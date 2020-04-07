@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LineProfileWidget</class>
+ <widget class="QWidget" name="LineProfileWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1100</width>
+    <height>650</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Spectral Line Profiles</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_4">
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Single</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="s1_groupbox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>500</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>598</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Star 1</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="toolTip">
+             <string>The bin width in microns. Too small a bin width gives noisy profiles. Too large a bin
+width gives insufficient spectral resolution.</string>
+            </property>
+            <property name="text">
+             <string>Bin Width</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QDoubleSpinBox" name="s1_binwidth_spinbox">
+            <property name="decimals">
+             <number>6</number>
+            </property>
+            <property name="minimum">
+             <double>0.000001000000000</double>
+            </property>
+            <property name="maximum">
+             <double>1.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000100000000000</double>
+            </property>
+            <property name="value">
+             <double>0.000010000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="label_4">
+            <property name="toolTip">
+             <string>The continuum scale (continuum flux at the reference wavelength). The unit is decided by
+the user.</string>
+            </property>
+            <property name="text">
+             <string>Cont. Scale</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QDoubleSpinBox" name="s1_contscale_spinbox">
+            <property name="decimals">
+             <number>5</number>
+            </property>
+            <property name="minimum">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>99.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>1.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QPushButton" name="s1_add_btn">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grid fineness for micro-integration on each surface element. Subgrid = 1 means that there is no micro-integration. Subgrid = n breaks each surface element into n&lt;span style=&quot; vertical-align:super;&quot;&gt;2&lt;/span&gt; pieces, each with its own radial velocity, thus improving integration accuracy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Subgrid</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="s1_subgrid_spinbox">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>999</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="label_5">
+            <property name="toolTip">
+             <string>The continuum slope in flux units per micron.</string>
+            </property>
+            <property name="text">
+             <string>Cont. Slope</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QDoubleSpinBox" name="s1_contslope_spinbox">
+            <property name="decimals">
+             <number>5</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QPushButton" name="s1_remove_btn">
+            <property name="text">
+             <string>Remove</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="5">
+           <widget class="QTreeWidget" name="s1_treewidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>150</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>270</height>
+             </size>
+            </property>
+            <column>
+             <property name="text">
+              <string>Wavelength</string>
+             </property>
+             <property name="toolTip">
+              <string>The line rest wavelength in microns</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Equivalent Width</string>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The line equivalent width for a line, in microns—the traditional measure of line strength.&lt;/p&gt;&lt;p&gt;Absorption and emission lines both have positive equivalent width by program (WD) convention. Whether a line is in absorption or emission is controlled by parameters Rectangle Line Depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Rect. Line Depth</string>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rectangular line depth for a line. &lt;/p&gt;&lt;p&gt;Line profiles are formed by binning of Doppler shifted elements that have rectangular profiles, each with a depth and a width. The user supplies the depth and the program (WD) then calculates the rectangular line width needed to reproduce the specified equivalent width. The depth is relative to a unit continuum, so 0.80000 means that 80 percent of the continuum flux is missing within the rectangular profile element, or that the residual flux is 20 percent of the continuum. Negative depths correspond to emission lines, so −0.50000 means 50 percent above the continuum. Depths must be less than 1.0000 (i.e. an absorption line cannot go to zero flux or below), but can be less than −1.0000 (an emission line can go arbitrarily high).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>KKS</string>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This integer specifies a surface region associated with a given spectral line. &lt;/p&gt;&lt;p&gt;If KKS=0, the line is not specific to a location but applies to the entire star. &lt;/p&gt;&lt;p&gt;If KKS=1, then the line applies only to the first spot on that star&lt;/p&gt;&lt;p&gt;if KKS=2 it applies only to the second spot, and so on. &lt;/p&gt;&lt;p&gt;Naturally the star must have spots for this scheme to work, but the spots need not be hot or cool spots—they can have temperature factors of unity. &lt;/p&gt;&lt;p&gt;Negative KKS specifies avoidance of regions. Thus KKS=−4 means that the spectral line applies everywhere on the star except within spot 4. If you find this confusing, just set KKS=0 and the line applies in the old simple way—everywhere on the star.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="plot_btn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>125</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Plot</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Line" name="line">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Phase</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="phase_spinbox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="decimals">
+            <number>4</number>
+           </property>
+           <property name="singleStep">
+            <double>0.100000000000000</double>
+           </property>
+           <property name="value">
+            <double>0.250000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="2" rowspan="2">
+        <widget class="QWidget" name="plot_widget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>1</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" rowspan="3">
+        <widget class="QGroupBox" name="s2_groupbox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>500</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>598</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Star 2</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_15">
+            <property name="toolTip">
+             <string>The bin width in microns. Too small a bin width gives noisy profiles. Too large a bin
+width gives insufficient spectral resolution.</string>
+            </property>
+            <property name="text">
+             <string>Bin Width</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QDoubleSpinBox" name="s2_binwidth_spinbox">
+            <property name="decimals">
+             <number>6</number>
+            </property>
+            <property name="minimum">
+             <double>0.000001000000000</double>
+            </property>
+            <property name="maximum">
+             <double>1.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000100000000000</double>
+            </property>
+            <property name="value">
+             <double>0.000010000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="label_12">
+            <property name="toolTip">
+             <string>The continuum scale (continuum flux at the reference wavelength). The unit is decided by
+the user.</string>
+            </property>
+            <property name="text">
+             <string>Cont. Scale</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QDoubleSpinBox" name="s2_contscale_spinbox">
+            <property name="decimals">
+             <number>5</number>
+            </property>
+            <property name="maximum">
+             <double>99.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>1.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QPushButton" name="s2_add_btn">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_13">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grid fineness for micro-integration on each surface element. Subgrid = 1 means that there is no micro-integration. Subgrid = n breaks each surface element into n&lt;span style=&quot; vertical-align:super;&quot;&gt;2&lt;/span&gt; pieces, each with its own radial velocity, thus improving integration accuracy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Subgrid</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="s2_subgrid_spinbox">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="label_11">
+            <property name="toolTip">
+             <string>The continuum slope in flux units per micron.</string>
+            </property>
+            <property name="text">
+             <string>Cont. Slope</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QDoubleSpinBox" name="s2_contslope_spinbox">
+            <property name="decimals">
+             <number>5</number>
+            </property>
+            <property name="maximum">
+             <double>1.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QPushButton" name="s2_remove_btn">
+            <property name="text">
+             <string>Remove</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="5">
+           <widget class="QTreeWidget" name="s2_treewidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>150</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>270</height>
+             </size>
+            </property>
+            <column>
+             <property name="text">
+              <string>Wavelength</string>
+             </property>
+             <property name="toolTip">
+              <string>The line rest wavelength in microns</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Equivalent Width</string>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The line equivalent width for a line, in microns—the traditional measure of line strength.&lt;/p&gt;&lt;p&gt;Absorption and emission lines both have positive equivalent width by program (WD) convention. Whether a line is in absorption or emission is controlled by parameters Rectangle Line Depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Rect. Line Depth</string>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rectangular line depth for a line. &lt;/p&gt;&lt;p&gt;Line profiles are formed by binning of Doppler shifted elements that have rectangular profiles, each with a depth and a width. The user supplies the depth and the program (WD) then calculates the rectangular line width needed to reproduce the specified equivalent width. The depth is relative to a unit continuum, so 0.80000 means that 80 percent of the continuum flux is missing within the rectangular profile element, or that the residual flux is 20 percent of the continuum. Negative depths correspond to emission lines, so −0.50000 means 50 percent above the continuum. Depths must be less than 1.0000 (i.e. an absorption line cannot go to zero flux or below), but can be less than −1.0000 (an emission line can go arbitrarily high).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>KKS</string>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This integer specifies a surface region associated with a given spectral line. &lt;/p&gt;&lt;p&gt;If KKS=0, the line is not specific to a location but applies to the entire star. &lt;/p&gt;&lt;p&gt;If KKS=1, then the line applies only to the first spot on that star&lt;/p&gt;&lt;p&gt;if KKS=2 it applies only to the second spot, and so on. &lt;/p&gt;&lt;p&gt;Naturally the star must have spots for this scheme to work, but the spots need not be hot or cool spots—they can have temperature factors of unity. &lt;/p&gt;&lt;p&gt;Negative KKS specifies avoidance of regions. Thus KKS=−4 means that the spectral line applies everywhere on the star except within spot 4. If you find this confusing, just set KKS=0 and the line applies in the old simple way—everywhere on the star.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1" rowspan="4">
+        <widget class="Line" name="line_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="Line" name="line_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Animation</string>
+      </attribute>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

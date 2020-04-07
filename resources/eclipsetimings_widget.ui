@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EclipseWidget</class>
+ <widget class="QWidget" name="EclipseWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>375</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>375</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>400</width>
+    <height>900</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Eclipse Timings</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_16">
+     <property name="toolTip">
+      <string>Set standard deviation apply method. [?]</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An integer array that is 0, 1, or 2 for each input sub-dataset (velocity, light, or eclipse timings). &lt;/p&gt;&lt;p&gt;The KSDs tell DC whether to apply the input standard deviations (σ’s) to compute curvedependent weights (KSD=0), &lt;/p&gt;&lt;p&gt;to apply DC’s internally computed σ’s for the weights (KSD=1),&lt;/p&gt;&lt;p&gt;or to apply σ’s based on one or two restricted phase ranges for the weights (KSD=2).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;If unsure, set to 1.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>KSD</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QSpinBox" name="ksd_box">
+     <property name="buttonSymbols">
+      <enum>QAbstractSpinBox::UpDownArrows</enum>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>3</number>
+     </property>
+     <property name="value">
+      <number>1</number>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0" colspan="5">
+    <widget class="QTreeWidget" name="datawidget">
+     <column>
+      <property name="text">
+       <string>Time</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Eclipse Type</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Weight</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="5" column="3">
+    <widget class="QLabel" name="label_11">
+     <property name="toolTip">
+      <string>Estimated standard deviation of observed light</string>
+     </property>
+     <property name="text">
+      <string>SIGMA</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0" colspan="2">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Data preview of file:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="5">
+    <widget class="QCheckBox" name="constant_weight_checkbox">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, third column will be ignored and all weights will be assumed as unity.&lt;/p&gt;&lt;p&gt;If there isn't a third column, program will fill weights with unity too, regardless of this option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Use constant weights (1.0)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0" colspan="5">
+    <widget class="QLabel" name="filepath_label">
+     <property name="text">
+      <string>None</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="5">
+    <widget class="Line" name="line_12">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="5">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="5">
+    <widget class="Line" name="line_13">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="5">
+    <widget class="QLabel" name="label_53">
+     <property name="text">
+      <string>Load eclipse timings from a file</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="2">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="4">
+    <widget class="QCheckBox" name="iftime_chk">
+     <property name="text">
+      <string>IFTIME - Write eclipse timings</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="0" colspan="5">
+    <widget class="QPushButton" name="load_btn">
+     <property name="text">
+      <string>Load</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="0" colspan="5">
+    <widget class="QPushButton" name="clear_btn">
+     <property name="text">
+      <string>Clear</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="4">
+    <widget class="QDoubleSpinBox" name="sigma_ipt">
+     <property name="buttonSymbols">
+      <enum>QAbstractSpinBox::NoButtons</enum>
+     </property>
+     <property name="decimals">
+      <number>8</number>
+     </property>
+     <property name="maximum">
+      <double>99999.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

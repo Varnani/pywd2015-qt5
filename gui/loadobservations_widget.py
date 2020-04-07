@@ -1,0 +1,93 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'loadobservations_widget.ui'
+#
+# Created by: PyQt5 UI code generator 5.11.3
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Ui_ObservationWidget(object):
+    def setupUi(self, ObservationWidget):
+        ObservationWidget.setObjectName("ObservationWidget")
+        ObservationWidget.resize(600, 250)
+        ObservationWidget.setMinimumSize(QtCore.QSize(450, 200))
+        ObservationWidget.setMaximumSize(QtCore.QSize(900, 400))
+        self.gridLayout = QtWidgets.QGridLayout(ObservationWidget)
+        self.gridLayout.setObjectName("gridLayout")
+        self.plot_btn = QtWidgets.QPushButton(ObservationWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.plot_btn.sizePolicy().hasHeightForWidth())
+        self.plot_btn.setSizePolicy(sizePolicy)
+        self.plot_btn.setObjectName("plot_btn")
+        self.gridLayout.addWidget(self.plot_btn, 5, 0, 1, 1)
+        self.remove_btn = QtWidgets.QPushButton(ObservationWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.remove_btn.sizePolicy().hasHeightForWidth())
+        self.remove_btn.setSizePolicy(sizePolicy)
+        self.remove_btn.setObjectName("remove_btn")
+        self.gridLayout.addWidget(self.remove_btn, 4, 0, 1, 1)
+        self.edit_btn = QtWidgets.QPushButton(ObservationWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.edit_btn.sizePolicy().hasHeightForWidth())
+        self.edit_btn.setSizePolicy(sizePolicy)
+        self.edit_btn.setObjectName("edit_btn")
+        self.gridLayout.addWidget(self.edit_btn, 3, 0, 1, 1)
+        self.add_btn = QtWidgets.QPushButton(ObservationWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.add_btn.sizePolicy().hasHeightForWidth())
+        self.add_btn.setSizePolicy(sizePolicy)
+        self.add_btn.setObjectName("add_btn")
+        self.gridLayout.addWidget(self.add_btn, 2, 0, 1, 1)
+        self.line = QtWidgets.QFrame(ObservationWidget)
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.gridLayout.addWidget(self.line, 1, 0, 1, 3)
+        self.label = QtWidgets.QLabel(ObservationWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
+        self.label.setObjectName("label")
+        self.gridLayout.addWidget(self.label, 0, 0, 1, 3)
+        self.line_2 = QtWidgets.QFrame(ObservationWidget)
+        self.line_2.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_2.setObjectName("line_2")
+        self.gridLayout.addWidget(self.line_2, 2, 1, 4, 1)
+        self.curve_treewidget = QtWidgets.QTreeWidget(ObservationWidget)
+        self.curve_treewidget.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.curve_treewidget.setIndentation(10)
+        self.curve_treewidget.setExpandsOnDoubleClick(True)
+        self.curve_treewidget.setObjectName("curve_treewidget")
+        self.curve_treewidget.header().setDefaultSectionSize(100)
+        self.curve_treewidget.header().setMinimumSectionSize(50)
+        self.curve_treewidget.header().setStretchLastSection(True)
+        self.gridLayout.addWidget(self.curve_treewidget, 2, 2, 4, 1)
+
+        self.retranslateUi(ObservationWidget)
+        QtCore.QMetaObject.connectSlotsByName(ObservationWidget)
+
+    def retranslateUi(self, ObservationWidget):
+        _translate = QtCore.QCoreApplication.translate
+        ObservationWidget.setWindowTitle(_translate("ObservationWidget", "Load Observations"))
+        self.plot_btn.setText(_translate("ObservationWidget", "Plot"))
+        self.remove_btn.setText(_translate("ObservationWidget", "Remove"))
+        self.edit_btn.setText(_translate("ObservationWidget", "Edit"))
+        self.add_btn.setText(_translate("ObservationWidget", "Add"))
+        self.label.setText(_translate("ObservationWidget", "Load or edit observations from files:"))
+        self.curve_treewidget.headerItem().setText(0, _translate("ObservationWidget", "Filename"))
+        self.curve_treewidget.headerItem().setText(1, _translate("ObservationWidget", "Type"))
+        self.curve_treewidget.headerItem().setText(2, _translate("ObservationWidget", "Band"))
+
