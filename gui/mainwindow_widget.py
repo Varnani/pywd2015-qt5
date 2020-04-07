@@ -2053,7 +2053,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(1)
+        self.tabWidget_2.setCurrentIndex(0)
         self.mode_combobox.setCurrentIndex(3)
         self.lc_noise_combobox.setCurrentIndex(0)
         self.tabWidget_3.setCurrentIndex(0)

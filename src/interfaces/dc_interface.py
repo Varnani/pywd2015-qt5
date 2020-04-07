@@ -509,6 +509,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 elif result[1] != 0.0:
                     _update_curve(int(result[0]), int(result[1]), result[4], self.main_window)
 
+            self.main_window.lc_synthetic_curve_widget.reset_and_repopulate()
+
     def plot(self):
         if self.observations is not None:
             if self.data_combobox.currentText() == "Velocity Curve #1 + #2":
@@ -954,8 +956,16 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             s2_root = QtWidgets.QTreeWidgetItem(self.component_treewidget)
             s2_root.setText(0, "Star 2")
 
-            s1_dimensions = list(numpy.array(self.dimensions[0][1:]).transpose())
-            s2_dimensions = list(numpy.array(self.dimensions[1][1:]).transpose())
+            temp_dimensions = list(self.dimensions)
+
+            temp_dimensions[0].pop(3)
+            temp_dimensions[0].pop(3)
+
+            temp_dimensions[1].pop(3)
+            temp_dimensions[1].pop(3)
+
+            s1_dimensions = list(numpy.array(temp_dimensions[0][1:]).transpose())
+            s2_dimensions = list(numpy.array(temp_dimensions[1][1:]).transpose())
 
             for row in s1_dimensions:
                 item = QtWidgets.QTreeWidgetItem(s1_root)
