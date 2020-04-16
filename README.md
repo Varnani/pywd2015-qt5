@@ -40,7 +40,7 @@ You can use pip to install PyQt5 on Windows:
 
 ## Getting Started
 
-After installing required dependencies, you can get the source code of the program by either cloning this repository, or downloading a release from the Releases page. Extract the source code and issue this command to start the PyWD2015:
+After installing required dependencies, you can get the source code of the program by either cloning this repository, or downloading a release from the [Releases](https://github.com/Varnani/pywd2015-qt5/releases) page. Extract the source code and issue this command to start the PyWD2015:
 
 ```python pywd2015.py```  
 
