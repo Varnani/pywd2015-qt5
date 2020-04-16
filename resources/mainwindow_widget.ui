@@ -4474,7 +4474,7 @@ zero for zero output noise</string>
                 </size>
                </property>
                <property name="text">
-                <string>github.com/Varnani/PyWD2015</string>
+                <string>github.com/Varnani/pywd2015-qt5</string>
                </property>
                <property name="readOnly">
                 <bool>true</bool>

@@ -2496,7 +2496,7 @@ class Ui_MainWindow(object):
         self.groupBox_17.setTitle(_translate("MainWindow", "About PyWD2015"))
         self.pywd_about.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">PyWD2015</span> is a graphical user interface wrapping and adding convenience features to Wilson - Devinney\'s DC/LC programs for eclipsing binary system modeling, targeting specifically the 2015 version. </p><p>Manual is available at the GitHub wiki. You can also reach the authors from there.</p><p>For information about DC/LC programs itself, please refer to the WD Homepage.</p></body></html>"))
         self.groupBox_16.setTitle(_translate("MainWindow", "Useful Links"))
-        self.lineEdit_7.setText(_translate("MainWindow", "github.com/Varnani/PyWD2015"))
+        self.lineEdit_7.setText(_translate("MainWindow", "github.com/Varnani/pywd2015-qt5"))
         self.label_66.setText(_translate("MainWindow", "GitHub:"))
         self.label_65.setText(_translate("MainWindow", "WD Homepage:"))
         self.lineEdit_8.setText(_translate("MainWindow", "ftp://ftp.astro.ufl.edu/pub/wilson/"))
