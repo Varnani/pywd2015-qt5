@@ -9,7 +9,7 @@ If you happen to use this software in a scientific work, we kindly ask you to ci
 [ApJ (2008), 672, 575](https://ui.adsabs.harvard.edu/abs/2008ApJ...672..575W/abstract)  
 
 Plus PyWD2015 release proceeding:  
-[CAOSP (2020), 50, 535](https://ui.adsabs.harvard.edu/abs/2020CoSka..50..535G/abstract)  
+[CoSka (2020), 50, 535](https://ui.adsabs.harvard.edu/abs/2020CoSka..50..535G/abstract)  
 
 ## Installing Dependencies
 PyWD2015 is written with Python 2.7. It also relies on Numpy, Scipy, Matplotlib libraries. You can install those with the following command:  
