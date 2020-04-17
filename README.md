@@ -2,14 +2,14 @@
 A Qt5 GUI written in Python for Wilson - Devinney eclipsing binary modeling software.
 
 ## First Things First
-If you happen to use this software in a scientific work, we kindly ask you to cite these relevant Wilson - Devinney papers:  
+If you happen to use this software in a scientific work, please cite PyWD2015 release proceeding:  
+[CoSka (2020), 50, 535](https://ui.adsabs.harvard.edu/abs/2020CoSka..50..535G/abstract)  
+
+You must also properly cite relevant Wilson - Devinney papers:  
 [ApJ (1971), 166, 605](https://ui.adsabs.harvard.edu/abs/1971ApJ...166..605W/abstract)  
 [ApJ (1979), 234, 1054](https://ui.adsabs.harvard.edu/abs/1979ApJ...234.1054W/abstract)  
 [ApJ (1990), 356, 613](https://ui.adsabs.harvard.edu/abs/1990ApJ...356..613W/abstract)  
 [ApJ (2008), 672, 575](https://ui.adsabs.harvard.edu/abs/2008ApJ...672..575W/abstract)  
-
-Plus PyWD2015 release proceeding:  
-[CoSka (2020), 50, 535](https://ui.adsabs.harvard.edu/abs/2020CoSka..50..535G/abstract)  
 
 ## Installing Dependencies
 PyWD2015 is written with Python 2.7. It also relies on Numpy, Scipy, Matplotlib libraries. You can install those with the following command:  
