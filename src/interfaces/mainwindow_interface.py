@@ -815,8 +815,8 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         dc_params["maglite"] = constants.MAGLITE_DICT[self.maglite_combobox.currentText()]
         dc_params["linkext"] = 0
         dc_params["desextinc"] = 0
-        dc_params["n1l"] = 30
-        dc_params["n2l"] = 30
+        dc_params["n1l"] = self.n1l_ipt.value()
+        dc_params["n2l"] = self.n2l_ipt.value()
 
         # spot params
         dc_params["nomax"] = constants.NOMAX_DICT[self.configurespot_widget.nomax_combobox.currentText()]
@@ -835,10 +835,10 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
                 b = spot[9]
 
                 if a:
-                    params["kspa"] = 1
+                    params["kspa"] = star
                     params["nspa"] = i + 1
                 if b:
-                    params["kspb"] = 1
+                    params["kspb"] = star
                     params["nspb"] = i + 1
 
                 params.add_spot(star,

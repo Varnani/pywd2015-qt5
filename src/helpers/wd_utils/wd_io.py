@@ -117,7 +117,7 @@ class _WDIO:
         return columns
 
     @staticmethod
-    def _read_table(source, header, offset=1, occurence=1, splitmap=None, terminator="\n", tidy=True, string=False):
+    def _read_table(source, header, offset=1, occurence=1, splitmap=None, tidy=True, string=False):
         table = []
         flag = False
         start = 0
@@ -132,7 +132,7 @@ class _WDIO:
                     if start < offset:
                         start = start + 1
                     else:
-                        if line == terminator:
+                        if not line.strip():
                             break
                         else:
                             if splitmap is not None:
@@ -146,7 +146,7 @@ class _WDIO:
             return table
 
     @staticmethod
-    def _read_all_tables(source, header, offset=1, splitmap=None, terminator="", tidy=True, string=False):
+    def _read_all_tables(source, header, offset=1, splitmap=None, tidy=True, string=False):
         with open(source, "r") as src:
             splitted_source = src.read().split(header)
 
@@ -164,7 +164,7 @@ class _WDIO:
                 current_offset = current_offset + 1
             table = []
             for line in splitted_segment:
-                if line == terminator:
+                if not line.split():
                     break
                 else:
                     if splitmap is not None:

@@ -557,6 +557,7 @@ class Ui_MainWindow(object):
         self.a_ipt.setMinimum(0.0)
         self.a_ipt.setMaximum(999999.0)
         self.a_ipt.setObjectName("a_ipt")
+        self.a_ipt.setProperty("value", 10.0)
         self.gridLayout_8.addWidget(self.a_ipt, 5, 1, 1, 1)
         self.pshift_ipt = QtWidgets.QDoubleSpinBox(self.groupBox_7)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)

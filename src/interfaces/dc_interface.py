@@ -443,7 +443,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                     curve.x1 = value
 
                 elif par_id == 59:
-                    curve.l2 = value
+                    curve.x2 = value
 
                 elif par_id == 60:
                     curve.l3 = value
