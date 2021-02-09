@@ -811,10 +811,10 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         dc_params["tc3b"] = self.conj3b_ipt.value()
 
         # general dc params
-        dc_params["isym"] = 1
+        dc_params["isym"] = constants.DERIV_DICT[self.dc_isym_combobox.currentText()]
         dc_params["maglite"] = constants.MAGLITE_DICT[self.maglite_combobox.currentText()]
-        dc_params["linkext"] = 0
-        dc_params["desextinc"] = 0
+        dc_params["linkext"] = self.dc_ext_band_spinbox.value()
+        dc_params["desextinc"] = self.dc_desextinc_ipt.value()
         dc_params["n1l"] = self.n1l_ipt.value()
         dc_params["n2l"] = self.n2l_ipt.value()
 
