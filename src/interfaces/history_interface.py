@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets, QtGui
 from gui import history_widget
 from src.helpers.matplotlib_embedder import MatplotlibWidget
 from src import constants
-from itertools import izip
+
 from matplotlib.ticker import MaxNLocator
 from src.helpers import methods
 from src.helpers import messenger
@@ -84,7 +84,7 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
         elif len(self.solutions[0]) == len(new_solution):
             same_solution = True
             old_solution = self.solutions[-1]
-            for old, new in izip(old_solution, new_solution):
+            for old, new in zip(old_solution, new_solution):
                 if old[0] != new[0]:
                     same_solution = False
                     break
@@ -133,7 +133,7 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
         if selected_item is not None and len(self.solutions) > 0:
             self.chart.clear_all()
             index = self.history_treewidget.currentColumn() - 1
-            x = range(1, len(self.solutions) + 1)
+            x = list(range(1, len(self.solutions) + 1))
             y = [solution[index][4] for solution in self.solutions]
             y_w = [solution[index][5] for solution in self.solutions]
 

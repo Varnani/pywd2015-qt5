@@ -7,19 +7,19 @@ from configparser import ConfigParser
 import os
 import webbrowser  # sending open file commands with this might not be portable
 import numpy
-import lcdcpicker_interface
-import loadobservations_interface
-import syntheticcurve_interface
-import configurespots_interface
-import eclipsetimings_interface
-import lineprofile_interface
-import dimension_interface
-import starpositions_interface
-import conjunction_interface
-import oc_interface
-import dc_interface
-import history_interface
-import single_conjunction
+from . import lcdcpicker_interface
+from . import loadobservations_interface
+from . import syntheticcurve_interface
+from . import configurespots_interface
+from . import eclipsetimings_interface
+from . import lineprofile_interface
+from . import dimension_interface
+from . import starpositions_interface
+from . import conjunction_interface
+from . import oc_interface
+from . import dc_interface
+from . import history_interface
+from . import single_conjunction
 
 
 class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
@@ -190,7 +190,7 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
 
     def populate_styles(self):
         style_factory = QtWidgets.QStyleFactory()
-        style_keys = style_factory.keys()
+        style_keys = list(style_factory.keys())
 
         for style in style_keys:
             self.theme_combobox.addItem(str(style))
@@ -248,7 +248,7 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
 
         except OverflowError as e:
             msg = messenger.Messenger("error", "An error encountered. Check your inputs.")
-            msg.set_info("Details:\n" + e.message)
+            msg.set_info("Details:\n" + e.args[0])
             msg.show()
 
     def compute_infrared_color_temp(self):
@@ -269,7 +269,7 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
 
         except OverflowError as e:
             msg = messenger.Messenger("error", "An error encountered. Check your inputs.")
-            msg.set_info("Details:\n" + e.message)
+            msg.set_info("Details:\n" + e.args[0])
             msg.show()
 
     def compute_omega(self):

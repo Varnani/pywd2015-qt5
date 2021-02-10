@@ -47,7 +47,7 @@ class Widget(QtWidgets.QDialog, lcdcpicker_dialog.Ui_LCDCPickerDialog):
             except NoOptionError as ex:
                 msg = messenger.Messenger("error", "A NoOptionError occured during config file read.")
                 msg.set_info("Config file is malformed. Please reselect wd binary paths.\nAdditional info:\n" +
-                             ex.message)
+                             ex.args[0])
                 msg.show()
                 return self.exec_()
 

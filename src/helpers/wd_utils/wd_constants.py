@@ -58,4 +58,4 @@ DC_KEEPS_NAME_ID_DICT = {
 }
 
 # reverse of the dictionary above
-DC_KEEPS_ID_NAME_DICT = {value: key for key, value in DC_KEEPS_NAME_ID_DICT.items()}
+DC_KEEPS_ID_NAME_DICT = {value: key for key, value in list(DC_KEEPS_NAME_ID_DICT.items())}

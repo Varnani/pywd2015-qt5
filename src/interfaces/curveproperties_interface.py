@@ -335,13 +335,13 @@ class Widget(QtWidgets.QDialog, curveproperties_dialog.Ui_CurvePropertiesDialog)
 
         except ValueError as e:
             msg = messenger.Messenger("error", "A ValueError has occured:")
-            msg.set_info(e.message)
+            msg.set_info(e.args[0])
             msg.show()
             return False
 
         except IndexError as e:
             msg = messenger.Messenger("error", "An IndexError has occured:")
-            msg.set_info(e.message)
+            msg.set_info(e.args[0])
             msg.show()
             return False
 

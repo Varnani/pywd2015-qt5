@@ -256,7 +256,7 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
                         lc_obs = self.alias(lc_obs, model_start, model_end)
                     except ValueError as e:
                         msg = messenger.Messenger("error", "A ValueError has occured:")
-                        msg.set_info(e.message)
+                        msg.set_info(e.args[0])
                         msg.show()
 
                         return 0
@@ -334,7 +334,7 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
                         s1_obs = self.alias(s1_obs, model_start, model_end)
                     except ValueError as e:
                         msg = messenger.Messenger("error", "A ValueError has occured:")
-                        msg.set_info(e.message)
+                        msg.set_info(e.args[0])
                         msg.show()
 
                         return 0
@@ -351,7 +351,7 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
                         s2_obs = self.alias(s2_obs, model_start, model_end)
                     except ValueError as e:
                         msg = messenger.Messenger("error", "A ValueError has occured:")
-                        msg.set_info(e.message)
+                        msg.set_info(e.args[0])
                         msg.show()
 
                         return 0

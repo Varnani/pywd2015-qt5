@@ -142,11 +142,11 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                             for result in component:
                                 if selection.objectName() == "plaintext":
                                     value = "r" + str(i + 1) + "_" + str(result[1])
-                                    f.write(value + delimiter + str(result[2]) + delimiter + str(result[5]) + "\n")
+                                    f.write(value + delimiter + str(result[2]) + delimiter + str(result[3]) + "\n")
                                 elif selection.objectName() == "latex":
                                     value = "$r_{" + str(i + 1) + "~" + str(result[1]) + "}$"
                                     f.write(value + " & " + str(result[2]) + " $\pm$ " +
-                                            str(result[5]) + " \\" + "\\" + "\n")
+                                            str(result[3]) + " \\" + "\\" + "\n")
 
                         if selection.objectName() == "plaintext":
                             f.write("\n#Mean Residual for Input Values\n" + str(self.solution_stats[0][0]) + "\n")
@@ -1029,14 +1029,14 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
         except ValueError as e:
             msg = messenger.Messenger("error", "An ValueError has occured:")
-            msg.set_info(e.message + _template_msg)
+            msg.set_info(e.args[0] + _template_msg)
             msg.show()
 
             error = True
 
         except IndexError as e:
             msg = messenger.Messenger("error", "An IndexError has occured:")
-            msg.set_info(e.message + _template_msg)
+            msg.set_info(e.args[0] + _template_msg)
             msg.show()
 
             error = True

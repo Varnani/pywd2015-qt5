@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
 import numpy
-from itertools import izip
+
 from scipy.optimize import fsolve, newton
 from src import constants
 
@@ -464,7 +464,7 @@ def alias_phased_obs_with_phase(x, y, start, end):
     _x = []
     _y = []
 
-    for phase, value in izip(new_x, new_y):
+    for phase, value in zip(new_x, new_y):
         if start <= phase <= end:
             _x.append(phase)
             _y.append(value)
@@ -510,7 +510,7 @@ def alias_phased_obs_with_jd(x, y, start, end, t0, p):
     _x = []
     _y = []
 
-    for jd, value in izip(new_x, new_y):
+    for jd, value in zip(new_x, new_y):
         if start <= jd <= end:
             _x.append(jd)
             _y.append(value)

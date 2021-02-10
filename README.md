@@ -13,40 +13,48 @@ You must also properly cite relevant Wilson - Devinney papers:
 [ApJ (2014), 780, 151](https://ui.adsabs.harvard.edu/abs/2014ApJ...780..151W/abstract)
 
 ## Installing Dependencies
-PyWD2015 is written with Python 2.7. It also relies on Numpy, Scipy, Matplotlib libraries. You can install those with the following command:  
+
+> **WARNING** | Some Linux distributions use Python 3.x as their default Python interpreter. In that case 'python' command and package name prefix will actually refer to Python 3.x and 'python2' will refer to Python 2.7. Please refer to your distributions package manager database if you are unsure. On Windows, multiple Python installations may conflict with each other, and your 'python' command might run a different version rather than what you intented. Run 'python --version' from command line to check your Python version. 
+
+PyWD2015 supports Python 2.7 and 3.5+. It also relies on Numpy, Scipy, Matplotlib libraries. These libraries can be installed using pip, the Python package installer. Pip should be automatically installed alongside Python on Windows. On Linux, you may need to install pip with your package manager. On Ubuntu and Debian, you can issue:
 
 ```shell
-pip install numpy scipy matplotlib
-``` 
-
-Pip should be automatically installed alongside Python on Windows. On Linux, you may need to install pip with your package manager. On Ubuntu and Debian, you can issue:  
-
-```shell
-sudo apt install python-pip
+(For Python 2.7) sudo apt install python-pip
+(For Python 3.x) sudo apt install python3-pip
 ```   
 
-to install pip.
+to install pip. You can then install the dependencies with the following command:  
 
-On Debian, you may encounter a "backports.functools_lru_cache" and/or "tkinter" error on a fresh matplotlib installation. To fix this, you can issue:  
+```shell
+Linux: 
+(For Python 2.7) sudo python -m pip install numpy scipy matplotlib
+(For Python 3.x) sudo python3 -m pip install numpy scipy matplotlib
+
+Windows:
+python -m pip install numpy scipy matplotlib
+```
+
+On Debian, you may encounter a "backports.functools_lru_cache" and/or "tkinter" error on a fresh matplotlib installation under Python 2.7. To fix this, you can issue:  
 
 ```shell
 sudo apt install python-backports.functools-lru-cache python-tk
 ```  
 
-After that, you need to install the PyQt5 library.  
+After that, you need to install the PyQt5 library.
 
 ### Linux
-Installing PyQt5 on Linux depends on your distro and package manager. On Ubuntu and Debian you can use:  
+Installing PyQt5 on Linux depends on your distribution and package manager. In general, you should not use pip to install PyQt5, instead use your distributions package manager. On Ubuntu and Debian you can use:  
 
 ```shell
-sudo apt install python-pyqt5
+(For Python 2.7) sudo apt install python-pyqt5
+(For Python 3.x) sudo apt install python3-pyqt5
 ```  
 
 ### Windows
-You can use pip to install PyQt5 on Windows:  
+You can safely use pip to install PyQt5 on Windows:  
 
 ```shell
-pip install python-qt5
+python -m pip install python-qt5
 ```  
 
 ## Getting Started

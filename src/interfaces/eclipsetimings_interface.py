@@ -47,13 +47,13 @@ class Widget(QtWidgets.QWidget, eclipsetimings_widget.Ui_EclipseWidget):
 
         except ValueError as e:
             msg = messenger.Messenger("error", "A ValueError has occured:")
-            msg.set_info(e.message + "\nEclipse times are not loaded.")
+            msg.set_info(e.args[0] + "\nEclipse times are not loaded.")
             msg.show()
             return False
 
         except IndexError as e:
             msg = messenger.Messenger("error", "An IndexError has occured:")
-            msg.set_info(e.message + "\nEclipse times are not loaded.")
+            msg.set_info(e.args[0] + "\nEclipse times are not loaded.")
             msg.show()
             return False
 

@@ -141,7 +141,7 @@ BANDPASS_ID_DICT = {
             "Lunar Ultraviolet Telescope": "94"
 }
 ID_BANDPASS_DICT = {
-    value: key for key, value in BANDPASS_ID_DICT.items()  # reverse of the above
+    value: key for key, value in list(BANDPASS_ID_DICT.items())  # reverse of the above
 }
 KEEPS_NAME_ID_DICT = {
     "Spot 1 Latitude": 1.0,
@@ -201,7 +201,7 @@ KEEPS_NAME_ID_DICT = {
     "L3": 60.0
 }
 KEEPS_ID_NAME_DICT = {
-    value: key for key, value in KEEPS_NAME_ID_DICT.items()
+    value: key for key, value in list(KEEPS_NAME_ID_DICT.items())
 }
 
 ID_LATEX_DICT = {

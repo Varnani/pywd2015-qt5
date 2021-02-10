@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtGui
 from gui import loadobservations_widget
-import curveproperties_interface
+from . import curveproperties_interface
 from matplotlib import pyplot
 import os
 from src import constants

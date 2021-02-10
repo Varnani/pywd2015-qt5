@@ -5,9 +5,9 @@ from src.interfaces import mainwindow_interface
 
 
 def run():
-    if platform.system() is "Windows":  # used for making app icon visible in windows taskbar
+    if platform.system() == "Windows":  # used for making app icon visible in windows taskbar
         import ctypes
-        appid = u"pywd2015-qt5"
+        appid = "pywd2015-qt5"
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
     app = QtWidgets.QApplication(sys.argv)
     gui = mainwindow_interface.Widget(app)
