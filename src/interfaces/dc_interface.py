@@ -23,8 +23,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
         self.main_window = parent
 
-        self.ptm_font = QtGui.QFont(constants.PTM_FONT_PATH)
-        self.ptm_font.setPointSize(10)
+        self.ptm_font = QtGui.QFont(parent.monoFont)
+        self.ptm_font.setPointSize(constants.DC_RESULTS_FONTSIZE)
         self.component_treewidget.setFont(self.ptm_font)
         self.curvestat_treewidget.setFont(self.ptm_font)
         self.residual_treewidget.setFont(self.ptm_font)

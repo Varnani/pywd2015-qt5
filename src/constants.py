@@ -16,7 +16,7 @@ PLAY_ICON_PATH = os.path.join(RESOURCES_DIR, "play.png")
 PAUSE_ICON_PATH = os.path.join(RESOURCES_DIR, "pause.png")
 NEXT_ICON_PATH = os.path.join(RESOURCES_DIR, "next.png")
 PREV_ICON_PATH = os.path.join(RESOURCES_DIR, "prev.png")
-PTM_FONT_PATH = os.path.join(RESOURCES_DIR, "PTM55F.ttf")
+MONO_FONT_PATH = os.path.join(RESOURCES_DIR, "PTM55FT.ttf")
 
 # hex colors and plot details
 MARKER_SIZE = 3
@@ -24,6 +24,7 @@ COLOR_BLUE = "#4286f4"
 COLOR_RED = "#f5425a"
 COLOR_GREEN = "#2aa34b"
 COLOR_ORANGE = "#f5a142"
+DC_RESULTS_FONTSIZE = 9
 
 # config sections
 CONFIG_SECTION_INFO = "Info"

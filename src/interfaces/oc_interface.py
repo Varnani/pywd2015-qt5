@@ -24,7 +24,7 @@ class Widget(QtWidgets.QWidget, oc_widget.Ui_OCWidget):
         self.chart = MatplotlibWidget(self.plot_widget, 1, 1, exportable=False)
         self.chart.create_axis(0, 0, name="", labels=("E", "O - C (Day)"))
 
-        self.data_treewidget.setFont(QtGui.QFont(constants.PTM_FONT_PATH))
+        self.data_treewidget.setFont(parent.monoFont)
         self.data_treewidget.header().setSectionResizeMode(3)
 
         self.cycles = []

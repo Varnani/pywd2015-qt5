@@ -36,6 +36,10 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         self.lc_binary = None
         self.dc_binary = None
 
+        # create mono font
+        fid = QtGui.QFontDatabase.addApplicationFont(constants.MONO_FONT_PATH)
+        self.monoFont = QtGui.QFont(QtGui.QFontDatabase.applicationFontFamilies(fid)[0])
+
         # interfaces
         self.loadobservations_widget = loadobservations_interface.Widget(self)
         self.configurespot_widget = configurespots_interface.Widget(self)

@@ -19,7 +19,7 @@ class Widget(QtWidgets.QWidget, conjunction_widget.Ui_conjunctionwidget):
 
         self.main_window = parent
 
-        self.data_treewidget.setFont(QtGui.QFont(constants.PTM_FONT_PATH))
+        self.data_treewidget.setFont(parent.monoFont)
         self.data_treewidget.header().setSectionResizeMode(3)
 
         self.connect_signals()

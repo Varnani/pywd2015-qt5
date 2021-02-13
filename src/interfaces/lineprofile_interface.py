@@ -53,8 +53,8 @@ class Widget(QtWidgets.QWidget, lineprofile_widget.Ui_LineProfileWidget):
     def add_row(self, widget):
         item = QtWidgets.QTreeWidgetItem(widget)
         i = 0
-        values = [0.65627, 0.00001, 0.5, 0]
-        while i < 4:
+        values = [0.65627, 0.00001, 0.5]
+        while i < 3:
             spinbox = QtWidgets.QDoubleSpinBox(widget)
             spinbox.setButtonSymbols(2)
             spinbox.setDecimals(7)
@@ -63,6 +63,13 @@ class Widget(QtWidgets.QWidget, lineprofile_widget.Ui_LineProfileWidget):
             spinbox.setValue(values[i])
             widget.setItemWidget(item, i, spinbox)
             i = i + 1
+
+        integer_spinbox = QtWidgets.QSpinBox(widget)
+        integer_spinbox.setButtonSymbols(2)
+        integer_spinbox.setMinimum(-999)
+        integer_spinbox.setMaximum(999)
+        integer_spinbox.setValue(0)
+        widget.setItemWidget(item, 3, integer_spinbox)
 
     def remove_row(self, widget):
         selected_item = self.get_selected(widget)

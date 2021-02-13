@@ -20,7 +20,7 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
 
         self.main_window = parent
 
-        self.ptm_font = QtGui.QFont(constants.PTM_FONT_PATH)
+        self.ptm_font = QtGui.QFont(parent.monoFont)
         self.ptm_font.setPointSize(9)
         self.history_treewidget.setFont(self.ptm_font)
         self.history_treewidget.header().setSectionResizeMode(3)

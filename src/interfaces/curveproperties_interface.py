@@ -231,7 +231,7 @@ class Widget(QtWidgets.QDialog, curveproperties_dialog.Ui_CurvePropertiesDialog)
 
         self.setWindowIcon(QtGui.QIcon(constants.MAIN_ICON_PATH))
 
-        self.data_widget.setFont(QtGui.QFont(constants.PTM_FONT_PATH))
+        self.data_widget.setFont(main_window.monoFont)
         self.data_widget.header().setSectionResizeMode(3)
 
         self.filepath = None

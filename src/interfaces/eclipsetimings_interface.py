@@ -13,7 +13,7 @@ class Widget(QtWidgets.QWidget, eclipsetimings_widget.Ui_EclipseWidget):
         self.setWindowIcon(QtGui.QIcon(constants.MAIN_ICON_PATH))
 
         self.main_window = parent
-        self.datawidget.setFont(QtGui.QFont(constants.PTM_FONT_PATH))
+        self.datawidget.setFont(parent.monoFont)
         self.datawidget.header().setSectionResizeMode(3)
         self.connect_signals()
 
