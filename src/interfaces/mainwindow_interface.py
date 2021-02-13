@@ -37,8 +37,12 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         self.dc_binary = None
 
         # create mono font
-        fid = QtGui.QFontDatabase.addApplicationFont(constants.MONO_FONT_PATH)
-        self.monoFont = QtGui.QFont(QtGui.QFontDatabase.applicationFontFamilies(fid)[0])
+        if os.path.isfile(constants.MONO_FONT_PATH):
+            fid = QtGui.QFontDatabase.addApplicationFont(constants.MONO_FONT_PATH)
+            self.monoFont = QtGui.QFont(QtGui.QFontDatabase.applicationFontFamilies(fid)[0])
+
+        else:
+            self.monoFont = QtGui.QFont()  # this creates a copy of app's default font
 
         # interfaces
         self.loadobservations_widget = loadobservations_interface.Widget(self)
