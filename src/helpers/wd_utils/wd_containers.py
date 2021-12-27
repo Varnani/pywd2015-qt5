@@ -603,7 +603,7 @@ class DCParameterContainer(_CommonParameterContainer):
         lc._add_parameter("sphas2", float, value=spha2)
         lc._add_parameter("sphas3", float, value=spha3)
         lc._add_parameter("sphas4", float, value=spha4)
-        lc._add_parameter("ksd", float, value=ksd)
+        lc._add_parameter("ksd", int, value=ksd)
         lc._add_parameter("wla", float, value=wla)
         lc._add_parameter("el3a", float, value=el3a)
         lc._add_parameter("noise", int, value=noise)
