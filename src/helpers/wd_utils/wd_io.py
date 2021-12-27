@@ -825,15 +825,15 @@ class DCIO(_WDIO):
             if self.parameters.velocity_curves[0] is not None:
                 vc1_len = len(self.parameters.velocity_curves[0].data["velocity_data"][0])
                 split_table.append([limit, limit + vc1_len])
-                limit = limit + vc1_len + 1
+                limit = limit + vc1_len #+ 1
             if self.parameters.velocity_curves[1] is not None:
                 vc2_len = len(self.parameters.velocity_curves[1].data["velocity_data"][0])
                 split_table.append([limit, limit + vc2_len])
-                limit = limit + vc2_len + 1
+                limit = limit + vc2_len #+ 1
             for lc in self.parameters.light_curves:
                 lc_len = len(lc.data["light_data"][0])
                 split_table.append([limit, limit + lc_len])
-                limit = limit + lc_len + 1
+                limit = limit + lc_len #+ 1
             for split in split_table:
                 temp_table = []
                 for column in oc_table:
