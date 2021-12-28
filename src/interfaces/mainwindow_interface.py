@@ -867,12 +867,12 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         if self.loadobservations_widget.velocity_curves[0] is not None:
             vc = self.loadobservations_widget.velocity_curves[0]
             data = vc.get_data()
-            dc_params.add_velocity_curve(1, vc.sigma, vc.ksd, vc.wla, data[0], data[1], data[2])
+            dc_params.add_velocity_curve(1, vc.sigma, vc.ksd, vc.wla, data[0], data[1], data[2], sphas1=vc.e1, sphas2=vc.e2, sphas3=vc.e3, sphas4=vc.e4)
 
         if self.loadobservations_widget.velocity_curves[1] is not None:
             vc = self.loadobservations_widget.velocity_curves[1]
             data = vc.get_data()
-            dc_params.add_velocity_curve(2, vc.sigma, vc.ksd, vc.wla, data[0], data[1], data[2])
+            dc_params.add_velocity_curve(2, vc.sigma, vc.ksd, vc.wla, data[0], data[1], data[2], sphas1=vc.e1, sphas2=vc.e2, sphas3=vc.e3, sphas4=vc.e4)
 
         if self.eclipsetimings_widget.iftime_chk.isChecked():
             data = self.eclipsetimings_widget.get_data()
