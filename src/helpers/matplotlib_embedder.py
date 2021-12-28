@@ -115,7 +115,7 @@ class MatplotlibWidget:
                     continue
 
                 for x, y in zip(xdata, ydata):  # "{:0.5f}"
-                    output = output + "{0:0.5f}{2}{1:0.5f}\n".format(x, y, delimiter)
+                    output = output + "{0:0.5f}{2}{1:0.10f}\n".format(x, y, delimiter)
 
             output = output + "\n"
 
