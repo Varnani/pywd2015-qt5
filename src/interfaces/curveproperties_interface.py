@@ -134,6 +134,8 @@ class CurveProperty:
 
         if str(ui.weight_combobox.currentText()) == "Constant (1.0)":
             self.constant_weights = True
+        else:
+            self.constant_weights = False
 
     def populate_parser(self, parser, section):
 
