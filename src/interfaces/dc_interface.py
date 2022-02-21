@@ -9,7 +9,7 @@ import os
 import math
 import numpy
 import webbrowser  # sending open file commands with this might not be portable
-
+import timeit
 
 delimiter = constants.EXPORT_DELIMITER
 
@@ -322,7 +322,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         dc_params.keeps["xincl3b"] = _eval_checkbox(self.xinc3b_chk)
         dc_params.keeps["e3b"] = _eval_checkbox(self.e3b_chk)
         dc_params.keeps["perr3b"] = _eval_checkbox(self.perr3b_chk)
-        dc_params.keeps["t03b"] = _eval_checkbox(self.jd0_chk)
+        dc_params.keeps["t03b"] = _eval_checkbox(self.tc3b_chk)
         dc_params.keeps["dpclog"] = _eval_checkbox(self.logd_chk)
         dc_params.keeps["desextinc"] = _eval_checkbox(self.desextinc_chk)
 
@@ -993,8 +993,9 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             a = str(self.solution_stats[0][0])
             b = str(self.solution_stats[1][0])
             c = str(self.solution_stats[2][0])
+            d = str(runtime)
 
-            for index, val in enumerate((a, b, c)):
+            for index, val in enumerate((a, b, c, d)):
                 if val == "nan":
                     item.setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
                     val = "NaN"
@@ -1083,7 +1084,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
         self.current_iteration = self.current_iteration + 1
 
-        self.main_window.dc_history_widget.receive_solution(self.results)
+        self.main_window.dc_history_widget.receive_solution(self.results, self.solution_stats)
 
         if self.current_iteration > self.iteration_spinbox.value():
             self.abort_differential_correction()
@@ -1294,8 +1295,17 @@ class IterationWorker(QtCore.QThread):
         self.dc_io = dc_io
 
     def run(self):
+        global runtime
+        starttime = timeit.default_timer()
         self.dc_io.fill_for_solution().save().run()
         self.iteration_done.emit()
+        runtime = (timeit.default_timer() - starttime)
+        if runtime < 120.0:
+            runtime = ("- %0.2f second -" % (timeit.default_timer() - starttime))
+        else:
+            runtime = (timeit.default_timer() - starttime)/60.0
+            runtime = ("- %0.2f minutes -" % ( runtime ) )
+
 
     def stop(self):
         if self.dc_io.process is not None:

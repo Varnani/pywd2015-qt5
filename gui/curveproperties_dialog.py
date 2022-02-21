@@ -107,7 +107,7 @@ class Ui_CurvePropertiesDialog(object):
         self.band_box = QtWidgets.QSpinBox(self.groupBox_6)
         self.band_box.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         self.band_box.setMinimum(1)
-        self.band_box.setMaximum(94)
+        self.band_box.setMaximum(95)
         self.band_box.setProperty("value", 7)
         self.band_box.setObjectName("band_box")
         self.gridLayout_6.addWidget(self.band_box, 0, 1, 1, 1)
@@ -489,4 +489,14 @@ class Ui_CurvePropertiesDialog(object):
         self.label_13.setText(_translate("CurvePropertiesDialog", "E4"))
         self.accept_btn.setText(_translate("CurvePropertiesDialog", "Accept"))
         self.discard_btn.setText(_translate("CurvePropertiesDialog", "Discard"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    CurvePropertiesDialog = QtWidgets.QDialog()
+    ui = Ui_CurvePropertiesDialog()
+    ui.setupUi(CurvePropertiesDialog)
+    CurvePropertiesDialog.show()
+    sys.exit(app.exec_())
 

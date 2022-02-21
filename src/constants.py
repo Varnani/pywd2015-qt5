@@ -139,7 +139,8 @@ BANDPASS_ID_DICT = {
             "Milone 330": "91",
             "Ca II triplet": "92",
             "WIRE V+R": "93",
-            "Lunar Ultraviolet Telescope": "94"
+            "Lunar Ultraviolet Telescope": "94",
+            "TESS": "95"
 }
 ID_BANDPASS_DICT = {
     value: key for key, value in list(BANDPASS_ID_DICT.items())  # reverse of the above
@@ -172,7 +173,7 @@ KEEPS_NAME_ID_DICT = {
     "Pot1": 23.0,
     "Pot2": 24.0,
     "q (M2/M1)": 25.0,
-    "Ephemeris": 26.0,
+    "Epoch": 26.0,
     "Period": 27.0,
     "dP/dt": 28.0,
     "d(Omega)/dt": 29.0,
@@ -181,7 +182,7 @@ KEEPS_NAME_ID_DICT = {
     "i (3B)": 32.0,
     "e (3B)": 33.0,
     "Omega (3B)": 34.,
-    "Ephemeris (3B)": 35.0,
+    "Epoch (3B)": 35.0,
     "Log(d)": 41.0,
     "Desig. Ext.": 42.0,
 
@@ -240,7 +241,7 @@ ID_LATEX_DICT = {
             "32": "$i~(3B)~(^{\circ})$",
             "33": "$e~(3B)$",
             "34": "$\omega~(3B)$",
-            "35": "$Ephemeris~(3B)$",
+            "35": "$Epoch~(3B)$",
             "41": "$log(d)$",
             "42": "$Designated~Extinction$",
             "43": "nan",

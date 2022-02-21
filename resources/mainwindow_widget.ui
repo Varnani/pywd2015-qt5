@@ -952,13 +952,13 @@
                   </sizepolicy>
                  </property>
                  <property name="toolTip">
-                  <string>Ephemeris time of the eclipsing system in JD time</string>
+                  <string>Epoch of the eclipsing system in JD time</string>
                  </property>
                  <property name="statusTip">
                   <string>JD0</string>
                  </property>
                  <property name="text">
-                  <string>Ephemeris</string>
+                  <string>Epoch</string>
                  </property>
                 </widget>
                </item>
@@ -1040,6 +1040,9 @@
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="inputMethodHints">
+                  <set>Qt::ImhFormattedNumbersOnly</set>
+                 </property>
                  <property name="buttonSymbols">
                   <enum>QAbstractSpinBox::NoButtons</enum>
                  </property>
@@ -1047,7 +1050,7 @@
                   <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
                  </property>
                  <property name="decimals">
-                  <number>8</number>
+                  <number>12</number>
                  </property>
                  <property name="minimum">
                   <double>-999999.000000000000000</double>

@@ -251,6 +251,8 @@ def create_bandpass_menu(parent):
     wire.setObjectName("WIRE V+R")
     lut = rootmenu.addAction("Lunar Ultraviolet Telescope")
     lut.setObjectName("Lunar Ultraviolet Telescope")
+    tess = rootmenu.addAction("TESS")
+    tess.setObjectName("TESS")
 
     return rootmenu
 

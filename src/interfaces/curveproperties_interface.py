@@ -137,6 +137,7 @@ class CurveProperty:
         else:
             self.constant_weights = False
 
+
     def populate_parser(self, parser, section):
 
         parser.set(section, "filepath", self.filepath)

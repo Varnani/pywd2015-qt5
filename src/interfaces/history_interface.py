@@ -34,6 +34,7 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
         self.chart.create_axis(0, 0)
 
         self.solutions = []
+        self.stats = []
 
         self.connect_signals()
 
@@ -77,9 +78,10 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
         else:
             return None
 
-    def receive_solution(self, new_solution):
+    def receive_solution(self, new_solution, new_stat):
         if len(self.solutions) == 0:
             self.solutions.append(new_solution)
+            self.stats.append(new_stat)
 
         elif len(self.solutions[0]) == len(new_solution):
             same_solution = True
@@ -92,13 +94,16 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
             if not same_solution:
                 self.clear()
                 self.solutions.append(new_solution)
+                self.stats.append(new_stat)
 
             elif same_solution:
                 self.solutions.append(new_solution)
+                self.stats.append(new_stat)
 
         else:
             self.clear()
             self.solutions.append(new_solution)
+            self.stats.append(new_stat)
 
         self.update_solutions()
 
@@ -114,6 +119,7 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
                 if c_id != 0.0:
                     text = text + " (Curve #{0})".format(str(int(c_id)))
                 header_item.setText(index + 1, text)
+                header_item.setText(index + 2, "Mean Residual for Input Values")
             self.history_treewidget.setHeaderItem(header_item)
 
         solution = self.solutions[-1]
@@ -124,6 +130,8 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
             if row[0] in (19.0, 20.0):
                 value = value * 10000.0
             item.setText(index + 1, "{:0.5f}".format(value))
+            item.setText(index+2, "{:0.5f}".format(self.stats[0][0][0]))
+
 
         if self.auto_chk.isChecked():
             self.plot_solutions()

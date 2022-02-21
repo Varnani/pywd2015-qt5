@@ -126,7 +126,7 @@ class Ui_OCWidget(object):
     def retranslateUi(self, OCWidget):
         _translate = QtCore.QCoreApplication.translate
         OCWidget.setWindowTitle(_translate("OCWidget", "Compute O - C"))
-        self.groupBox.setTitle(_translate("OCWidget", "Ephemeris and Period Correction"))
+        self.groupBox.setTitle(_translate("OCWidget", "Epoch and Period Correction"))
         self.label_2.setText(_translate("OCWidget", "ΔP"))
         self.label.setText(_translate("OCWidget", "ΔT"))
         self.calculate_btn.setText(_translate("OCWidget", "Calculate"))
@@ -140,4 +140,14 @@ class Ui_OCWidget(object):
         self.data_treewidget.headerItem().setToolTip(2, _translate("OCWidget", "Linear residuals with dP/dt"))
         self.compute_btn.setText(_translate("OCWidget", "Compute"))
         self.export_btn.setText(_translate("OCWidget", "Export"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    OCWidget = QtWidgets.QWidget()
+    ui = Ui_OCWidget()
+    ui.setupUi(OCWidget)
+    OCWidget.show()
+    sys.exit(app.exec_())
 

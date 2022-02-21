@@ -988,14 +988,14 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         self.pshift_ipt.setDisabled(False)
         self.dc_widget.pshift_chk.setDisabled(False)
         self.dc_widget.jd0_chk.setDisabled(False)
-        #if jdphs == "Time":
-            #self.pshift_ipt.setDisabled(True)
-            #self.pshift_ipt.setValue(0.0)
-            #self.dc_widget.pshift_chk.setDisabled(True)
-            #self.dc_widget.pshift_chk.setChecked(False)
-        #elif jdphs == "Phase":
-            #self.dc_widget.jd0_chk.setDisabled(True)
-            #self.dc_widget.jd0_chk.setChecked(False)
+#        if jdphs == "Time":
+#            self.pshift_ipt.setDisabled(True)
+#            self.pshift_ipt.setValue(0.0)
+#            self.dc_widget.pshift_chk.setDisabled(True)
+#            self.dc_widget.pshift_chk.setChecked(False)
+#        elif jdphs == "Phase":
+#            self.dc_widget.jd0_chk.setDisabled(True)
+#            self.dc_widget.jd0_chk.setChecked(False)
 
     def update_input_pairs(self):
         sender = self.sender()
