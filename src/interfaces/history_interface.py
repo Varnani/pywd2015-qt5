@@ -30,8 +30,9 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
         header_item.setText(1, "Parameters")
         self.history_treewidget.setHeaderItem(header_item)
 
-        self.chart = MatplotlibWidget(self.plot_widget, 1, 1, exportable=False)
+        self.chart = MatplotlibWidget(self.plot_widget, 2, 1, exportable=False)
         self.chart.create_axis(0, 0)
+        self.chart.create_axis(1, 0)
 
         self.solutions = []
         self.stats = []
@@ -50,14 +51,15 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
                 output = "# Itr" + delimiter
                 for result in self.solutions[0]:
                     output = output + constants.KEEPS_ID_NAME_DICT[result[0]] + delimiter
-                output = output + "\n"
+                output = output + "MRfIV" + delimiter + "MRP" + delimiter + "\n"
 
                 for idx, solution in enumerate(self.solutions):
                     output = output + str(idx + 1) + delimiter
                     for row in solution:
                         output = output + str(row[4]) + delimiter
 
-                    output = output + "\n"
+                    output = output + delimiter + str("{:0.16f}".format(self.stats[idx][0][0])) + delimiter + \
+                             str("{:0.16f}".format(self.stats[idx][1][0])) + "\n"
 
                 with open(filepath, "w") as destination:
                     destination.write(output)
@@ -69,6 +71,7 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
     def clear(self):
         self.chart.clear_all()
         self.solutions = []
+        self.stats = []
         self.history_treewidget.clear()
 
     def selected_item(self):
@@ -119,7 +122,7 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
                 if c_id != 0.0:
                     text = text + " (Curve #{0})".format(str(int(c_id)))
                 header_item.setText(index + 1, text)
-                header_item.setText(index + 2, "Mean Residual for Input Values")
+                #header_item.setText(index + 2, "Mean Residual for Input Values")
             self.history_treewidget.setHeaderItem(header_item)
 
         solution = self.solutions[-1]
@@ -130,8 +133,7 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
             if row[0] in (19.0, 20.0):
                 value = value * 10000.0
             item.setText(index + 1, "{:0.5f}".format(value))
-            item.setText(index+2, "{:0.5f}".format(self.stats[0][0][0]))
-
+            #item.setText(index+2, "{:0.16f}".format(self.stats[-1][0][0]))
 
         if self.auto_chk.isChecked():
             self.plot_solutions()
@@ -145,6 +147,9 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
             y = [solution[index][4] for solution in self.solutions]
             y_w = [solution[index][5] for solution in self.solutions]
 
+            y_s = [stat[0][0] for stat in self.stats]
+            y_s2 = [stat[1][0] for stat in self.stats]
+
             if self.solutions[0][index][0] in (19.0, 20.0):
                 _y = [yy * 10000.0 for yy in y]
                 _y_w = [yyw * 10000.0 for yyw in y_w]
@@ -154,8 +159,14 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
 
             self.chart.axes[0].errorbar(x, y, yerr=y_w, linestyle="-", marker="o", markersize=constants.MARKER_SIZE + 2,
                                         color=constants.COLOR_BLUE, ecolor=constants.COLOR_RED)
-            self.chart.axes[0].set_xlabel("Iteration Number")
             self.chart.axes[0].set_ylabel(constants.KEEPS_ID_NAME_DICT[self.solutions[0][index][0]])
             self.chart.axes[0].ticklabel_format(useOffset=False)
             self.chart.axes[0].get_yaxis().set_major_locator(MaxNLocator(integer=True))
+            self.chart.axes[1].plot(x, y_s, marker="o", markersize=constants.MARKER_SIZE + 2,
+                                        color=constants.COLOR_BLUE)
+            self.chart.axes[1].plot(x, y_s2, marker="o", markersize=constants.MARKER_SIZE + 2,
+                                        color=constants.COLOR_RED)
+            self.chart.axes[1].set_xlabel("Iteration Number")
+            self.chart.axes[1].set_ylabel("Mean Residual\n (Input/Predicted)")
             self.chart.redraw()
+
