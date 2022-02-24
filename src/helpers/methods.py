@@ -750,3 +750,10 @@ def compute_conjunction_phases(w, e, phase_shift):
 
     return phase_of_primary_eclipse, phase_of_first_quadrature, phase_of_secondary_eclipse, \
            phase_of_second_quadrature, phase_of_periastron, phase_of_apastron
+
+def compute_luminosity(T1, T2, R1, R2):
+
+    L1, L2 = (R1**2)*(T1/5780)**4, (R2**2)*(T2/5780)**4
+    logL1, logL2 = "{:9.4f}".format(numpy.log10(L1)), "{:9.4f}".format(numpy.log10(L2))
+
+    return L1, L2, logL1, logL2

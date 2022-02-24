@@ -428,6 +428,13 @@ class LCIO(_WDIO):
                                        offset=2)
         return conjunction
 
+    def read_abs_params(self):
+        abs_params = self._read_table(self._get_output_path(),
+                                       " Star         M/Msun   (Mean Radius)/Rsun     M Bol    Log g (cgs)")
+
+        teffs = self._read_table(self._get_output_path(),
+                                       "  T1      T2     Alb 1  Alb 2")
+        return abs_params, teffs
 
 class DCIO(_WDIO):
     def __init__(self, container, wd_path=os.getcwd(), dc_binary_name="DC"):

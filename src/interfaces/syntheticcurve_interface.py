@@ -164,6 +164,7 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
     def reset_light_treewidget(self):
         self.nlc = 0
         self.light_treewidget.clear()
+        #self.light_treewidget_2.clear()
         self.insert_synthetic_curves()
 
     def reset_widget(self):
@@ -271,6 +272,34 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
                                    lc_binary_name=self.main_window.lc_binary)
 
                 results = lc_io.fill_for_synthetic_light_curve().save().run().read_synthetic_light_curve()
+
+                absolute_params, teffs = lc_io.read_abs_params()
+                teffs = float(teffs[0][0])*10000, float(teffs[1][0])*10000
+                L1, L2, logL1, logL2 = methods.compute_luminosity(teffs[0],teffs[1],absolute_params[2][0],absolute_params[2][1])
+                #self.light_treewidget_2.clear()
+                item = self.light_treewidget_2
+
+                a = str(absolute_params[1][0])
+                b = str(absolute_params[1][1])
+                c = str(absolute_params[2][0])
+                d = str(absolute_params[2][1])
+                e = str(int(teffs[0]))
+                f = str(int(teffs[1]))
+
+                aa = str(absolute_params[4][0])
+                bb = str(absolute_params[4][1])
+                cc = str(absolute_params[3][0])
+                dd = str(absolute_params[3][1])
+                ee = str(logL1)
+                ff = str(logL2)
+
+
+                for index, val in enumerate((a, b, c, d, e, f, aa, bb, cc, dd, ee, ff)):
+                    if val == "nan":
+                        item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
+                        val = "NaN"
+                    item.topLevelItem(index).setText(1, val)
+
                 self.light_chart.plot(results[x_index], results[y_index], clear=False, color=constants.COLOR_RED)
 
             if self.light_plotobs_chk.isChecked() and self.light_plotmodel_chk.isChecked() and \

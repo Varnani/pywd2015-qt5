@@ -2507,6 +2507,118 @@ Line plotting will be used for LC synthetic points. DC outputs will be plotted w
            </item>
           </layout>
          </widget>
+         <widget class="QWidget" name="tab_11">
+          <attribute name="title">
+           <string>Physical Parameters</string>
+          </attribute>
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <property name="leftMargin">
+              <number>5</number>
+             </property>
+             <property name="topMargin">
+              <number>5</number>
+             </property>
+             <property name="rightMargin">
+              <number>5</number>
+             </property>
+             <property name="bottomMargin">
+              <number>5</number>
+             </property>
+             <item>
+              <widget class="QTreeWidget" name="phys_params_treewidget">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::NoSelection</enum>
+               </property>
+               <property name="indentation">
+                <number>0</number>
+               </property>
+               <property name="columnCount">
+                <number>2</number>
+               </property>
+               <column>
+                <property name="text">
+                 <string>Parameter</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Value</string>
+                </property>
+               </column>
+               <item>
+                <property name="text">
+                 <string>M1 (M☉)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>M2 (M☉)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>R1 (R☉)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>R2 (R☉)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Teff1 (K)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Teff2 (K)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>logg1 (cgs)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>logg2 (cgs)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Mbol1 (mag)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Mbol2 (mag)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>log (L1/L☉)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>log (L2/L☉)</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
        <item row="0" column="1" rowspan="3">

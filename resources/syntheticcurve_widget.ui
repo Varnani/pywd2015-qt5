@@ -24,22 +24,6 @@
        <string>Light Curve</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="4" column="0" colspan="4">
-        <widget class="QWidget" name="light_plot_widget" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>500</width>
-           <height>300</height>
-          </size>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="2" colspan="2">
         <widget class="QGroupBox" name="groupBox_3">
          <property name="title">
@@ -83,26 +67,6 @@
            </widget>
           </item>
          </layout>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="4">
-        <widget class="Line" name="line_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2" colspan="2">
-        <widget class="QPushButton" name="light_plot_btn">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Plot</string>
-         </property>
         </widget>
        </item>
        <item row="0" column="0" rowspan="3">
@@ -215,17 +179,194 @@
          </layout>
         </widget>
        </item>
-       <item row="0" column="1" rowspan="3">
-        <widget class="Line" name="line">
+       <item row="2" column="2" colspan="2">
+        <widget class="QPushButton" name="light_plot_btn">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Plot</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="4">
+        <widget class="Line" name="line_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QWidget" name="light_plot_widget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>500</width>
+           <height>300</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="Line" name="line_6">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
+        </widget>
+       </item>
+       <item row="4" column="2" colspan="2">
+        <widget class="QTreeWidget" name="light_treewidget_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>256</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="sizeAdjustPolicy">
+          <enum>QAbstractScrollArea::AdjustIgnored</enum>
+         </property>
+         <property name="defaultDropAction">
+          <enum>Qt::IgnoreAction</enum>
+         </property>
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::ExtendedSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectItems</enum>
+         </property>
+         <property name="indentation">
+          <number>5</number>
+         </property>
+         <property name="itemsExpandable">
+          <bool>true</bool>
+         </property>
+         <property name="allColumnsShowFocus">
+          <bool>false</bool>
+         </property>
+         <property name="headerHidden">
+          <bool>false</bool>
+         </property>
+         <attribute name="headerCascadingSectionResizes">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="headerDefaultSectionSize">
+          <number>110</number>
+         </attribute>
+         <attribute name="headerHighlightSections">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="headerMinimumSectionSize">
+          <number>30</number>
+         </attribute>
+         <attribute name="headerStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Parameter</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Value</string>
+          </property>
+         </column>
+         <item>
+          <property name="text">
+           <string>M1 (M☉)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>M2 (M☉)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>R1 (R☉)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>R2 (R☉)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Teff1 (K)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Teff2 (K)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>logg1 (cgs)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>logg2 (cgs)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Mbol1 (mag)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Mbol2 (mag)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>log (L1/L☉)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>log (L2/L☉)</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item row="1" column="2" colspan="2">
         <widget class="Line" name="line_2">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1" rowspan="3">
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
         </widget>
        </item>
@@ -385,14 +526,14 @@
             <item row="0" column="0" colspan="2">
              <widget class="QRadioButton" name="vel_pri_radiobtn">
               <property name="text">
-               <string>Primary Curve</string>
+               <string>Primar&amp;y Curve</string>
               </property>
              </widget>
             </item>
             <item row="2" column="0" colspan="2">
              <widget class="QRadioButton" name="vel_sec_radiobtn">
               <property name="text">
-               <string>Secondary Curve</string>
+               <string>Secondary C&amp;urve</string>
               </property>
              </widget>
             </item>
