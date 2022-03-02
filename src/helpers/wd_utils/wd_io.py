@@ -434,7 +434,9 @@ class LCIO(_WDIO):
 
         teffs = self._read_table(self._get_output_path(),
                                        "  T1      T2     Alb 1  Alb 2")
-        return abs_params, teffs
+        sma = self._read_table(self._get_output_path(),
+                                       "  ecc     s-m axis       F1         F2       Vgam")
+        return abs_params, teffs, sma
 
 class DCIO(_WDIO):
     def __init__(self, container, wd_path=os.getcwd(), dc_binary_name="DC"):

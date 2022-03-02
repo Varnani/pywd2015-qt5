@@ -2250,7 +2250,7 @@ Line plotting will be used for LC synthetic points. DC outputs will be plotted w
           </size>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="tab_9">
           <attribute name="title">
@@ -2541,7 +2541,7 @@ Line plotting will be used for LC synthetic points. DC outputs will be plotted w
                 <number>0</number>
                </property>
                <property name="columnCount">
-                <number>2</number>
+                <number>4</number>
                </property>
                <column>
                 <property name="text">
@@ -2553,19 +2553,58 @@ Line plotting will be used for LC synthetic points. DC outputs will be plotted w
                  <string>Value</string>
                 </property>
                </column>
+               <column>
+                <property name="text">
+                 <string>Radius Information</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Value</string>
+                </property>
+               </column>
+               <item>
+                <property name="text">
+                 <string>a (R☉)</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>r1 (R1/a)</string>
+                </property>
+               </item>
                <item>
                 <property name="text">
                  <string>M1 (M☉)</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>r2 (R2/a)</string>
                 </property>
                </item>
                <item>
                 <property name="text">
                  <string>M2 (M☉)</string>
                 </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>r1+r2</string>
+                </property>
                </item>
                <item>
                 <property name="text">
                  <string>R1 (R☉)</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>k=r2/r1</string>
                 </property>
                </item>
                <item>
