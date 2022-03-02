@@ -2250,7 +2250,7 @@ Line plotting will be used for LC synthetic points. DC outputs will be plotted w
           </size>
          </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab_9">
           <attribute name="title">

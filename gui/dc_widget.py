@@ -1051,7 +1051,7 @@ class Ui_DCWidget(object):
         self.retranslateUi(DCWidget)
         self.tab_widget.setCurrentIndex(0)
         self.keepdel_tab_widget.setCurrentIndex(0)
-        self.result_tab_widget.setCurrentIndex(2)
+        self.result_tab_widget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(DCWidget)
 
     def retranslateUi(self, DCWidget):
