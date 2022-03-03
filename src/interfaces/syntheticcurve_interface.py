@@ -273,12 +273,14 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
 
                 results = lc_io.fill_for_synthetic_light_curve().save().run().read_synthetic_light_curve()
 
-                absolute_params, teffs = lc_io.read_abs_params()
+                absolute_params, teffs, sma = lc_io.read_abs_params()
                 teffs = float(teffs[0][0])*10000, float(teffs[1][0])*10000
+                sma = float(sma[1][0])
                 L1, L2, logL1, logL2 = methods.compute_luminosity(teffs[0],teffs[1],absolute_params[2][0],absolute_params[2][1])
                 #self.light_treewidget_2.clear()
                 item = self.light_treewidget_2
 
+                sma = str(sma)
                 a = str(absolute_params[1][0])
                 b = str(absolute_params[1][1])
                 c = str(absolute_params[2][0])
@@ -294,7 +296,7 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
                 ff = str(logL2)
 
 
-                for index, val in enumerate((a, b, c, d, e, f, aa, bb, cc, dd, ee, ff)):
+                for index, val in enumerate((sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff)):
                     if val == "nan":
                         item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
                         val = "NaN"

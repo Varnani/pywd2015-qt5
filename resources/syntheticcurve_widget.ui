@@ -296,6 +296,11 @@
          </column>
          <item>
           <property name="text">
+           <string>a (R☉)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>M1 (M☉)</string>
           </property>
          </item>
