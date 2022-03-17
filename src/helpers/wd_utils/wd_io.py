@@ -436,7 +436,24 @@ class LCIO(_WDIO):
                                        "  T1      T2     Alb 1  Alb 2")
         sma = self._read_table(self._get_output_path(),
                                        "  ecc     s-m axis       F1         F2       Vgam")
-        return abs_params, teffs, sma
+        lds = self._read_table(self._get_output_path(),
+                                       "band      x1        x2        y1        y2")
+        lums = self._read_table(self._get_output_path(),
+                                       "band         L1           L2         x1      x2      y1      y2")
+        return abs_params, teffs, sma, lds, lums
+
+    def read_K1_2_params(self):
+        par_set_1 = self._read_table(self._get_output_path(),
+                                       "JDPHS     J.D. zero       P zero           dPdt      Ph. shift")
+        par_set_2 = self._read_table(self._get_output_path(),
+                                       "  ecc     s-m axis       F1         F2       Vgam       Incl")
+        par_set_3 = self._read_table(self._get_output_path(),
+                                       "  T1      T2     Alb 1  Alb 2    Pot 1        Pot 2           M2/M1")
+
+        p, e, a, i, q = float(par_set_1[2][0]), float(par_set_2[0][0]), float(par_set_2[1][0]), \
+                         float(par_set_2[5][0]), float(par_set_3[6][0])
+        return p, e, a, i, q
+
 
 class DCIO(_WDIO):
     def __init__(self, container, wd_path=os.getcwd(), dc_binary_name="DC"):

@@ -754,6 +754,14 @@ def compute_conjunction_phases(w, e, phase_shift):
 def compute_luminosity(T1, T2, R1, R2):
 
     L1, L2 = (R1**2)*(T1/5780)**4, (R2**2)*(T2/5780)**4
-    logL1, logL2 = "{:9.4f}".format(numpy.log10(L1)), "{:9.4f}".format(numpy.log10(L2))
+    logL1, logL2 = "{:0.4f}".format(numpy.log10(L1)), "{:0.4f}".format(numpy.log10(L2))
 
     return L1, L2, logL1, logL2
+
+def compute_rv_semi_amplitudes(p, e, a, i, q):
+
+    K1 = 50.593*a*q*numpy.sin(i*numpy.pi/180.0)/(p*(1.0+q)*numpy.sqrt(1.0-e**2))
+    K2 = 50.593*a*numpy.sin(i*numpy.pi/180.0)/(p*(1.0+q)*numpy.sqrt(1.0-e**2))
+    K1, K2 = "{:0.3f}".format(K1), "{:0.3f}".format(K2)
+
+    return K1, K2

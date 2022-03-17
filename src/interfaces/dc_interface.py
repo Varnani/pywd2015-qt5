@@ -588,7 +588,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
             results = lc_io.fill_for_synthetic_velocity_curve().save().run().read_synthetic_velocity_curve()
 
-            absolute_params, teffs, sma = lc_io.read_abs_params()
+            absolute_params, teffs, sma, lds, lums = lc_io.read_abs_params()
             teffs = float(teffs[0][0]) * 10000, float(teffs[1][0]) * 10000
             sma = float(sma[1][0])
             L1, L2, logL1, logL2 = methods.compute_luminosity(teffs[0], teffs[1], absolute_params[2][0],
@@ -596,9 +596,15 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             r1, r2 = float(absolute_params[2][0])/sma, float(absolute_params[2][1])/sma
             r1_r2, r2_r1 = "{:6.5f}".format(r1 + r2), "{:6.5f}".format(r2/r1)
             r1, r2 = "{:6.5f}".format(r1), "{:6.5f}".format(r2)
+            x1, x2, y1, y2 = str(lds[1][0]), str(lds[2][0]), str(lds[3][0]), str(lds[4][0])
+            lum2_1 = str("{:0.5f}".format(float(lums[2][0] / lums[1][0])))
             # self.light_treewidget_2.clear()
             item = self.phys_params_treewidget
 
+            p, e, a, i, q = lc_io.read_K1_2_params()
+            K1, K2 = methods.compute_rv_semi_amplitudes(p, e, a, i, q)
+
+            K1, K2 = str(K1), str(K2)
             sma = str(sma)
             a = str(absolute_params[1][0])
             b = str(absolute_params[1][1])
@@ -620,11 +626,17 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                     val = "NaN"
                 item.topLevelItem(index).setText(1, val)
 
-            for index, val in enumerate((str(r1), str(r2), str(r1_r2), str(r2_r1))):
+            for index, val in enumerate((str(r1), str(r2), str(r1_r2), str(r2_r1), x1, x2, y1, y2, lum2_1)):
+                # if val == "nan":
+                val = "None"
+                item.topLevelItem(index).setBackground(3, QtGui.QBrush(QtGui.QColor("red")))
+                item.topLevelItem(index).setText(3, val)
+
+            for index, val in enumerate((K1, K2)):
                 if val == "nan":
                     item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
                     val = "NaN"
-                item.topLevelItem(index).setText(3, val)
+                item.topLevelItem(index).setText(5, val)
 
             vc1_mdl_x = results[x_index]
             vc2_mdl_x = results[x_index]
@@ -832,7 +844,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
                 results = lc_io.fill_for_synthetic_light_curve().save().run().read_synthetic_light_curve()
 
-                absolute_params, teffs, sma = lc_io.read_abs_params()
+                absolute_params, teffs, sma, lds, lums = lc_io.read_abs_params()
                 teffs = float(teffs[0][0])*10000, float(teffs[1][0])*10000
                 sma = float(sma[1][0])
                 L1, L2, logL1, logL2 = methods.compute_luminosity(teffs[0],teffs[1],absolute_params[2][0],
@@ -840,9 +852,15 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 r1, r2 = float(absolute_params[2][0]) / sma, float(absolute_params[2][1]) / sma
                 r1_r2, r2_r1 = "{:6.5f}".format(r1 + r2), "{:6.5f}".format(r2 / r1)
                 r1, r2 = "{:6.5f}".format(r1), "{:6.5f}".format(r2)
+                x1, x2, y1, y2 = str(lds[1][0]), str(lds[2][0]), str(lds[3][0]), str(lds[4][0])
+                lum2_1 = str("{:0.5f}".format(float(lums[2][0] / lums[1][0])))
                 #self.light_treewidget_2.clear()
                 item = self.phys_params_treewidget
 
+                p, e, a, i, q = lc_io.read_K1_2_params()
+                K1, K2 = methods.compute_rv_semi_amplitudes(p, e, a, i, q)
+
+                K1, K2 = str(K1), str(K2)
                 sma = str(sma)
                 a = str(absolute_params[1][0])
                 b = str(absolute_params[1][1])
@@ -865,11 +883,18 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                         val = "NaN"
                     item.topLevelItem(index).setText(1, val)
 
-                for index, val in enumerate((str(r1), str(r2), str(r1_r2), str(r2_r1))):
+                for index, val in enumerate((str(r1), str(r2), str(r1_r2), str(r2_r1), x1, x2, y1, y2, lum2_1)):
+                    item.topLevelItem(index).setBackground(3, QtGui.QBrush(QtGui.QColor("white")))
+                    if val == "nan":
+                        item.topLevelItem(index).setBackground(3, QtGui.QBrush(QtGui.QColor("red")))
+                        val = "NaN"
+                    item.topLevelItem(index).setText(3, val)
+
+                for index, val in enumerate((K1, K2)):
                     if val == "nan":
                         item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
                         val = "NaN"
-                    item.topLevelItem(index).setText(3, val)
+                    item.topLevelItem(index).setText(5, val)
 
 
             elif curve.curve_type == "velocity":
@@ -881,7 +906,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
                 results = lc_io.fill_for_synthetic_velocity_curve().save().run().read_synthetic_velocity_curve()
 
-                absolute_params, teffs, sma = lc_io.read_abs_params()
+                absolute_params, teffs, sma, lds, lums = lc_io.read_abs_params()
                 teffs = float(teffs[0][0])*10000, float(teffs[1][0])*10000
                 sma = float(sma[1][0])
                 L1, L2, logL1, logL2 = methods.compute_luminosity(teffs[0],teffs[1],absolute_params[2][0],
@@ -889,9 +914,15 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 r1, r2 = float(absolute_params[2][0]) / sma, float(absolute_params[2][1]) / sma
                 r1_r2, r2_r1 = "{:6.5f}".format(r1 + r2), "{:6.5f}".format(r2 / r1)
                 r1, r2 = "{:6.5f}".format(r1), "{:6.5f}".format(r2)
+                x1, x2, y1, y2 = str(lds[1][0]), str(lds[2][0]), str(lds[3][0]), str(lds[4][0])
+                lum2_1 = str("{:0.5f}".format(float(lums[2][0] / lums[1][0])))
                 #self.light_treewidget_2.clear()
                 item = self.phys_params_treewidget
 
+                p, e, a, i, q = lc_io.read_K1_2_params()
+                K1, K2 = methods.compute_rv_semi_amplitudes(p, e, a, i, q)
+
+                K1, K2 = str(K1), str(K2)
                 sma = str(sma)
                 a = str(absolute_params[1][0])
                 b = str(absolute_params[1][1])
@@ -913,11 +944,17 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                         val = "NaN"
                     item.topLevelItem(index).setText(1, val)
 
-                for index, val in enumerate((str(r1), str(r2), str(r1_r2), str(r2_r1))):
+                for index, val in enumerate((str(r1), str(r2), str(r1_r2), str(r2_r1), x1, x2, y1, y2, lum2_1)):
+                    #if val == "nan":
+                    val = "None"
+                    item.topLevelItem(index).setBackground(3, QtGui.QBrush(QtGui.QColor("red")))
+                    item.topLevelItem(index).setText(3, val)
+
+                for index, val in enumerate((K1, K2)):
                     if val == "nan":
                         item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
                         val = "NaN"
-                    item.topLevelItem(index).setText(3, val)
+                    item.topLevelItem(index).setText(5, val)
 
                 y_index = 6
 

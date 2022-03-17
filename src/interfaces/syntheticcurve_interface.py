@@ -116,7 +116,7 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
             spinbox.setButtonSymbols(2)
             spinbox.setDecimals(7)
             spinbox.setMaximum(999)
-            spinbox.setMinimum(0)
+            spinbox.setMinimum(-999)
             if i == 12:
                 spinbox.setValue(1.0)
             if i == 13:
@@ -273,7 +273,7 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
 
                 results = lc_io.fill_for_synthetic_light_curve().save().run().read_synthetic_light_curve()
 
-                absolute_params, teffs, sma = lc_io.read_abs_params()
+                absolute_params, teffs, sma, lds, lums = lc_io.read_abs_params()
                 teffs = float(teffs[0][0])*10000, float(teffs[1][0])*10000
                 sma = float(sma[1][0])
                 L1, L2, logL1, logL2 = methods.compute_luminosity(teffs[0],teffs[1],absolute_params[2][0],absolute_params[2][1])

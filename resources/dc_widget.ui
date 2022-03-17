@@ -2509,7 +2509,7 @@ Line plotting will be used for LC synthetic points. DC outputs will be plotted w
          </widget>
          <widget class="QWidget" name="tab_11">
           <attribute name="title">
-           <string>Physical Parameters</string>
+           <string>System Information</string>
           </attribute>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
            <item>
@@ -2541,11 +2541,11 @@ Line plotting will be used for LC synthetic points. DC outputs will be plotted w
                 <number>0</number>
                </property>
                <property name="columnCount">
-                <number>4</number>
+                <number>6</number>
                </property>
                <column>
                 <property name="text">
-                 <string>Parameter</string>
+                 <string>Abs. Parameters</string>
                 </property>
                </column>
                <column>
@@ -2555,7 +2555,17 @@ Line plotting will be used for LC synthetic points. DC outputs will be plotted w
                </column>
                <column>
                 <property name="text">
-                 <string>Radius Information</string>
+                 <string>LC Info</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Value</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>RV Info</string>
                 </property>
                </column>
                <column>
@@ -2573,6 +2583,12 @@ Line plotting will be used for LC synthetic points. DC outputs will be plotted w
                 <property name="text">
                  <string>r1 (R1/a)</string>
                 </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>K1 (km/s)</string>
+                </property>
                </item>
                <item>
                 <property name="text">
@@ -2583,6 +2599,12 @@ Line plotting will be used for LC synthetic points. DC outputs will be plotted w
                 </property>
                 <property name="text">
                  <string>r2 (R2/a)</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>K2 (km/s)</string>
                 </property>
                </item>
                <item>
@@ -2604,37 +2626,73 @@ Line plotting will be used for LC synthetic points. DC outputs will be plotted w
                  <string/>
                 </property>
                 <property name="text">
-                 <string>k=r2/r1</string>
+                 <string>k (r2/r1)</string>
                 </property>
                </item>
                <item>
                 <property name="text">
                  <string>R2 (R☉)</string>
                 </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>x1</string>
+                </property>
                </item>
                <item>
                 <property name="text">
                  <string>Teff1 (K)</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>x2</string>
                 </property>
                </item>
                <item>
                 <property name="text">
                  <string>Teff2 (K)</string>
                 </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>y1</string>
+                </property>
                </item>
                <item>
                 <property name="text">
                  <string>logg1 (cgs)</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>y2</string>
                 </property>
                </item>
                <item>
                 <property name="text">
                  <string>logg2 (cgs)</string>
                 </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>L2/L1</string>
+                </property>
                </item>
                <item>
                 <property name="text">
                  <string>Mbol1 (mag)</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string/>
                 </property>
                </item>
                <item>
