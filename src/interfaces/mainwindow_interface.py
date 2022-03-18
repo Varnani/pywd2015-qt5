@@ -85,17 +85,27 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
 
         # show's
         self.loadwidget_btn.clicked.connect(self.loadobservations_widget.show)
+        self.loadwidget_btn.clicked.connect(self.loadobservations_widget.activateWindow)
         self.spotwidget_btn.clicked.connect(self.configurespot_widget.show)
+        self.spotwidget_btn.clicked.connect(self.configurespot_widget.activateWindow)
         self.eclipsewidget_btn.clicked.connect(self.eclipsetimings_widget.show)
+        self.eclipsewidget_btn.clicked.connect(self.eclipsetimings_widget.activateWindow)
         self.lc_lightcurve_btn.clicked.connect(self.lc_synthetic_curve_widget.show)
+        self.lc_lightcurve_btn.clicked.connect(self.lc_synthetic_curve_widget.activateWindow)
         self.lc_speclineprof_btn.clicked.connect(self.lc_lineprofile_widget.show)
+        self.lc_speclineprof_btn.clicked.connect(self.lc_lineprofile_widget.activateWindow)
         self.lc_stardimphase_btn.clicked.connect(self.lc_dimension_widget.show)
+        self.lc_stardimphase_btn.clicked.connect(self.lc_dimension_widget.activateWindow)
         self.lc_coordinates_btn.clicked.connect(self.lc_starpositions_widget.show)
+        self.lc_coordinates_btn.clicked.connect(self.lc_starpositions_widget.activateWindow)
         self.lc_conjunction_btn.clicked.connect(self.lc_conjunction_widget.show)
+        self.lc_conjunction_btn.clicked.connect(self.lc_conjunction_widget.activateWindow)
         self.lc_oc_btn.clicked.connect(self.lc_oc_widget.show)
-
+        self.lc_oc_btn.clicked.connect(self.lc_oc_widget.activateWindow)
         self.dc_rundc_btn.clicked.connect(self.dc_widget.show)
+        self.dc_rundc_btn.clicked.connect(self.dc_widget.activateWindow)
         self.dc_history_btn.clicked.connect(self.dc_history_widget.show)
+        self.dc_history_btn.clicked.connect(self.dc_history_widget.activateWindow)
 
         self.lc_lcin_btn.clicked.connect(self.open_lcin)
         self.lc_lcout_btn.clicked.connect(self.open_lcout)
@@ -210,9 +220,9 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         self.app.setStyle(style)
         self.app.setFont(font)
 
-    def curve_list_changed(self):
-        self.lc_synthetic_curve_widget.reset_and_repopulate()
-        self.dc_widget.clear()
+    #def curve_list_changed(self):
+        #self.lc_synthetic_curve_widget.reset_and_repopulate()
+        #self.dc_widget.clear()
 
     def compute_jd(self):
         year = self.t_time_year_ipt.value()

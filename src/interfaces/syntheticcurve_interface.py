@@ -356,10 +356,11 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
             plot_vc1 = True
             plot_vc2 = True
 
+        vunit = float(self.main_window.vunit_ipt.value())
         if self.vel_plotobs_chk.isChecked():
             if plot_vc1 and self.vel_pri_label.text() != "[Synthetic]":
                 data = self.main_window.loadobservations_widget.velocity_curves[0].get_data()
-                s1_obs = data[0], data[1]
+                s1_obs = data[0], [i * vunit for i in data[1]]
                 if self.vel_alias_chk.isChecked():
                     try:
                         s1_obs = self.alias(s1_obs, model_start, model_end)
@@ -376,7 +377,7 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
 
             if plot_vc2 and self.vel_sec_label.text() != "[Synthetic]":
                 data = self.main_window.loadobservations_widget.velocity_curves[1].get_data()
-                s2_obs = data[0], data[1]
+                s2_obs = data[0], [i * vunit for i in data[1]]
                 if self.vel_alias_chk.isChecked():
                     try:
                         s2_obs = self.alias(s2_obs, model_start, model_end)
@@ -399,6 +400,8 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
             results = lc_io.fill_for_synthetic_velocity_curve().save().run().read_synthetic_velocity_curve()
             s1_index = 6
             s2_index = 7
+            results[s1_index] = [i * vunit for i in results[s1_index]]
+            results[s2_index] = [i * vunit for i in results[s2_index]]
 
             if plot_vc1:
                 self.velocity_chart.plot(results[x_index], results[s1_index], clear=False, color=constants.COLOR_RED)
@@ -438,5 +441,5 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
         self.velocity_chart.set_labels("", y_label, index=0)
         self.velocity_chart.set_labels(x_label, "Residuals", index=1)
 
-        self.velocity_chart.axes[0].axhline([self.main_window.vgamma_ipt.value()], color="black", linestyle="--")
+        self.velocity_chart.axes[0].axhline([self.main_window.vgamma_ipt.value()*vunit], color="black", linestyle="--")
         self.velocity_chart.redraw()

@@ -514,7 +514,7 @@ class Ui_MainWindow(object):
         self.dperdt_ipt.setSizePolicy(sizePolicy)
         self.dperdt_ipt.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         self.dperdt_ipt.setCorrectionMode(QtWidgets.QAbstractSpinBox.CorrectToNearestValue)
-        self.dperdt_ipt.setDecimals(7)
+        self.dperdt_ipt.setDecimals(12)
         self.dperdt_ipt.setMinimum(-99999.9999)
         self.dperdt_ipt.setMaximum(9999999.0)
         self.dperdt_ipt.setObjectName("dperdt_ipt")

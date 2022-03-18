@@ -1,6 +1,8 @@
 # PyWD2015-Qt5
 A Qt5 GUI written in Python for Wilson - Devinney eclipsing binary modeling software.
 
+IMPORTANT NOTE: TESS bandpass was added to PyWD2015. However, users must get updated atmosphere and limb darkening files from https://faculty.fiu.edu/~vanhamme/lcdc2015/ in order to run PyWD2015 properly.
+
 ## First Things First
 If you happen to use this software in a scientific work, please cite PyWD2015 release proceeding:  
 [CoSka (2020), 50, 535](https://ui.adsabs.harvard.edu/abs/2020CoSka..50..535G/abstract)  

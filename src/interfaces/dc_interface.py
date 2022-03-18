@@ -525,6 +525,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
     def plot_both_vc(self):
         self.chart.clear_all()
 
+        vunit = float(self.main_window.vunit_ipt.value())
+
         dcout_obs_x_index = 0
         dcout_obs_y_index = 1
         dcout_mdl_y_index = 2
@@ -542,11 +544,11 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         vc1_obs_x = vc1_data[dcout_obs_x_index]
         vc2_obs_x = vc2_data[dcout_obs_x_index]
 
-        vc1_obs_y = vc1_data[dcout_obs_y_index]
-        vc2_obs_y = vc2_data[dcout_obs_y_index]
+        vc1_obs_y = [i * vunit for i in vc1_data[dcout_obs_y_index]]
+        vc2_obs_y = [i * vunit for i in vc2_data[dcout_obs_y_index]]
 
-        vc1_resd = vc1_data[-1]
-        vc2_resd = vc2_data[-1]
+        vc1_resd = [i * vunit for i in vc1_data[-1]]
+        vc2_resd = [i * vunit for i in vc2_data[-1]]
 
         vc1_mdl_x = None
         vc2_mdl_x = None
@@ -640,14 +642,14 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
             vc1_mdl_x = results[x_index]
             vc2_mdl_x = results[x_index]
-            vc1_mdl_y = results[6]
-            vc2_mdl_y = results[7]
+            vc1_mdl_y = [i * vunit for i in results[6]]
+            vc2_mdl_y = [i * vunit for i in results[7]]
 
         else:
             vc1_mdl_x = vc1_obs_x
             vc2_mdl_x = vc2_obs_x
-            vc1_mdl_y = vc1_data[dcout_mdl_y_index]
-            vc2_mdl_y = vc2_data[dcout_mdl_y_index]
+            vc1_mdl_y = [i * vunit for i in vc1_data[dcout_mdl_y_index]]
+            vc2_mdl_y = [i * vunit for i in vc2_data[dcout_mdl_y_index]]
 
         if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
 
@@ -729,7 +731,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
 
         self.chart.axes[1].axhline([0], color=constants.COLOR_RED)
-        self.chart.axes[0].axhline([self.main_window.vgamma_ipt.value()], color="black", linestyle="--")
+        self.chart.axes[0].axhline([self.main_window.vgamma_ipt.value()*vunit], color="black", linestyle="--")
 
         self.chart.set_labels("", "Km/s", index=0)
 
@@ -743,8 +745,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 self.chart.set_labels("Phase", "Residuals", index=1)
 
         if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
-            self.chart.axes[0].set_xlim(0.25,1.75)
-            self.chart.axes[1].set_xlim(0.25,1.75)
+            self.chart.axes[0].set_xlim(-0.25,1.25)
+            self.chart.axes[1].set_xlim(-0.25,1.25)
 
         self.chart.redraw()
 
@@ -770,6 +772,12 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         obs_x = mdl_data[dcout_obs_x_index]
         obs_y = mdl_data[dcout_obs_y_index]
         residuals = mdl_data[dcout_residual_index]
+
+        if curve.curve_type == "velocity":
+            vunit = float(self.main_window.vunit_ipt.value())
+            obs_y = [i * vunit for i in obs_y]
+            residuals = [i * vunit for i in residuals]
+
 
         mdl_x = None
         mdl_y = None
@@ -896,6 +904,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                         val = "NaN"
                     item.topLevelItem(index).setText(5, val)
 
+                mdl_x = results[x_index]
+                mdl_y = results[y_index]
 
             elif curve.curve_type == "velocity":
                 lc_params.set_dummy_synthetic_curve()
@@ -965,12 +975,16 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
                     y_index = 7
 
-            mdl_x = results[x_index]
-            mdl_y = results[y_index]
+                mdl_x = results[x_index]
+                mdl_y = [i * vunit for i in results[y_index]]
 
         else:
             mdl_x = obs_x
-            mdl_y = mdl_data[dcout_mdl_y_index]
+            if curve.curve_type == "velocity":
+                vunit = float(self.main_window.vunit_ipt.value())
+                mdl_y = [i * vunit for i in mdl_data[dcout_mdl_y_index]]
+            else:
+                mdl_y = mdl_data[dcout_mdl_y_index]
 
         if curve.curve_type == "light" and self.main_window.maglite_combobox.currentText() == "Magnitude":
             _ = [-2.5 * numpy.log10(x) for x in obs_y]
@@ -1039,7 +1053,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
         elif curve.curve_type == "velocity":
             self.chart.set_labels("", "Km/s", index=0)
-            self.chart.axes[0].axhline([self.main_window.vgamma_ipt.value()], color="black", linestyle="--")
+            self.chart.axes[0].axhline([self.main_window.vgamma_ipt.value()*vunit], color="black", linestyle="--")
 
         if self.forcephase_chk.isChecked():
             self.chart.set_labels("Phase", "Residuals", index=1)

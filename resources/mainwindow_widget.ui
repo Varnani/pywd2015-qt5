@@ -1170,7 +1170,7 @@
                   <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
                  </property>
                  <property name="decimals">
-                  <number>7</number>
+                  <number>12</number>
                  </property>
                  <property name="minimum">
                   <double>-99999.999899999995250</double>
