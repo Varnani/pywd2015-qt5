@@ -73,6 +73,7 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         self.loadproject_btn.clicked.connect(self.load_project)
         self.fill_btn.clicked.connect(self.fill_button_clicked)
         self.conjunctions_btn.clicked.connect(self.single_conjunction_widget.show)
+        self.conjunctions_btn.clicked.connect(self.single_conjunction_widget.activateWindow)
         self.lc_defaultseed_btn.clicked.connect(self.set_default_seed)
         self.lc_randomizeseed_btn.clicked.connect(self.get_random_seed)
 
@@ -220,8 +221,8 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         self.app.setStyle(style)
         self.app.setFont(font)
 
-    #def curve_list_changed(self):
-        #self.lc_synthetic_curve_widget.reset_and_repopulate()
+    def curve_list_changed(self):
+        self.lc_synthetic_curve_widget.reset_and_repopulate()
         #self.dc_widget.clear()
 
     def compute_jd(self):
@@ -239,7 +240,7 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
     def compute_ut(self):
         year, month, day, hour, minute, second = methods.convert_jd_to_ut(self.t_time_jd_ipt.value(), add_24=False)
         self.t_time_dmy_otpt.setText(str(day) + "/" + str(month) + "/" + str(year) + " - " +
-                                     str(hour) + "/" + str(minute) + "/" + str(numpy.round(second, decimals=3)))
+                                     str(hour) + ":" + str(minute) + ":" + str(numpy.round(second, decimals=3)))
 
     def compute_optical_color_temp(self):
         color = self.t_color_bv_ipt.value()

@@ -174,7 +174,7 @@ class Widget(QtWidgets.QWidget, loadobservations_widget.Ui_ObservationWidget):
             itm.setText(1, "Light Curve")
             itm.setText(2, constants.ID_BANDPASS_DICT[str(light_curve.band_id)])
 
-        #self.main_window.curve_list_changed()
+        self.main_window.curve_list_changed()
 
     def write_into_parser(self, parser):
         parser.add_section(constants.CONFIG_SECTION_CURVE_COUNTS)

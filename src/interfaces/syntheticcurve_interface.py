@@ -169,7 +169,7 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
 
     def reset_widget(self):
         self.reset_light_treewidget()
-        self.light_chart.clear_all()
+        #self.light_chart.clear_all()
 
     def reset_and_repopulate(self):
         self.reset_widget()

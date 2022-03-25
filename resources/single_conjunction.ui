@@ -172,6 +172,15 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>prieclipse_opt</tabstop>
+  <tabstop>firstquad_opt</tabstop>
+  <tabstop>periastron_opt</tabstop>
+  <tabstop>sececlipse_opt</tabstop>
+  <tabstop>secondquad_opt</tabstop>
+  <tabstop>apastron_opt</tabstop>
+  <tabstop>conj_btn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

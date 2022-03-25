@@ -4187,7 +4187,7 @@ zero for zero output noise</string>
           </widget>
           <widget class="QWidget" name="tab_12">
            <attribute name="title">
-            <string>JD - UD Conversion</string>
+            <string>JD - UT Conversion</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_32">
             <item row="0" column="0">
@@ -4236,7 +4236,7 @@ zero for zero output noise</string>
                <item>
                 <widget class="QLabel" name="label_87">
                  <property name="text">
-                  <string>D/M/Y - H/M/S (UT)</string>
+                  <string>D/M/Y - H:M:S (UT)</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -4312,7 +4312,7 @@ zero for zero output noise</string>
                <item row="3" column="2">
                 <widget class="QDoubleSpinBox" name="t_time_second_ipt">
                  <property name="decimals">
-                  <number>3</number>
+                  <number>1</number>
                  </property>
                  <property name="maximum">
                   <double>60.000000000000000</double>
@@ -4701,6 +4701,45 @@ zero for zero output noise</string>
   <tabstop>lineEdit_8</tabstop>
   <tabstop>theme_combobox</tabstop>
   <tabstop>whatsthis_btn</tabstop>
+  <tabstop>jd_radiobtn</tabstop>
+  <tabstop>phase_radiobtn</tabstop>
+  <tabstop>lc_lcin_btn</tabstop>
+  <tabstop>lc_lcout_btn</tabstop>
+  <tabstop>tabWidget_3</tabstop>
+  <tabstop>t_pot_pot_otpt</tabstop>
+  <tabstop>t_calc_pot_btn</tabstop>
+  <tabstop>t_pot_rad_ipt</tabstop>
+  <tabstop>t_pot_q_ipt</tabstop>
+  <tabstop>t_pot_d_ipt</tabstop>
+  <tabstop>t_pot_f_ipt</tabstop>
+  <tabstop>t_color_calc_hot_btn</tabstop>
+  <tabstop>t_color_gray_otpt</tabstop>
+  <tabstop>t_color_gray_err_otpt</tabstop>
+  <tabstop>t_color_flower_err_otpt</tabstop>
+  <tabstop>t_color_dl_err_otpt</tabstop>
+  <tabstop>t_color_popper_err_otpt</tabstop>
+  <tabstop>t_color_dl_otpt</tabstop>
+  <tabstop>t_color_popper_otpt</tabstop>
+  <tabstop>t_color_flower_otpt</tabstop>
+  <tabstop>t_color_bv_ipt</tabstop>
+  <tabstop>t_color_bv_err_ipt</tabstop>
+  <tabstop>t_color_calc_cool_btn</tabstop>
+  <tabstop>t_color_tokunaga_err_otpt</tabstop>
+  <tabstop>t_color_tokunaga_otpt</tabstop>
+  <tabstop>t_color_cool_combobox</tabstop>
+  <tabstop>t_color_cool_ipt</tabstop>
+  <tabstop>t_color_cool_err_ipt</tabstop>
+  <tabstop>t_time_jd_ipt</tabstop>
+  <tabstop>t_time_jd_convert_btn</tabstop>
+  <tabstop>t_time_dmy_otpt</tabstop>
+  <tabstop>t_time_jd_otpt</tabstop>
+  <tabstop>t_time_day_ipt</tabstop>
+  <tabstop>t_time_month_ipt</tabstop>
+  <tabstop>t_time_year_ipt</tabstop>
+  <tabstop>t_time_hour_ipt</tabstop>
+  <tabstop>t_time_minute_ipt</tabstop>
+  <tabstop>t_time_second_ipt</tabstop>
+  <tabstop>t_time_ut_convert_btn</tabstop>
  </tabstops>
  <resources/>
  <connections/>

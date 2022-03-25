@@ -44,7 +44,7 @@
         <bool>true</bool>
        </property>
        <property name="title">
-        <string>Compute UTC</string>
+        <string>Compute &amp;UTC</string>
        </property>
        <property name="flat">
         <bool>false</bool>
@@ -83,7 +83,7 @@
         <item>
          <widget class="QGroupBox" name="dt_groupbox">
           <property name="title">
-           <string>Convert HJD to JD</string>
+           <string>Convert HJD &amp;to JD</string>
           </property>
           <property name="flat">
            <bool>true</bool>
@@ -315,6 +315,20 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>ra_h_spinbox</tabstop>
+  <tabstop>ra_m_spinbox</tabstop>
+  <tabstop>ra_s_spinbox</tabstop>
+  <tabstop>dec_d_spinbox</tabstop>
+  <tabstop>dec_m_spinbox</tabstop>
+  <tabstop>dec_s_spinbox</tabstop>
+  <tabstop>ut_groupbox</tabstop>
+  <tabstop>dt_groupbox</tabstop>
+  <tabstop>export_btn</tabstop>
+  <tabstop>compute_btn</tabstop>
+  <tabstop>data_treewidget</tabstop>
+  <tabstop>kstep_spinbox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

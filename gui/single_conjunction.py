@@ -105,6 +105,12 @@ class Ui_ConjunctionWidget(object):
 
         self.retranslateUi(ConjunctionWidget)
         QtCore.QMetaObject.connectSlotsByName(ConjunctionWidget)
+        ConjunctionWidget.setTabOrder(self.prieclipse_opt, self.firstquad_opt)
+        ConjunctionWidget.setTabOrder(self.firstquad_opt, self.periastron_opt)
+        ConjunctionWidget.setTabOrder(self.periastron_opt, self.sececlipse_opt)
+        ConjunctionWidget.setTabOrder(self.sececlipse_opt, self.secondquad_opt)
+        ConjunctionWidget.setTabOrder(self.secondquad_opt, self.apastron_opt)
+        ConjunctionWidget.setTabOrder(self.apastron_opt, self.conj_btn)
 
     def retranslateUi(self, ConjunctionWidget):
         _translate = QtCore.QCoreApplication.translate
@@ -117,4 +123,14 @@ class Ui_ConjunctionWidget(object):
         self.secondary_label.setText(_translate("ConjunctionWidget", "Second Quadrature"))
         self.a_past_label.setText(_translate("ConjunctionWidget", "Apastron"))
         self.conj_btn.setText(_translate("ConjunctionWidget", "Compute Conjunction Phases"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    ConjunctionWidget = QtWidgets.QWidget()
+    ui = Ui_ConjunctionWidget()
+    ui.setupUi(ConjunctionWidget)
+    ConjunctionWidget.show()
+    sys.exit(app.exec_())
 

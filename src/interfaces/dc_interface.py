@@ -886,8 +886,9 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
 
                 for index, val in enumerate((sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff)):
+                    item.topLevelItem(index).setBackground(1, QtGui.QBrush(QtGui.QColor("white")))
                     if val == "nan":
-                        item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
+                        item.topLevelItem(index).setBackground(1, QtGui.QBrush(QtGui.QColor("red")))
                         val = "NaN"
                     item.topLevelItem(index).setText(1, val)
 
@@ -899,8 +900,9 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                     item.topLevelItem(index).setText(3, val)
 
                 for index, val in enumerate((K1, K2)):
+                    item.topLevelItem(index).setBackground(5, QtGui.QBrush(QtGui.QColor("white")))
                     if val == "nan":
-                        item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
+                        item.topLevelItem(index).setBackground(5, QtGui.QBrush(QtGui.QColor("red")))
                         val = "NaN"
                     item.topLevelItem(index).setText(5, val)
 
@@ -949,6 +951,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 ff = str(logL2)
 
                 for index, val in enumerate((sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff)):
+                    item.topLevelItem(index).setBackground(1, QtGui.QBrush(QtGui.QColor("white")))
                     if val == "nan":
                         item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
                         val = "NaN"
@@ -961,6 +964,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                     item.topLevelItem(index).setText(3, val)
 
                 for index, val in enumerate((K1, K2)):
+                    item.topLevelItem(index).setBackground(5, QtGui.QBrush(QtGui.QColor("white")))
                     if val == "nan":
                         item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
                         val = "NaN"
@@ -985,6 +989,33 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 mdl_y = [i * vunit for i in mdl_data[dcout_mdl_y_index]]
             else:
                 mdl_y = mdl_data[dcout_mdl_y_index]
+
+            item = self.phys_params_treewidget
+            sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff = "None", "None", "None", \
+                                    "None", "None", "None", "None", "None", "None", "None", "None", "None", "None"
+            for index, val in enumerate((sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff)):
+                #if val == "nan":
+                val = "None"
+                item.topLevelItem(index).setBackground(1, QtGui.QBrush(QtGui.QColor("red")))
+                #val = "NaN"
+                item.topLevelItem(index).setText(1, val)
+
+            r1, r2, r1_r2, r2_r1, x1, x2, y1, y2, lum2_1 = "None", "None", "None", "None", "None", "None", "None", \
+                                    "None", "None"
+            for index, val in enumerate((str(r1), str(r2), str(r1_r2), str(r2_r1), x1, x2, y1, y2, lum2_1)):
+                #if val == "nan":
+                val = "None"
+                item.topLevelItem(index).setBackground(3, QtGui.QBrush(QtGui.QColor("red")))
+                item.topLevelItem(index).setText(3, val)
+
+            K1, K2 = "None", "None"
+            for index, val in enumerate((K1, K2)):
+                #if val == "nan":
+                val = "None"
+                item.topLevelItem(index).setBackground(5, QtGui.QBrush(QtGui.QColor("red")))
+                item.topLevelItem(index).setText(5, val)
+
+
 
         if curve.curve_type == "light" and self.main_window.maglite_combobox.currentText() == "Magnitude":
             _ = [-2.5 * numpy.log10(x) for x in obs_y]

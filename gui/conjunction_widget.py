@@ -163,14 +163,25 @@ class Ui_conjunctionwidget(object):
 
         self.retranslateUi(conjunctionwidget)
         QtCore.QMetaObject.connectSlotsByName(conjunctionwidget)
+        conjunctionwidget.setTabOrder(self.ra_h_spinbox, self.ra_m_spinbox)
+        conjunctionwidget.setTabOrder(self.ra_m_spinbox, self.ra_s_spinbox)
+        conjunctionwidget.setTabOrder(self.ra_s_spinbox, self.dec_d_spinbox)
+        conjunctionwidget.setTabOrder(self.dec_d_spinbox, self.dec_m_spinbox)
+        conjunctionwidget.setTabOrder(self.dec_m_spinbox, self.dec_s_spinbox)
+        conjunctionwidget.setTabOrder(self.dec_s_spinbox, self.ut_groupbox)
+        conjunctionwidget.setTabOrder(self.ut_groupbox, self.dt_groupbox)
+        conjunctionwidget.setTabOrder(self.dt_groupbox, self.export_btn)
+        conjunctionwidget.setTabOrder(self.export_btn, self.compute_btn)
+        conjunctionwidget.setTabOrder(self.compute_btn, self.data_treewidget)
+        conjunctionwidget.setTabOrder(self.data_treewidget, self.kstep_spinbox)
 
     def retranslateUi(self, conjunctionwidget):
         _translate = QtCore.QCoreApplication.translate
         conjunctionwidget.setWindowTitle(_translate("conjunctionwidget", "Compute Conjunction Times"))
         self.label.setToolTip(_translate("conjunctionwidget", "Space conjunction times by a whole orbit cycles per minima [KTSTEP]"))
         self.label.setText(_translate("conjunctionwidget", "Cycle Step"))
-        self.ut_groupbox.setTitle(_translate("conjunctionwidget", "Compute UTC"))
-        self.dt_groupbox.setTitle(_translate("conjunctionwidget", "Convert HJD to JD"))
+        self.ut_groupbox.setTitle(_translate("conjunctionwidget", "Compute &UTC"))
+        self.dt_groupbox.setTitle(_translate("conjunctionwidget", "Convert HJD &to JD"))
         self.label_16.setText(_translate("conjunctionwidget", "Right Ascension"))
         self.label_11.setText(_translate("conjunctionwidget", "°"))
         self.label_15.setText(_translate("conjunctionwidget", "\""))
@@ -184,4 +195,14 @@ class Ui_conjunctionwidget(object):
         self.data_treewidget.headerItem().setText(0, _translate("conjunctionwidget", "HJD"))
         self.data_treewidget.headerItem().setText(1, _translate("conjunctionwidget", "Min"))
         self.data_treewidget.headerItem().setText(2, _translate("conjunctionwidget", "D/M/Y - H:M:S"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    conjunctionwidget = QtWidgets.QWidget()
+    ui = Ui_conjunctionwidget()
+    ui.setupUi(conjunctionwidget)
+    conjunctionwidget.show()
+    sys.exit(app.exec_())
 

@@ -404,12 +404,12 @@ class Widget(QtWidgets.QDialog, curveproperties_dialog.Ui_CurvePropertiesDialog)
                 self.x2_ipt.setDisabled(True)
                 self.y2_ipt.setDisabled(True)
 
-                def _lockx2y2():
-                    self.x2_ipt.setText(self.x1_ipt.text())
-                    self.y2_ipt.setText(self.y1_ipt.text())
+                #def _lockx2y2():
+                    #self.x2_ipt.setText(self.x1_ipt.text())
+                    #self.y2_ipt.setText(self.y1_ipt.text())
 
-                self.x1_ipt.valueChanged.connect(_lockx2y2)
-                self.y1_ipt.valueChanged.connect(_lockx2y2)
+                #self.x1_ipt.valueChanged.connect(_lockx2y2)
+                #self.y1_ipt.valueChanged.connect(_lockx2y2)
 
     def clear_widgets(self):
         self.data_widget.clear()

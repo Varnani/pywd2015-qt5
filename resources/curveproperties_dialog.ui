@@ -790,6 +790,9 @@
         <property name="decimals">
          <number>4</number>
         </property>
+        <property name="value">
+         <double>0.050000000000000</double>
+        </property>
        </widget>
       </item>
       <item row="3" column="0">
@@ -801,7 +804,7 @@
          <number>4</number>
         </property>
         <property name="value">
-         <double>0.050000000000000</double>
+         <double>0.450000000000000</double>
         </property>
        </widget>
       </item>
