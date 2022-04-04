@@ -156,7 +156,7 @@
          <enum>QAbstractSpinBox::NoButtons</enum>
         </property>
         <property name="decimals">
-         <number>6</number>
+         <number>12</number>
         </property>
         <property name="minimum">
          <double>-99999.000000000000000</double>
@@ -279,7 +279,7 @@
          <enum>QAbstractSpinBox::NoButtons</enum>
         </property>
         <property name="decimals">
-         <number>8</number>
+         <number>12</number>
         </property>
         <property name="minimum">
          <double>-99999.000000000000000</double>
@@ -305,7 +305,7 @@
          <enum>QAbstractSpinBox::NoButtons</enum>
         </property>
         <property name="decimals">
-         <number>8</number>
+         <number>12</number>
         </property>
         <property name="minimum">
          <double>-99999.000000000000000</double>
@@ -341,7 +341,7 @@
          <enum>QAbstractSpinBox::NoButtons</enum>
         </property>
         <property name="decimals">
-         <number>8</number>
+         <number>12</number>
         </property>
         <property name="minimum">
          <double>-99999.000000000000000</double>
