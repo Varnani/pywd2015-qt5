@@ -223,7 +223,7 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
 
     def curve_list_changed(self):
         self.lc_synthetic_curve_widget.reset_and_repopulate()
-        #self.dc_widget.clear()
+        self.dc_widget.clear()
 
     def compute_jd(self):
         year = self.t_time_year_ipt.value()
@@ -593,6 +593,8 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
                 self.loadobservations_widget.read_from_parser(parser)
 
                 self.clear_children()
+                self.dc_widget.clear()
+                self.lc_synthetic_curve_widget.reset_and_repopulate()
 
                 msg = messenger.Messenger("info", "Load completed:")
                 msg.set_info(load_path)
