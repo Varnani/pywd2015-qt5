@@ -1,0 +1,359 @@
+[Info]
+version = 2015-qt5
+config = 0.2.0
+
+[Main]
+system_name = WD2015 Test Binary
+operation_mode = 3
+jdphs = 1
+maglite = 1
+rv_corr_1 = True
+rv_corr_2 = True
+ifcgs = False
+
+[System]
+jd0 = 30979.347628
+period = 1.919411642
+dpdt = 2.89188e-11
+ecc = 0.21859
+omega = 2.608469
+dperdt = 0.00011005
+incl = 89.362
+a = 10.3034
+pshift = 0.0
+vgam = -0.099
+vunit = 100.0
+logd = 0.0
+q = 0.741712
+abunin = 0.0
+t1 = 10140.0
+t2 = 8487.0
+pot1 = 6.59389
+pot2 = 6.36603
+f1 = 2.9008
+f2 = 1.5924
+the = 0.0
+delph = 0.01156
+nga = 1
+
+[Surface]
+ifat1 = 0
+ifat2 = 0
+alb1 = 1.0
+alb2 = 1.0
+gr1 = 1.0
+gr2 = 1.0
+n1 = 20
+n2 = 20
+n1l = 10
+n2l = 10
+ld1 = 2
+ld2 = 1
+ld1_fixed = False
+ld2_fixed = False
+ipb = False
+mref = False
+nref = 1
+xbol_s1 = 0.538
+xbol_s2 = 0.658
+ybol_s1 = 0.174
+ybol_s2 = 0.142
+
+[Third_body]
+if3b = False
+a_3b = 0.0
+p_3b = 32.78213
+incl_3b = 76.0
+ecc_3b = 0.160038
+omega_3b = 3.6276558
+conj_time = 44655.414831
+
+[LC2015]
+std_dev = 0.0
+noise = 0
+seed = 138472375.0
+jd_start = 50000.0
+jd_stop = 50010.0
+jd_incr = 0.001
+phase_start = 0.0
+phase_stop = 1.0
+phase_incr = 0.001
+lsp = 1
+tobs = 0.0
+phobs = 0.0
+phn = 0.0
+
+[DC2015]
+deriv_type = 0
+desextinc = 0.0
+linkext = 0
+
+[DC Keeps]
+xlamda = 1e-05
+vlr = 1.0
+t0 = False
+p = True
+dpdt = False
+omega = False
+dperdt = False
+pshift = False
+a = False
+e = False
+incl = False
+q = False
+logd = False
+vgam = True
+t1 = False
+t2 = False
+g1 = False
+g2 = False
+alb1 = False
+alb2 = False
+f1 = False
+f2 = False
+l1 = True
+l2 = False
+x1 = False
+x2 = False
+pot1 = True
+pot2 = True
+a3b = False
+p3b = False
+i3b = False
+e3b = False
+t03b = False
+omega3b = False
+l3 = True
+desextinc = False
+s1lat = False
+s1lon = False
+s1rad = False
+s1temp = False
+s2lat = False
+s2lon = False
+s2rad = False
+s2temp = False
+s1tstart = False
+s1tmax1 = False
+s1tmax2 = False
+s1tend = False
+s2tstart = False
+s2tmax1 = False
+s2tmax2 = False
+s2tend = False
+
+[DC Dels]
+a = 0.05
+e = 0.001
+incl = 0.2
+q = 0.003
+pshift = 0.002
+omega = 0.01
+pot1 = 0.02
+pot2 = 0.02
+l1 = 0.01
+l2 = 0.01
+g1 = 0.01
+g2 = 0.01
+t1 = 0.02
+t2 = 0.02
+alb1 = 0.05
+alb2 = 0.05
+f1 = 0.01
+f2 = 0.01
+x1 = 0.01
+x2 = 0.01
+s1lat = 0.02
+s1lon = 0.02
+s1temp = 0.02
+s1rad = 0.001
+s2lat = 0.02
+s2lon = 0.02
+s2temp = 0.02
+s2rad = 0.001
+
+[Spot Parameters]
+fspot1 = 1.0
+fspot2 = 1.0
+ifsvm1 = False
+ifsvm2 = False
+kspev = True
+nomax = 0
+kspot = False
+star 1 spot count = 0
+star 2 spot count = 0
+
+[Eclipse Timings]
+iftime = True
+cw = False
+ksd = 1
+sigma = 0.0082
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/WD2015_Test_eclipse_times.dat
+
+[Curve Counts]
+light_curves = 4
+velocity_curve_1 = True
+velocity_curve_2 = True
+
+[Light Curve 1]
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/WD2015_Test_V1.dat
+band_id = 7
+constant_weights = False
+l1 = 0.00103018
+l2 = 1.0
+l3 = 1.421e-05
+x1 = -0.029
+x2 = 0.669
+y1 = 0.726
+y2 = 0.285
+wla = 0.55
+aextinc = 0.0
+xunit = 1.0
+calib = 0.36895
+ksd = 1.0
+noise = 1
+sigma = 6.85e-07
+opsf = 0.0
+e1 = 0.12
+e2 = 0.44
+e3 = 0.55
+e4 = 0.95
+col1_idx = 0
+col2_idx = 1
+col3_idx = 2
+
+[Light Curve 2]
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/WD2015_Test_B1.dat
+band_id = 6
+constant_weights = False
+l1 = 0.000963158
+l2 = 1.0
+l3 = 8.481e-06
+x1 = -0.029
+x2 = 0.773
+y1 = 0.841
+y2 = 0.315
+wla = 0.44
+aextinc = 0.0
+xunit = 1.0
+calib = 0.6266
+ksd = 1.0
+noise = 1
+sigma = 5.15e-07
+opsf = 0.0
+e1 = 0.12
+e2 = 0.44
+e3 = 0.55
+e4 = 0.95
+col1_idx = 0
+col2_idx = 1
+col3_idx = 2
+
+[Light Curve 3]
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/WD2015_Test_V2.dat
+band_id = 7
+constant_weights = False
+l1 = 0.00101564
+l2 = 1.0
+l3 = 1.452e-05
+x1 = -0.029
+x2 = 0.669
+y1 = 0.726
+y2 = 0.285
+wla = 0.55
+aextinc = 0.0
+xunit = 1.0
+calib = 0.36895
+ksd = 1
+noise = 1
+sigma = 7.84e-07
+opsf = 0.0
+e1 = 0.12
+e2 = 0.38
+e3 = 0.55
+e4 = 0.9
+col1_idx = 0
+col2_idx = 1
+col3_idx = 2
+
+[Light Curve 4]
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/WD2015_Test_B2.dat
+band_id = 6
+constant_weights = False
+l1 = 0.000948209
+l2 = 1.0
+l3 = 7.946e-06
+x1 = -0.029
+x2 = 0.773
+y1 = 0.841
+y2 = 0.315
+wla = 0.44
+aextinc = 0.0
+xunit = 1.0
+calib = 0.6266
+ksd = 1
+noise = 1
+sigma = 8.5e-07
+opsf = 0.0
+e1 = 0.12
+e2 = 0.38
+e3 = 0.55
+e4 = 0.9
+col1_idx = 0
+col2_idx = 1
+col3_idx = 2
+
+[Velocity Curve1]
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/WD2015_Test_RV1.dat
+band_id = 7
+constant_weights = False
+l1 = 1.0
+l2 = 1.0
+l3 = 0.0
+x1 = 0.0
+x2 = 0.0
+y1 = 0.0
+y2 = 0.0
+wla = 0.44
+aextinc = 0.0
+xunit = 0.0
+calib = 0.0
+ksd = 1.0
+noise = 0
+sigma = 0.058
+opsf = 0.0
+e1 = 0.1
+e2 = 0.4
+e3 = 0.55
+e4 = 0.95
+col1_idx = 0
+col2_idx = 1
+col3_idx = 2
+
+[Velocity Curve2]
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/WD2015_Test_RV2.dat
+band_id = 7
+constant_weights = False
+l1 = 1.0
+l2 = 1.0
+l3 = 0.0
+x1 = 0.0
+x2 = 0.0
+y1 = 0.0
+y2 = 0.0
+wla = 0.44
+aextinc = 0.0
+xunit = 0.0
+calib = 0.0
+ksd = 1.0
+noise = 0
+sigma = 0.0485
+opsf = 0.0
+e1 = 0.1
+e2 = 0.4
+e3 = 0.55
+e4 = 0.95
+col1_idx = 0
+col2_idx = 1
+col3_idx = 2
+

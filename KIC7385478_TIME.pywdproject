@@ -1,0 +1,290 @@
+[Info]
+version = 2015-qt5
+config = 0.2.0
+
+[Main]
+system_name = KIC 7385478
+operation_mode = 6
+jdphs = 1
+maglite = 0
+rv_corr_1 = False
+rv_corr_2 = False
+ifcgs = False
+
+[System]
+jd0 = 54954.534784
+period = 1.655473
+dpdt = 0.0
+ecc = 0.0
+omega = 1.570796
+dperdt = 0.0
+incl = 70.9645784
+a = 7.48893
+pshift = 0.001594
+vgam = -14.9985
+vunit = 1.0
+logd = 0.0
+q = 0.209056
+abunin = 0.0
+t1 = 7000.0
+t2 = 4296.0
+pot1 = 4.936999
+pot2 = 2.255101
+f1 = 1.0
+f2 = 1.0
+the = 0.0
+delph = 0.01258
+nga = 1
+
+[Surface]
+ifat1 = 0
+ifat2 = 0
+alb1 = 0.5
+alb2 = 0.699
+gr1 = 0.32
+gr2 = 0.27
+n1 = 30
+n2 = 30
+n1l = 15
+n2l = 15
+ld1 = 0
+ld2 = 0
+ld1_fixed = True
+ld2_fixed = True
+ipb = False
+mref = False
+nref = 1
+xbol_s1 = 0.471
+xbol_s2 = 0.531
+ybol_s1 = 0.0
+ybol_s2 = 0.0
+
+[Third_body]
+if3b = True
+a_3b = 82.789539
+p_3b = 1442.8208394
+incl_3b = 90.0
+ecc_3b = 0.635167
+omega_3b = 5.3793404
+conj_time = 54847.81175684
+
+[LC2015]
+std_dev = 0.0
+noise = 0
+seed = 138472375.0
+jd_start = 50000.0
+jd_stop = 50010.0
+jd_incr = 0.001
+phase_start = 0.7
+phase_stop = 1.7
+phase_incr = 0.001
+lsp = 1
+tobs = 0.0
+phobs = 0.0
+phn = 0.0
+
+[DC2015]
+deriv_type = 0
+desextinc = 0.0
+linkext = 0
+
+[DC Keeps]
+xlamda = 1e-05
+vlr = 1.0
+t0 = False
+p = False
+dpdt = False
+omega = False
+dperdt = False
+pshift = False
+a = False
+e = False
+incl = False
+q = False
+logd = False
+vgam = False
+t1 = False
+t2 = False
+g1 = False
+g2 = False
+alb1 = False
+alb2 = False
+f1 = False
+f2 = False
+l1 = False
+l2 = False
+x1 = False
+x2 = False
+pot1 = False
+pot2 = False
+a3b = True
+p3b = False
+i3b = True
+e3b = True
+t03b = False
+omega3b = True
+l3 = False
+desextinc = False
+s1lat = False
+s1lon = False
+s1rad = False
+s1temp = False
+s2lat = False
+s2lon = False
+s2rad = False
+s2temp = False
+s1tstart = False
+s1tmax1 = False
+s1tmax2 = False
+s1tend = False
+s2tstart = False
+s2tmax1 = False
+s2tmax2 = False
+s2tend = False
+
+[DC Dels]
+a = 0.05
+e = 0.001
+incl = 0.2
+q = 0.003
+pshift = 0.002
+omega = 0.01
+pot1 = 0.02
+pot2 = 0.02
+l1 = 0.01
+l2 = 0.01
+g1 = 0.01
+g2 = 0.01
+t1 = 0.02
+t2 = 0.02
+alb1 = 0.05
+alb2 = 0.05
+f1 = 0.01
+f2 = 0.01
+x1 = 0.01
+x2 = 0.01
+s1lat = 0.02
+s1lon = 0.02
+s1temp = 0.02
+s1rad = 0.001
+s2lat = 0.02
+s2lon = 0.02
+s2temp = 0.02
+s2rad = 0.001
+
+[Spot Parameters]
+fspot1 = 1.0
+fspot2 = 1.0
+ifsvm1 = False
+ifsvm2 = False
+kspev = False
+nomax = 0
+kspot = True
+star 1 spot count = 1
+star 2 spot count = 0
+
+[Star 1 Spot 1]
+a = True
+b = False
+lat = 1.71
+lon = 1.62
+radsp = 0.23
+temsp = 1.022
+tstart = 0.0
+tmax1 = 0.0
+tmax2 = 0.0
+tend = 0.0
+
+[Eclipse Timings]
+iftime = True
+cw = False
+ksd = 1
+sigma = 0.0007
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/kic7385478_minima.dat
+
+[Curve Counts]
+light_curves = 1
+velocity_curve_1 = True
+velocity_curve_2 = True
+
+[Light Curve 1]
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/kic7385478_lc_short.dat
+band_id = 26
+constant_weights = False
+l1 = 10.74207606
+l2 = 1.0
+l3 = 0.0
+x1 = 0.462
+x2 = 0.344
+y1 = 0.0
+y2 = 0.0
+wla = 0.592
+aextinc = 0.0
+xunit = 0.0
+calib = 0.0
+ksd = 1.0
+noise = 0
+sigma = 0.000178
+opsf = 0.0
+e1 = 0.05
+e2 = 0.45
+e3 = 0.55
+e4 = 0.95
+col1_idx = 0
+col2_idx = 1
+col3_idx = 2
+
+[Velocity Curve1]
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/kic7385478_vr1_hjd.dat
+band_id = 7
+constant_weights = False
+l1 = 1.0
+l2 = 1.0
+l3 = 0.0
+x1 = 0.0
+x2 = 0.0
+y1 = 0.0
+y2 = 0.0
+wla = 0.55
+aextinc = 0.0
+xunit = 0.0
+calib = 0.0
+ksd = 0.0
+noise = 0
+sigma = 2.0
+opsf = 0.0
+e1 = 0.05
+e2 = 0.45
+e3 = 0.55
+e4 = 0.95
+col1_idx = 0
+col2_idx = 1
+col3_idx = 2
+
+[Velocity Curve2]
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/kic7385478_vr2_hjd.dat
+band_id = 7
+constant_weights = False
+l1 = 1.0
+l2 = 1.0
+l3 = 0.0
+x1 = 0.0
+x2 = 0.0
+y1 = 0.0
+y2 = 0.0
+wla = 0.55
+aextinc = 0.0
+xunit = 0.0
+calib = 0.0
+ksd = 0.0
+noise = 0
+sigma = 2.0
+opsf = 0.0
+e1 = 0.05
+e2 = 0.45
+e3 = 0.55
+e4 = 0.95
+col1_idx = 0
+col2_idx = 1
+col3_idx = 2
+

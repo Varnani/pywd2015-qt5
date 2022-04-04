@@ -1,0 +1,278 @@
+[Info]
+version = 2015-qt5
+config = 0.2.0
+
+[Main]
+system_name = V788Cen
+operation_mode = 3
+jdphs = 1
+maglite = 0
+rv_corr_1 = False
+rv_corr_2 = False
+ifcgs = False
+
+[System]
+jd0 = 58578.99288
+period = 4.966376759
+dpdt = 0.0
+ecc = 0.0
+omega = 0.0
+dperdt = 0.0
+incl = 82.772605
+a = 18.6203
+pshift = 0.0
+vgam = -0.187
+vunit = 100.0
+logd = 0.0
+q = 0.787951
+abunin = 0.5
+t1 = 7820.0
+t2 = 7348.0
+pot1 = 7.566631
+pot2 = 10.153604
+f1 = 1.0
+f2 = 1.0
+the = 0.0
+delph = 0.0
+nga = 1
+
+[Surface]
+ifat1 = 0
+ifat2 = 0
+alb1 = 1.0
+alb2 = 0.923
+gr1 = 1.0
+gr2 = 1.0
+n1 = 90
+n2 = 60
+n1l = 40
+n2l = 30
+ld1 = 1
+ld2 = 1
+ld1_fixed = False
+ld2_fixed = False
+ipb = False
+mref = False
+nref = 1
+xbol_s1 = 0.633
+xbol_s2 = 0.475
+ybol_s1 = 0.232
+ybol_s2 = 0.302
+
+[Third_body]
+if3b = False
+a_3b = 0.0
+p_3b = 0.0
+incl_3b = 0.0
+ecc_3b = 0.0
+omega_3b = 0.0
+conj_time = 0.0
+
+[LC2015]
+std_dev = 0.0
+noise = 0
+seed = 138472375.0
+jd_start = 50000.0
+jd_stop = 50010.0
+jd_incr = 0.001
+phase_start = 0.0
+phase_stop = 1.06
+phase_incr = 0.0002
+lsp = 1
+tobs = 0.0
+phobs = 0.0
+phn = 0.0
+
+[DC2015]
+deriv_type = 0
+desextinc = 0.0
+linkext = 0
+
+[DC Keeps]
+xlamda = 1e-05
+vlr = 1.0
+t0 = False
+p = False
+dpdt = False
+omega = False
+dperdt = False
+pshift = False
+a = False
+e = False
+incl = False
+q = False
+logd = False
+vgam = False
+t1 = False
+t2 = False
+g1 = False
+g2 = False
+alb1 = False
+alb2 = False
+f1 = False
+f2 = False
+l1 = True
+l2 = False
+x1 = False
+x2 = False
+pot1 = False
+pot2 = False
+a3b = False
+p3b = False
+i3b = False
+e3b = False
+t03b = False
+omega3b = False
+l3 = False
+desextinc = False
+s1lat = False
+s1lon = False
+s1rad = False
+s1temp = False
+s2lat = False
+s2lon = False
+s2rad = False
+s2temp = False
+s1tstart = False
+s1tmax1 = False
+s1tmax2 = False
+s1tend = False
+s2tstart = False
+s2tmax1 = False
+s2tmax2 = False
+s2tend = False
+
+[DC Dels]
+a = 0.02
+e = 0.001
+incl = 0.4
+q = 0.008
+pshift = 0.002
+omega = 0.02
+pot1 = 0.08
+pot2 = 0.1
+l1 = 0.1
+l2 = 0.01
+g1 = 0.01
+g2 = 0.01
+t1 = 0.02
+t2 = 0.02
+alb1 = 0.01
+alb2 = 0.01
+f1 = 0.01
+f2 = 0.01
+x1 = 0.01
+x2 = 0.01
+s1lat = 0.02
+s1lon = 0.02
+s1temp = 0.02
+s1rad = 0.001
+s2lat = 0.02
+s2lon = 0.02
+s2temp = 0.02
+s2rad = 0.001
+
+[Spot Parameters]
+fspot1 = 1.0
+fspot2 = 1.0
+ifsvm1 = False
+ifsvm2 = False
+kspev = True
+nomax = 0
+kspot = False
+star 1 spot count = 0
+star 2 spot count = 0
+
+[Eclipse Timings]
+iftime = False
+cw = False
+ksd = 1
+sigma = 0.0
+filepath = None
+
+[Curve Counts]
+light_curves = 1
+velocity_curve_1 = True
+velocity_curve_2 = True
+
+[Light Curve 1]
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/V788_Cen_TESS_det.nrm
+band_id = 16
+constant_weights = False
+l1 = 9.657195652
+l2 = 1.0
+l3 = 0.0
+x1 = 0.0
+x2 = 0.0
+y1 = 0.0
+y2 = 0.0
+wla = 0.0
+aextinc = 0.0
+xunit = 0.0
+calib = 0.0
+ksd = 1.0
+noise = 0
+sigma = 0.000327
+opsf = 0.0
+e1 = 0.0
+e2 = 0.05
+e3 = 0.55
+e4 = 0.95
+col1_idx = 0
+col2_idx = 1
+col3_idx = 2
+
+[Velocity Curve1]
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/V788Cen_rv1.dat
+band_id = 7
+constant_weights = False
+l1 = 1.0
+l2 = 1.0
+l3 = 0.0
+x1 = 0.0
+x2 = 0.0
+y1 = 0.0
+y2 = 0.0
+wla = 0.0
+aextinc = 0.0
+xunit = 0.0
+calib = 0.0
+ksd = 1
+noise = 0
+sigma = 0.00055
+opsf = 0.0
+e1 = 0.0
+e2 = 0.05
+e3 = 0.55
+e4 = 0.95
+col1_idx = 0
+col2_idx = 1
+col3_idx = 2
+
+[Velocity Curve2]
+filepath = /home/orkuno/PycharmProjects/pywd2015-qt5/V788Cen_rv2.dat
+band_id = 7
+constant_weights = False
+l1 = 1.0
+l2 = 1.0
+l3 = 0.0
+x1 = 0.0
+x2 = 0.0
+y1 = 0.0
+y2 = 0.0
+wla = 0.0
+aextinc = 0.0
+xunit = 0.0
+calib = 0.0
+ksd = 1
+noise = 0
+sigma = 0.0022
+opsf = 0.0
+e1 = 0.0
+e2 = 0.05
+e3 = 0.55
+e4 = 0.95
+col1_idx = 0
+col2_idx = 1
+col3_idx = 2
+

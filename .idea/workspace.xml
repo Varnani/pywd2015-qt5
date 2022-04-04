@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dbcf13ba-a7c4-4563-b1e3-43a388e7c14a" name="Changes" comment="*KSD upper and lower limit values in &quot;eclipsetiming&quot; widget were corrected.">
+      <change beforePath="$PROJECT_DIR$/gui/mainwindow_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/mainwindow_widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/mainwindow_widget.ui" beforeDir="false" afterPath="$PROJECT_DIR$/resources/mainwindow_widget.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/wd_utils/wd_io.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/wd_utils/wd_io.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interfaces/loadobservations_interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interfaces/loadobservations_interface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interfaces/mainwindow_interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interfaces/mainwindow_interface.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="25YXTNq2LPG5G39MBTzPYO5B8UI" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+      </console-settings>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="pywd2015" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python3.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pywd2015.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.pywd2015" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dbcf13ba-a7c4-4563-b1e3-43a388e7c14a" name="Changes" comment="" />
+      <created>1645705002176</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1645705002176</updated>
+    </task>
+    <task id="LOCAL-00001" summary="* New windows were added to LC and DC widgets, which show Physical Parameters from &quot;lcout.active&quot; files.&#10;&#10;* A function was added to compute luminosity of each component in solar luminosity unit.&#10;&#10;* Bugfix and improvement in Solution History widget.&#10;&#10;* DC plot widget improvement was made for &quot;phase&quot; based plots.">
+      <created>1645713338445</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1645713338445</updated>
+    </task>
+    <task id="LOCAL-00002" summary="* Solution history widget was restored to the committed file at 22nd February 2022.">
+      <created>1645722432701</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1645722432701</updated>
+    </task>
+    <task id="LOCAL-00003" summary="* Semi-major axis value was added to DC widget (under Physical parameter tab).&#10;&#10;* Fractional radius information was added to DC widget (under Physical parameter tab).&#10;&#10;* Default phase range in plot window under DC widget was changed. Current phase range is between -0.25 and 1.25. So, in light curve plots, two primary eclipses and one secondary eclipse can be seen in the window.">
+      <created>1646211240828</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1646211240828</updated>
+    </task>
+    <task id="LOCAL-00004" summary="* A small modification in DC widget was done.">
+      <created>1646229813623</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1646229813623</updated>
+    </task>
+    <task id="LOCAL-00005" summary="* Semi-major axis value was added to the information window in synthetic curve widget.">
+      <created>1646308699170</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1646308699170</updated>
+    </task>
+    <task id="LOCAL-00006" summary="* Computation of radial velocity semi-amplitudes of the components were added. Computed values are printed under &quot;System Information&quot; tab in DC widget (&quot;RV Info&quot; header).&#10; &#10; * LC widget was updated. Now, all boxes (including third body contribution, l3) accept negative values.&#10; &#10; * Limb darkening coefficients and light ratios of the components were added to &quot;System Information&quot; tab in DC widget (LC Info header). These values are printed if a light curve is plotted via &quot;use LC&quot; option. If user does not check &quot;use LC&quot; box, program does not print these values. This is also the case if velocity curve is plotted, regardless situation of &quot;use LC&quot; box (checked or unchecked).">
+      <created>1647528530987</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1647528530987</updated>
+    </task>
+    <task id="LOCAL-00007" summary="*Behaviour of &quot;Conjunctions&quot; button under &quot;System&quot; tab was updated.&#10;&#10;*Small change in format of time unit &quot;second&quot; was applied and typing error was fixed in &quot;JD-UT Coversion&quot; tab under &quot;Tools&quot; tab.&#10;&#10;*Small modification of phase ranges in &quot;curveproperties dialog&quot; was made.&#10;&#10;*Behaviour of &quot;Synthetic curve widget&quot; was updated.&#10;&#10;*Maximum number of external and internal iterations in dc widget was updated to 9999.&#10;&#10;*Tab orders were updated in widgets.">
+      <created>1648215125898</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1648215125898</updated>
+    </task>
+    <task id="LOCAL-00008" summary="*MODE1 related limb darkening coefficient constraint defined in PyWD2015 was updated. &#10;&#10;*Behaviour of &quot;Conjunctions&quot; button under &quot;System&quot; tab was updated.&#10;&#10;*Small change in format of time unit &quot;second&quot; was applied and typing error was fixed in &quot;JD-UT Coversion&quot; tab under &quot;Tools&quot; tab.&#10;&#10;*Small modification of phase ranges in &quot;curveproperties dialog&quot; was made.&#10;&#10;*Behaviour of &quot;Synthetic curve widget&quot; was updated.&#10;&#10;*Maximum number of external and internal iterations in dc widget was updated to 9999.&#10;&#10;*Tab orders were updated in widgets.">
+      <created>1648217229053</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1648217229053</updated>
+    </task>
+    <task id="LOCAL-00009" summary="*MODE1 related limb darkening coefficient constraint defined in PyWD2015 was updated. &#10;&#10;*Behaviour of &quot;Conjunctions&quot; button under &quot;System&quot; tab was updated.&#10;&#10;*Small change in format of time unit &quot;second&quot; was applied and typing error was fixed in &quot;JD-UT Coversion&quot; tab under &quot;Tools&quot; tab.&#10;&#10;*Small modification of phase ranges in &quot;curveproperties dialog&quot; was made.&#10;&#10;*Behaviour of &quot;Synthetic curve widget&quot; was updated.&#10;&#10;*Maximum number of external and internal iterations in dc widget was updated to 9999.&#10;&#10;*Tab orders were updated in widgets.">
+      <created>1648217717304</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1648217717304</updated>
+    </task>
+    <task id="LOCAL-00010" summary="*Format of &quot;SIGMA&quot; value in curveproperties dialog was increased to 12 decimals.">
+      <created>1649082360790</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1649082360790</updated>
+    </task>
+    <task id="LOCAL-00011" summary="*Bug fixes in plot functions of &quot;DC widget&quot;.">
+      <created>1649082391013</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1649082391013</updated>
+    </task>
+    <task id="LOCAL-00012" summary="*KSD upper and lower limit values in &quot;eclipsetiming&quot; widget were corrected.">
+      <created>1649082406258</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1649082406258</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="* New windows were added to LC and DC widgets, which show Physical Parameters from &quot;lcout.active&quot; files.&#10;&#10;* A function was added to compute luminosity of each component in solar luminosity unit.&#10;&#10;* Bugfix and improvement in Solution History widget.&#10;&#10;* DC plot widget improvement was made for &quot;phase&quot; based plots." />
+    <MESSAGE value="* Solution history widget was restored to the committed file at 22nd February 2022." />
+    <MESSAGE value="* Semi-major axis value was added to DC widget (under Physical parameter tab).&#10;&#10;* Fractional radius information was added to DC widget (under Physical parameter tab).&#10;&#10;* Default phase range in plot window under DC widget was changed. Current phase range is between -0.25 and 1.25. So, in light curve plots, two primary eclipses and one secondary eclipse can be seen in the window." />
+    <MESSAGE value="* A small modification in DC widget was done." />
+    <MESSAGE value="* Semi-major axis value was added to the information window in synthetic curve widget." />
+    <MESSAGE value="* Computation of radial velocity semi-amplitudes of the components were added. Computed values are printed under &quot;System Information&quot; tab in DC widget (&quot;RV Info&quot; header).&#10; &#10; * LC widget was updated. Now, all boxes (including third body contribution, l3) accept negative values.&#10; &#10; * Limb darkening coefficients and light ratios of the components were added to &quot;System Information&quot; tab in DC widget (LC Info header). These values are printed if a light curve is plotted via &quot;use LC&quot; option. If user does not check &quot;use LC&quot; box, program does not print these values. This is also the case if velocity curve is plotted, regardless situation of &quot;use LC&quot; box (checked or unchecked)." />
+    <MESSAGE value="*Behaviour of &quot;Conjunctions&quot; button under &quot;System&quot; tab was updated.&#10;&#10;*Small change in format of time unit &quot;second&quot; was applied and typing error was fixed in &quot;JD-UT Coversion&quot; tab under &quot;Tools&quot; tab.&#10;&#10;*Small modification of phase ranges in &quot;curveproperties dialog&quot; was made.&#10;&#10;*Behaviour of &quot;Synthetic curve widget&quot; was updated.&#10;&#10;*Maximum number of external and internal iterations in dc widget was updated to 9999.&#10;&#10;*Tab orders were updated in widgets." />
+    <MESSAGE value="*MODE1 related limb darkening coefficient constraint defined in PyWD2015 was updated. &#10;&#10;*Behaviour of &quot;Conjunctions&quot; button under &quot;System&quot; tab was updated.&#10;&#10;*Small change in format of time unit &quot;second&quot; was applied and typing error was fixed in &quot;JD-UT Coversion&quot; tab under &quot;Tools&quot; tab.&#10;&#10;*Small modification of phase ranges in &quot;curveproperties dialog&quot; was made.&#10;&#10;*Behaviour of &quot;Synthetic curve widget&quot; was updated.&#10;&#10;*Maximum number of external and internal iterations in dc widget was updated to 9999.&#10;&#10;*Tab orders were updated in widgets." />
+    <MESSAGE value="*Format of &quot;SIGMA&quot; value in curveproperties dialog was increased to 12 decimals." />
+    <MESSAGE value="*Bug fixes in plot functions of &quot;DC widget&quot;." />
+    <MESSAGE value="*KSD upper and lower limit values in &quot;eclipsetiming&quot; widget were corrected." />
+    <option name="LAST_COMMIT_MESSAGE" value="*KSD upper and lower limit values in &quot;eclipsetiming&quot; widget were corrected." />
+  </component>
+</project>
