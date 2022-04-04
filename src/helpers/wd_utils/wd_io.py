@@ -760,15 +760,18 @@ class DCIO(_WDIO):
         eclipse_data = ""
         if self.parameters.eclipse_timings is not None:
             eclipse_line = (" " * 82) + \
-                           self.parameters.eclipse_timings["sigma"].format() + \
-                           (" " * 32) + \
-                           self.parameters.eclipse_timings["ksd"].format() + "\n"
+                           self.parameters.eclipse_timings["sigma"].format(10,8,"F") + \
+                           (" " * 34) + \
+                           self.parameters.eclipse_timings["ksd"].format(1,1,"") + "\n"
 
             hjd_formatter = _ParameterContainer.Parameter("hjd", float)
             type_formatter = _ParameterContainer.Parameter("type", int)
             weights_formatter = _ParameterContainer.Parameter("weights", float)
 
-            for xyz in zip(self.parameters.eclipse_timings.data[""]):
+            x, y, z = self.parameters.eclipse_timings.data["eclipse_data"][0], \
+                      self.parameters.eclipse_timings.data["eclipse_data"][1], \
+                      self.parameters.eclipse_timings.data["eclipse_data"][2]
+            for xyz in zip(x,y,z):
                 hjd_formatter.set(xyz[0])
                 type_formatter.set(xyz[1])
                 weights_formatter.set(xyz[2])
