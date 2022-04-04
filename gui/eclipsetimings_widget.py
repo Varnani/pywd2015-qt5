@@ -21,8 +21,8 @@ class Ui_EclipseWidget(object):
         self.gridLayout.addWidget(self.label_16, 5, 0, 1, 1)
         self.ksd_box = QtWidgets.QSpinBox(EclipseWidget)
         self.ksd_box.setButtonSymbols(QtWidgets.QAbstractSpinBox.UpDownArrows)
-        self.ksd_box.setMinimum(1)
-        self.ksd_box.setMaximum(3)
+        self.ksd_box.setMinimum(0)
+        self.ksd_box.setMaximum(2)
         self.ksd_box.setProperty("value", 1)
         self.ksd_box.setObjectName("ksd_box")
         self.gridLayout.addWidget(self.ksd_box, 5, 1, 1, 1)
@@ -102,4 +102,14 @@ class Ui_EclipseWidget(object):
         self.iftime_chk.setText(_translate("EclipseWidget", "IFTIME - Write eclipse timings"))
         self.load_btn.setText(_translate("EclipseWidget", "Load"))
         self.clear_btn.setText(_translate("EclipseWidget", "Clear"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    EclipseWidget = QtWidgets.QWidget()
+    ui = Ui_EclipseWidget()
+    ui.setupUi(EclipseWidget)
+    EclipseWidget.show()
+    sys.exit(app.exec_())
 
