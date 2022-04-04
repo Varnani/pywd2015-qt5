@@ -525,7 +525,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
     def plot_both_vc(self):
         self.chart.clear_all()
 
-        vunit = float(self.main_window.vunit_ipt.value())
+        self.vunit = float(self.main_window.vunit_ipt.value())
 
         dcout_obs_x_index = 0
         dcout_obs_y_index = 1
@@ -544,11 +544,18 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         vc1_obs_x = vc1_data[dcout_obs_x_index]
         vc2_obs_x = vc2_data[dcout_obs_x_index]
 
-        vc1_obs_y = [i * vunit for i in vc1_data[dcout_obs_y_index]]
-        vc2_obs_y = [i * vunit for i in vc2_data[dcout_obs_y_index]]
+        vc1_obs_y = vc1_data[dcout_obs_y_index]
+        vc2_obs_y = vc2_data[dcout_obs_y_index]
 
-        vc1_resd = [i * vunit for i in vc1_data[-1]]
-        vc2_resd = [i * vunit for i in vc2_data[-1]]
+        vc1_resd = vc1_data[-1]
+        vc2_resd = vc2_data[-1]
+
+        if float(self.vunit) != 1.0:
+            vc1_obs_y = [i * self.vunit for i in vc1_data[dcout_obs_y_index]]
+            vc2_obs_y = [i * self.vunit for i in vc2_data[dcout_obs_y_index]]
+
+            vc1_resd = [i * self.vunit for i in vc1_data[-1]]
+            vc2_resd = [i * self.vunit for i in vc2_data[-1]]
 
         vc1_mdl_x = None
         vc2_mdl_x = None
@@ -623,6 +630,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             ff = str(logL2)
 
             for index, val in enumerate((sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff)):
+                item.topLevelItem(index).setBackground(1, QtGui.QBrush(QtGui.QColor("white")))
                 if val == "nan":
                     item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
                     val = "NaN"
@@ -635,6 +643,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 item.topLevelItem(index).setText(3, val)
 
             for index, val in enumerate((K1, K2)):
+                item.topLevelItem(index).setBackground(1, QtGui.QBrush(QtGui.QColor("white")))
                 if val == "nan":
                     item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
                     val = "NaN"
@@ -642,14 +651,23 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
             vc1_mdl_x = results[x_index]
             vc2_mdl_x = results[x_index]
-            vc1_mdl_y = [i * vunit for i in results[6]]
-            vc2_mdl_y = [i * vunit for i in results[7]]
+            vc1_mdl_y = results[6]
+            vc2_mdl_y = results[7]
+
+            if float(self.vunit) != 1.0:
+                vc1_mdl_y = [i * self.vunit for i in results[6]]
+                vc2_mdl_y = [i * self.vunit for i in results[7]]
+
 
         else:
             vc1_mdl_x = vc1_obs_x
             vc2_mdl_x = vc2_obs_x
-            vc1_mdl_y = [i * vunit for i in vc1_data[dcout_mdl_y_index]]
-            vc2_mdl_y = [i * vunit for i in vc2_data[dcout_mdl_y_index]]
+            vc1_mdl_y = vc1_data[dcout_mdl_y_index]
+            vc2_mdl_y = vc2_data[dcout_mdl_y_index]
+
+            if float(self.vunit) != 1.0:
+                vc1_mdl_y = [i * self.vunit for i in vc1_data[dcout_mdl_y_index]]
+                vc2_mdl_y = [i * self.vunit for i in vc2_data[dcout_mdl_y_index]]
 
         if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
 
@@ -731,7 +749,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
 
         self.chart.axes[1].axhline([0], color=constants.COLOR_RED)
-        self.chart.axes[0].axhline([self.main_window.vgamma_ipt.value()*vunit], color="black", linestyle="--")
+        self.chart.axes[0].axhline([self.main_window.vgamma_ipt.value()*float(self.vunit)], color="black", linestyle="--")
 
         self.chart.set_labels("", "Km/s", index=0)
 
@@ -752,7 +770,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
     def plot_curve(self):
         self.chart.clear_all()
-
+        self.vunit = float(self.main_window.vunit_ipt.value())
         curves = self.main_window.loadobservations_widget.get_all_curves()
         curve = curves[self.data_combobox.currentIndex()]
         mdl_data = self.observations[self.data_combobox.currentIndex()]
@@ -773,10 +791,9 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         obs_y = mdl_data[dcout_obs_y_index]
         residuals = mdl_data[dcout_residual_index]
 
-        if curve.curve_type == "velocity":
-            vunit = float(self.main_window.vunit_ipt.value())
-            obs_y = [i * vunit for i in obs_y]
-            residuals = [i * vunit for i in residuals]
+        if curve.curve_type == "velocity" and float(self.vunit) != 1.0:
+            obs_y = [i * self.vunit for i in obs_y]
+            residuals = [i * self.vunit for i in residuals]
 
 
         mdl_x = None
@@ -980,15 +997,19 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                     y_index = 7
 
                 mdl_x = results[x_index]
-                mdl_y = [i * vunit for i in results[y_index]]
+                mdl_y = results[y_index]
+
+                if float(self.vunit) != 1.0:
+                    mdl_y = [i * self.vunit for i in results[y_index]]
+
+
 
         else:
             mdl_x = obs_x
-            if curve.curve_type == "velocity":
-                vunit = float(self.main_window.vunit_ipt.value())
-                mdl_y = [i * vunit for i in mdl_data[dcout_mdl_y_index]]
-            else:
-                mdl_y = mdl_data[dcout_mdl_y_index]
+            mdl_y = mdl_data[dcout_mdl_y_index]
+            if curve.curve_type == "velocity" and float(self.vunit) != 1.0:
+                mdl_y = [i * self.vunit for i in mdl_data[dcout_mdl_y_index]]
+
 
             item = self.phys_params_treewidget
             sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff = "None", "None", "None", \
@@ -1042,6 +1063,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                         markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=obs_color)
 
         if self.uselc_chk.isChecked():
+            mdl_x_phase = [x - 1.0 for x in mdl_x] + mdl_x + [x + 1.0 for x in mdl_x]
             if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
                 self.chart.plot(mdl_x_phase, mdl_y + mdl_y + mdl_y, clear=False, color=mdl_color)
                 #self.chart.plot(mdl_x_extend, mdl_y, clear=False, color=mdl_color)
@@ -1050,6 +1072,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
         else:
             if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
+                obs_x_phase = [x - 1.0 for x in obs_x] + obs_x + [x + 1.0 for x in obs_x]
                 self.chart.plot(obs_x_phase, mdl_y + mdl_y + mdl_y, clear=False,
                             markersize=constants.MARKER_SIZE - 1, marker="o",
                             linestyle="", color=mdl_color)
@@ -1062,7 +1085,9 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                             linestyle="", color=mdl_color)
 
         if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
-            self.chart.plot(obs_x_phase, residuals + residuals + residuals, index=1,
+            obs_x_phase = [x - 1.0 for x in obs_x] + obs_x + [x + 1.0 for x in obs_x]
+            residuals_plot = numpy.concatenate((residuals,residuals,residuals), axis=None)
+            self.chart.plot(obs_x_phase, residuals_plot, index=1,
                         markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=obs_color)
         else:
             self.chart.plot(obs_x, residuals, index=1,
@@ -1084,7 +1109,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
         elif curve.curve_type == "velocity":
             self.chart.set_labels("", "Km/s", index=0)
-            self.chart.axes[0].axhline([self.main_window.vgamma_ipt.value()*vunit], color="black", linestyle="--")
+            self.chart.axes[0].axhline([self.main_window.vgamma_ipt.value()*float(self.vunit)], color="black", linestyle="--")
 
         if self.forcephase_chk.isChecked():
             self.chart.set_labels("Phase", "Residuals", index=1)
@@ -1295,13 +1320,28 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         if self.curve_stats is not None:
             self.curvestat_treewidget.clear()
             curves = self.main_window.loadobservations_widget.get_all_curves()
-            for index, row in enumerate(self.curve_stats):
-                item = QtWidgets.QTreeWidgetItem(self.curvestat_treewidget)
-                item.setText(0, os.path.basename(curves[index].filepath))
-                item.setText(1, str(int(row[1])))
-                item.setText(2, str(row[2]))
-                item.setText(3, str(int(row[3])))
-                item.setText(4, str(row[4]))
+
+            if len(self.curve_stats[-1]) > 3:
+                for index, row in enumerate(self.curve_stats):
+                    item = QtWidgets.QTreeWidgetItem(self.curvestat_treewidget)
+                    item.setText(0, os.path.basename(curves[index].filepath))
+                    item.setText(1, str(int(row[1])))
+                    item.setText(2, str(row[2]))
+                    item.setText(3, str(int(row[3])))
+                    item.setText(4, str(row[4]))
+            else:
+                for index, row in enumerate(self.curve_stats):
+                    item = QtWidgets.QTreeWidgetItem(self.curvestat_treewidget)
+                    if index != (len(self.curve_stats)-1):
+                        item.setText(0, os.path.basename(curves[index].filepath))
+                        item.setText(1, str(int(row[1])))
+                        item.setText(2, str(row[2]))
+                        item.setText(3, str(int(row[3])))
+                        item.setText(4, str(row[4]))
+                    else:
+                        item.setText(0, "Eclipse Times")
+                        item.setText(1, str(int(row[1])))
+                        item.setText(2, str(row[2]))
 
     def read_dcout(self):
         self.results = self.iterator.dc_io.read_results()
