@@ -76,7 +76,7 @@ class Widget(QtWidgets.QWidget, loadobservations_widget.Ui_ObservationWidget):
                 elif selection.objectName() == "lightcurve":
                     self.light_curves.append(curve)
 
-                self.update_curve_list()
+            self.update_curve_list()
 
     def edit_observation(self):
         item = self.selected_item()
