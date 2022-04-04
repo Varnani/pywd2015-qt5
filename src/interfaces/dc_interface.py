@@ -643,7 +643,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 item.topLevelItem(index).setText(3, val)
 
             for index, val in enumerate((K1, K2)):
-                item.topLevelItem(index).setBackground(1, QtGui.QBrush(QtGui.QColor("white")))
+                item.topLevelItem(index).setBackground(5, QtGui.QBrush(QtGui.QColor("white")))
                 if val == "nan":
                     item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
                     val = "NaN"
