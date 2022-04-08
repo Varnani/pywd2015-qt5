@@ -306,6 +306,7 @@ class Ui_CurvePropertiesDialog(object):
         self.xunit_ipt.setDecimals(6)
         self.xunit_ipt.setMinimum(-99999.0)
         self.xunit_ipt.setMaximum(99999.0)
+        self.xunit_ipt.setProperty("value", 1.0)
         self.xunit_ipt.setObjectName("xunit_ipt")
         self.gridLayout_5.addWidget(self.xunit_ipt, 3, 0, 1, 1)
         self.calib_ipt = QtWidgets.QDoubleSpinBox(self.groupBox_5)
