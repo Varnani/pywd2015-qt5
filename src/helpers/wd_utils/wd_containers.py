@@ -586,7 +586,7 @@ class DCParameterContainer(_CommonParameterContainer):
 
     def add_light_curve(self, iband, hla, cla, x1a, x2a, y1a, y2a, opsfa, sigma,
                         ksd, el3a, noise, aextinc, calib, times, observations, weights,
-                        wla=0.55, xunit=1.000, spha1=0.05, spha2=0.45, spha3=0.55, spha4=0.95, ):
+                        wla, xunit, spha1, spha2, spha3, spha4 ):
 
         lc = _ParameterContainer("LightCurve")
 
@@ -603,7 +603,7 @@ class DCParameterContainer(_CommonParameterContainer):
         lc._add_parameter("sphas2", float, value=spha2)
         lc._add_parameter("sphas3", float, value=spha3)
         lc._add_parameter("sphas4", float, value=spha4)
-        lc._add_parameter("ksd", int, value=ksd) #Modified by Orkun OZDARCAN @ 7 December 2021
+        lc._add_parameter("ksd", int, value=ksd)
         lc._add_parameter("wla", float, value=wla)
         lc._add_parameter("el3a", float, value=el3a)
         lc._add_parameter("noise", int, value=noise)
