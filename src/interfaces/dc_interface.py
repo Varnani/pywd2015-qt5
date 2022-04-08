@@ -867,7 +867,11 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                                    wd_path=self.main_window.lc_path,
                                    lc_binary_name=self.main_window.lc_binary)
 
-                results = lc_io.fill_for_synthetic_light_curve().save().run().read_synthetic_light_curve()
+
+                if lc_params["ifcgs"]._value == 1:
+                    results = lc_io.fill_for_synthetic_light_curve().save().run().read_cgs_synthetic_light_curve()
+                else:
+                    results = lc_io.fill_for_synthetic_light_curve().save().run().read_synthetic_light_curve()
 
                 absolute_params, teffs, sma, lds, lums = lc_io.read_abs_params()
                 teffs = float(teffs[0][0])*10000, float(teffs[1][0])*10000
@@ -923,8 +927,12 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                         val = "NaN"
                     item.topLevelItem(index).setText(5, val)
 
+                if lc_params["ifcgs"]._value == 1:
+                    y_index = 5
+
                 mdl_x = results[x_index]
                 mdl_y = results[y_index]
+
 
             elif curve.curve_type == "velocity":
                 lc_params.set_dummy_synthetic_curve()
