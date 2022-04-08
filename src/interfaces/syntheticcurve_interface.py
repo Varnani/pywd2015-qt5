@@ -114,7 +114,7 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
             spinbox = QtWidgets.QDoubleSpinBox(self.light_treewidget)
             spinbox.setMaximumWidth(90)
             spinbox.setButtonSymbols(2)
-            spinbox.setDecimals(7)
+            spinbox.setDecimals(12)
             spinbox.setMaximum(999)
             spinbox.setMinimum(-999)
             if i == 12:
@@ -230,6 +230,9 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
             elif self.main_window.maglite_combobox.currentText() == "Flux":
                 y_index = 4
 
+            if self.main_window.maglite_combobox.currentText() == "Flux" and lc_params["ifcgs"]._value == 1:
+                y_index = 5
+
             lc_params.set_synthetic_curve(
                 int(constants.BANDPASS_ID_DICT[self.light_treewidget.itemWidget(selected_item, 1).text()]),
                 self.light_treewidget.itemWidget(selected_item, 2).value(),  # l1
@@ -252,6 +255,11 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
                 data = self.main_window.loadobservations_widget.light_curves[index - 2].get_data()
                 lc_obs = data[0], data[1]
 
+                if lc_params["ifcgs"]._value == 1:
+                    multiplier = float(self.main_window.loadobservations_widget.light_curves[index - 2].xunit)
+                    calibrator = float(self.main_window.loadobservations_widget.light_curves[index - 2].calib)
+                    lc_obs = data[0], data[1] * multiplier * calibrator
+
                 if self.light_alias_chk.isChecked():
                     try:
                         lc_obs = self.alias(lc_obs, model_start, model_end)
@@ -271,7 +279,10 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
                                    wd_path=self.main_window.lc_path,
                                    lc_binary_name=self.main_window.lc_binary)
 
-                results = lc_io.fill_for_synthetic_light_curve().save().run().read_synthetic_light_curve()
+                if lc_params["ifcgs"]._value == 1:
+                    results = lc_io.fill_for_synthetic_light_curve().save().run().read_cgs_synthetic_light_curve()
+                else:
+                    results = lc_io.fill_for_synthetic_light_curve().save().run().read_synthetic_light_curve()
 
                 absolute_params, teffs, sma, lds, lums = lc_io.read_abs_params()
                 teffs = float(teffs[0][0])*10000, float(teffs[1][0])*10000
