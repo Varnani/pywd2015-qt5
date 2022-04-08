@@ -874,18 +874,20 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
                 lc.l2 = 1.0
             data = lc.get_data()
             dc_params.add_light_curve(lc.band_id, lc.l1, lc.l2, lc.x1, lc.x2, lc.y1, lc.y2, lc.opsf, lc.sigma, lc.ksd,
-                                      lc.l3, lc.noise, lc.aextinc, lc.calib, data[0], data[1], data[2],
+                                      lc.l3, lc.noise, lc.aextinc, lc.calib, data[0], data[1], data[2], lc.wla,
                                       xunit=lc.xunit, spha1=lc.e1, spha2=lc.e2, spha3=lc.e3, spha4=lc.e4)
 
         if self.loadobservations_widget.velocity_curves[0] is not None:
             vc = self.loadobservations_widget.velocity_curves[0]
             data = vc.get_data()
-            dc_params.add_velocity_curve(1, vc.sigma, vc.ksd, vc.wla, data[0], data[1], data[2], sphas1=vc.e1, sphas2=vc.e2, sphas3=vc.e3, sphas4=vc.e4)
+            dc_params.add_velocity_curve(1, vc.sigma, vc.ksd, vc.wla, data[0], data[1], data[2], sphas1=vc.e1,
+                                         sphas2=vc.e2, sphas3=vc.e3, sphas4=vc.e4)
 
         if self.loadobservations_widget.velocity_curves[1] is not None:
             vc = self.loadobservations_widget.velocity_curves[1]
             data = vc.get_data()
-            dc_params.add_velocity_curve(2, vc.sigma, vc.ksd, vc.wla, data[0], data[1], data[2], sphas1=vc.e1, sphas2=vc.e2, sphas3=vc.e3, sphas4=vc.e4)
+            dc_params.add_velocity_curve(2, vc.sigma, vc.ksd, vc.wla, data[0], data[1], data[2], sphas1=vc.e1,
+                                         sphas2=vc.e2, sphas3=vc.e3, sphas4=vc.e4)
 
         if self.eclipsetimings_widget.iftime_chk.isChecked():
             data = self.eclipsetimings_widget.get_data()
