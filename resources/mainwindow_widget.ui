@@ -2877,7 +2877,7 @@ zero for zero output noise</string>
                 <number>6</number>
                </property>
                <property name="minimum">
-                <double>0.000000000000000</double>
+                <double>-99999.000000000000000</double>
                </property>
                <property name="maximum">
                 <double>99999.000000000000000</double>
@@ -2956,7 +2956,7 @@ zero for zero output noise</string>
                 <number>6</number>
                </property>
                <property name="minimum">
-                <double>0.000000000000000</double>
+                <double>-99999.000000000000000</double>
                </property>
                <property name="maximum">
                 <double>99999.000000000000000</double>
