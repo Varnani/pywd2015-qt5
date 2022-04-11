@@ -11,6 +11,7 @@ You must also properly cite relevant Wilson - Devinney papers:
 [ApJ (1971), 166, 605](https://ui.adsabs.harvard.edu/abs/1971ApJ...166..605W/abstract)  
 [ApJ (1979), 234, 1054](https://ui.adsabs.harvard.edu/abs/1979ApJ...234.1054W/abstract)  
 [ApJ (1990), 356, 613](https://ui.adsabs.harvard.edu/abs/1990ApJ...356..613W/abstract)  
+[Apj (2007), 661, 1129](https://ui.adsabs.harvard.edu/abs/2007ApJ...661.1129V/abstract)
 [ApJ (2008), 672, 575](https://ui.adsabs.harvard.edu/abs/2008ApJ...672..575W/abstract)  
 [ApJ (2014), 780, 151](https://ui.adsabs.harvard.edu/abs/2014ApJ...780..151W/abstract)
 
