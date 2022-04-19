@@ -1467,7 +1467,7 @@
                   <string>Grid size integers (number of latitude rows per hemisphere).</string>
                  </property>
                  <property name="statusTip">
-                  <string>N1L</string>
+                  <string>N1</string>
                  </property>
                  <property name="text">
                   <string>Fine</string>
@@ -1486,7 +1486,7 @@
                   <string>Coarse grid size integers, used in certain derivatives to save computation time</string>
                  </property>
                  <property name="statusTip">
-                  <string>N1</string>
+                  <string>N1L</string>
                  </property>
                  <property name="text">
                   <string>Coarse</string>
@@ -1864,7 +1864,7 @@
                   <string/>
                  </property>
                  <property name="checked">
-                  <bool>true</bool>
+                  <bool>false</bool>
                  </property>
                 </widget>
                </item>
@@ -1962,7 +1962,7 @@
                   <string/>
                  </property>
                  <property name="checked">
-                  <bool>true</bool>
+                  <bool>false</bool>
                  </property>
                 </widget>
                </item>
