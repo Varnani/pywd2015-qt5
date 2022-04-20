@@ -112,6 +112,8 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         self.lc_lcout_btn.clicked.connect(self.open_lcout)
 
         # constraints
+        self.ifcgs_chk.stateChanged.connect(self.apply_constraints)
+        self.if3b_groupbox.clicked.connect(self.apply_constraints)
         self.mode_combobox.currentIndexChanged.connect(self.apply_constraints)
         self.pot1_ipt.valueChanged.connect(self.update_input_pairs)
         self.t1_ipt.valueChanged.connect(self.update_input_pairs)
@@ -562,6 +564,9 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
                 self.ybol2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "ybol_s2"))
 
                 self.if3b_groupbox.setChecked(parser.getboolean(constants.CONFIG_SECTION_3B, "if3b"))
+
+                self.apply_constraints()
+
                 self.a3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "a_3b"))
                 self.p3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "p_3b"))
                 self.incl3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "incl_3b"))
@@ -899,6 +904,7 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
 
     def apply_constraints(self):
         self.clear_constraints()
+
         if str(self.mode_combobox.currentText()) == "Mode -1":
             self.pot2_ipt.setDisabled(True)
             self.pot2_ipt.setValue(self.pot1_ipt.value())
@@ -949,9 +955,9 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
             self.dc_widget.pot2_chk.setDisabled(True)
             self.dc_widget.pot2_chk.setChecked(False)
 
-        if str(self.mode_combobox.currentText()) == "Mode 2":
-            self.ipb_chk.setDisabled(True)
-            self.ipb_chk.setChecked(False)
+        #if str(self.mode_combobox.currentText()) == "Mode 2":
+            #self.ipb_chk.setDisabled(True)
+            #self.ipb_chk.setChecked(False)
 
         if str(self.mode_combobox.currentText()) == "Mode 4":
             self.update_potentials()
@@ -973,6 +979,49 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
             self.dc_widget.pot2_chk.setDisabled(True)
             self.dc_widget.pot1_chk.setChecked(False)
             self.dc_widget.pot2_chk.setChecked(False)
+
+        if self.ifcgs_chk.isChecked() is True:
+            self.dc_widget.l1_chk.setChecked(False)
+            self.dc_widget.l2_chk.setChecked(False)
+            self.dc_widget.logd_chk.setChecked(False)
+            self.dc_widget.l1_chk.setDisabled(True)
+            self.dc_widget.l2_chk.setDisabled(True)
+            self.dc_widget.logd_chk.setDisabled(False)
+        if self.ifcgs_chk.isChecked() is not True:
+            self.dc_widget.l1_chk.setChecked(False)
+            self.dc_widget.l2_chk.setChecked(False)
+            self.dc_widget.logd_chk.setChecked(False)
+            self.dc_widget.l1_chk.setDisabled(False)
+            self.dc_widget.l2_chk.setDisabled(False)
+            self.dc_widget.logd_chk.setDisabled(True)
+
+        if self.if3b_groupbox.isChecked() is not True:
+            self.dc_widget.a3b_chk.setChecked(False)
+            self.dc_widget.a3b_chk.setDisabled(True)
+            self.dc_widget.p3b_chk.setChecked(False)
+            self.dc_widget.p3b_chk.setDisabled(True)
+            self.dc_widget.xinc3b_chk.setChecked(False)
+            self.dc_widget.xinc3b_chk.setDisabled(True)
+            self.dc_widget.e3b_chk.setChecked(False)
+            self.dc_widget.e3b_chk.setDisabled(True)
+            self.dc_widget.tc3b_chk.setChecked(False)
+            self.dc_widget.tc3b_chk.setDisabled(True)
+            self.dc_widget.perr3b_chk.setChecked(False)
+            self.dc_widget.perr3b_chk.setDisabled(True)
+
+        if self.if3b_groupbox.isChecked() is True:
+            self.dc_widget.a3b_chk.setChecked(False)
+            self.dc_widget.a3b_chk.setEnabled(True)
+            self.dc_widget.p3b_chk.setChecked(False)
+            self.dc_widget.p3b_chk.setEnabled(True)
+            self.dc_widget.xinc3b_chk.setChecked(False)
+            self.dc_widget.xinc3b_chk.setEnabled(True)
+            self.dc_widget.e3b_chk.setChecked(False)
+            self.dc_widget.e3b_chk.setEnabled(True)
+            self.dc_widget.tc3b_chk.setChecked(False)
+            self.dc_widget.tc3b_chk.setEnabled(True)
+            self.dc_widget.perr3b_chk.setChecked(False)
+            self.dc_widget.perr3b_chk.setEnabled(True)
 
         self.check_ld()
         self.check_ipb()
@@ -1053,6 +1102,9 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         if self.ipb_chk.isChecked():
             self.dc_widget.l2_chk.setDisabled(False)
         else:
+            self.dc_widget.l2_chk.setDisabled(True)
+            self.dc_widget.l2_chk.setChecked(False)
+        if self.ifcgs_chk.isChecked() is True:
             self.dc_widget.l2_chk.setDisabled(True)
             self.dc_widget.l2_chk.setChecked(False)
 
