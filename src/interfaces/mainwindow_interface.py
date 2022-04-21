@@ -112,8 +112,8 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         self.lc_lcout_btn.clicked.connect(self.open_lcout)
 
         # constraints
-        self.ifcgs_chk.stateChanged.connect(self.apply_constraints)
-        self.if3b_groupbox.clicked.connect(self.apply_constraints)
+        self.ifcgs_chk.stateChanged.connect(self.apply_ifcgs_constraints)
+        self.if3b_groupbox.clicked.connect(self.apply_if3b_constraints)
         self.mode_combobox.currentIndexChanged.connect(self.apply_constraints)
         self.pot1_ipt.valueChanged.connect(self.update_input_pairs)
         self.t1_ipt.valueChanged.connect(self.update_input_pairs)
@@ -565,7 +565,7 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
 
                 self.if3b_groupbox.setChecked(parser.getboolean(constants.CONFIG_SECTION_3B, "if3b"))
 
-                self.apply_constraints()
+                self.apply_if3b_constraints()
 
                 self.a3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "a_3b"))
                 self.p3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "p_3b"))
@@ -980,6 +980,13 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
             self.dc_widget.pot1_chk.setChecked(False)
             self.dc_widget.pot2_chk.setChecked(False)
 
+
+        self.check_ld()
+        self.check_ipb()
+
+    def apply_ifcgs_constraints(self):
+        self.clear_constraints()
+
         if self.ifcgs_chk.isChecked() is True:
             self.dc_widget.l1_chk.setChecked(False)
             self.dc_widget.l2_chk.setChecked(False)
@@ -987,6 +994,7 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
             self.dc_widget.l1_chk.setDisabled(True)
             self.dc_widget.l2_chk.setDisabled(True)
             self.dc_widget.logd_chk.setDisabled(False)
+
         if self.ifcgs_chk.isChecked() is not True:
             self.dc_widget.l1_chk.setChecked(False)
             self.dc_widget.l2_chk.setChecked(False)
@@ -994,6 +1002,12 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
             self.dc_widget.l1_chk.setDisabled(False)
             self.dc_widget.l2_chk.setDisabled(False)
             self.dc_widget.logd_chk.setDisabled(True)
+
+        self.check_ld()
+        self.check_ipb()
+
+    def apply_if3b_constraints(self):
+        self.clear_constraints()
 
         if self.if3b_groupbox.isChecked() is not True:
             self.dc_widget.a3b_chk.setChecked(False)
@@ -1008,6 +1022,7 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
             self.dc_widget.tc3b_chk.setDisabled(True)
             self.dc_widget.perr3b_chk.setChecked(False)
             self.dc_widget.perr3b_chk.setDisabled(True)
+
 
         if self.if3b_groupbox.isChecked() is True:
             self.dc_widget.a3b_chk.setChecked(False)
@@ -1025,6 +1040,7 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
 
         self.check_ld()
         self.check_ipb()
+
 
     def clear_constraints(self):
         self.pot1_ipt.setDisabled(False)
