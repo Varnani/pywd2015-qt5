@@ -132,7 +132,7 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
             value = row[4]
             if row[0] in (19.0, 20.0):
                 value = value * 10000.0
-            item.setText(index + 1, "{:0.5f}".format(value))
+            item.setText(index + 1, "{:0.9f}".format(value))
             #item.setText(index+2, "{:0.16f}".format(self.stats[-1][0][0]))
 
         if self.auto_chk.isChecked():
