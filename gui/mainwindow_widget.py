@@ -1482,6 +1482,7 @@ class Ui_MainWindow(object):
         self.line.setObjectName("line")
         self.gridLayout_24.addWidget(self.line, 0, 2, 2, 1)
         self.dc_ext_band_spinbox = QtWidgets.QSpinBox(self.groupBox_14)
+        self.dc_ext_band_spinbox.setMaximum(9)
         self.dc_ext_band_spinbox.setObjectName("dc_ext_band_spinbox")
         self.gridLayout_24.addWidget(self.dc_ext_band_spinbox, 1, 4, 1, 1)
         self.horizontalLayout_18.addLayout(self.gridLayout_24)

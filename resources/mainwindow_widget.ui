@@ -3367,7 +3367,11 @@ zero for zero output noise</string>
               </widget>
              </item>
              <item row="1" column="4">
-              <widget class="QSpinBox" name="dc_ext_band_spinbox"/>
+              <widget class="QSpinBox" name="dc_ext_band_spinbox">
+               <property name="maximum">
+                <number>9</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
