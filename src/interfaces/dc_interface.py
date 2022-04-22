@@ -434,7 +434,13 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
                 paramdict[par_id].setValue(value)
 
+            def _update_extinction(band_id_idx, value, main_window):
+                curve = main_window.loadobservations_widget.light_curves[band_id_idx]
+
+                curve.aextinc = value
+
             def _update_curve(par_id, c_id, value, main_window):
+
                 curve = main_window.loadobservations_widget.light_curves[c_id - 1]
                 if par_id == 56:
                     curve.l1 = value
@@ -511,6 +517,11 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
                 elif result[1] != 0.0:
                     _update_curve(int(result[0]), int(result[1]), result[4], self.main_window)
+
+            if self.main_window.dc_ext_band_spinbox.value() != 0:
+                for ii in range(len(self.band_id_from_dcout)):
+
+                    _update_extinction(ii,float(self.extinction_values[ii]), self.main_window)
 
             self.main_window.lc_synthetic_curve_widget.reset_and_repopulate()
 
@@ -837,13 +848,20 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 lc_params["phstop"] = 1.0
                 lc_params["phin"] = 0.001
 
-            if self.main_window.maglite_combobox.currentText() == "Magnitude":
-                y_index = 8
-
-            elif self.main_window.maglite_combobox.currentText() == "Flux":
-                y_index = 4
-
             results = None
+
+            dc_params = self.get_dc_params()
+            self.extinction_values_array = numpy.array(wd_io.DCIO(dc_params,
+                           wd_path=self.main_window.dc_path,
+                           dc_binary_name=self.main_window.dc_binary).read_extinction_values())
+
+            self.band_id_from_dcout = self.extinction_values_array[0]
+            self.extinction_values = self.extinction_values_array[2]
+
+            self.idx = numpy.where(self.band_id_from_dcout==int(curve.band_id))[0][0]
+            print(self.idx)
+
+            print(self.idx,float(self.extinction_values[self.idx]))
 
             if curve.curve_type == "light":
                 lc_params.set_synthetic_curve(
@@ -859,7 +877,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                     8.0,  # zero
                     1.0,  # factor
                     0.55,  # wl, dummy
-                    curve.aextinc,  # aextinc
+                    #curve.aextinc,  # aextinc
+                    float(self.extinction_values[self.idx]),
                     curve.calib  # calib
                 )
 
@@ -867,11 +886,21 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                                    wd_path=self.main_window.lc_path,
                                    lc_binary_name=self.main_window.lc_binary)
 
+                self.ifcgs_value = lc_params["ifcgs"]._value
 
-                if lc_params["ifcgs"]._value == 1:
-                    results = lc_io.fill_for_synthetic_light_curve().save().run().read_cgs_synthetic_light_curve()
-                else:
+                if self.main_window.maglite_combobox.currentText() == "Magnitude" and self.ifcgs_value == 0:
+                    y_index = 8
                     results = lc_io.fill_for_synthetic_light_curve().save().run().read_synthetic_light_curve()
+                elif self.main_window.maglite_combobox.currentText() == "Flux" and self.ifcgs_value == 0:
+                    y_index = 4
+                    results = lc_io.fill_for_synthetic_light_curve().save().run().read_synthetic_light_curve()
+                elif self.main_window.maglite_combobox.currentText() == "Flux" and self.ifcgs_value == 1:
+                    y_index = 5
+                    results = lc_io.fill_for_synthetic_light_curve().save().run().read_cgs_synthetic_light_curve()
+                elif self.main_window.maglite_combobox.currentText() == "Magnitude" and self.ifcgs_value == 1:
+                    y_index = 6
+                    results = lc_io.fill_for_synthetic_light_curve().save().run().read_cgs_synthetic_light_curve()
+
 
                 absolute_params, teffs, sma, lds, lums = lc_io.read_abs_params()
                 teffs = float(teffs[0][0])*10000, float(teffs[1][0])*10000
@@ -927,12 +956,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                         val = "NaN"
                     item.topLevelItem(index).setText(5, val)
 
-                if lc_params["ifcgs"]._value == 1:
-                    y_index = 5
-
                 mdl_x = results[x_index]
                 mdl_y = results[y_index]
-
 
             elif curve.curve_type == "velocity":
                 lc_params.set_dummy_synthetic_curve()
@@ -1010,8 +1035,6 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 if float(self.vunit) != 1.0:
                     mdl_y = [i * self.vunit for i in results[y_index]]
 
-
-
         else:
             mdl_x = obs_x
             mdl_y = mdl_data[dcout_mdl_y_index]
@@ -1044,9 +1067,13 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 item.topLevelItem(index).setBackground(5, QtGui.QBrush(QtGui.QColor("red")))
                 item.topLevelItem(index).setText(5, val)
 
+        if self.main_window.ifcgs_chk.isChecked() is True:
+            self.ifcgs_value = 1
+        if self.main_window.ifcgs_chk.isChecked() is not True:
+            self.ifcgs_value = 0
 
-
-        if curve.curve_type == "light" and self.main_window.maglite_combobox.currentText() == "Magnitude":
+        if curve.curve_type == "light" and self.main_window.maglite_combobox.currentText() == "Magnitude" and \
+                self.ifcgs_value == 0:
             _ = [-2.5 * numpy.log10(x) for x in obs_y]
             obs_y = _
             if not self.uselc_chk.isChecked():
@@ -1055,6 +1082,21 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 residuals = numpy.array(obs_y) - numpy.array(mdl_y)
             else:
                 _ = [-2.5 * numpy.log10(x) for x in mdl_data[dcout_mdl_y_index]]
+                residuals = numpy.array(obs_y) - numpy.array(_)
+
+        if curve.curve_type == "light" and self.main_window.maglite_combobox.currentText() == "Magnitude" and \
+                self.ifcgs_value == 1:
+
+            calibrator = curve.calib
+
+            _ = [-2.5 * numpy.log10(x/calibrator) for x in obs_y]
+            obs_y = _
+            if not self.uselc_chk.isChecked():
+                _ = [-2.5 * numpy.log10(x/calibrator) for x in mdl_y]
+                mdl_y = _
+                residuals = numpy.array(obs_y) - numpy.array(mdl_y)
+            else:
+                _ = [-2.5 * numpy.log10(x/calibrator) for x in mdl_data[dcout_mdl_y_index]]
                 residuals = numpy.array(obs_y) - numpy.array(_)
 
         if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
