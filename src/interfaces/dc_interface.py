@@ -850,17 +850,17 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
             results = None
 
-            dc_params = self.get_dc_params()
-            self.extinction_values_array = numpy.array(wd_io.DCIO(dc_params,
-                           wd_path=self.main_window.dc_path,
-                           dc_binary_name=self.main_window.dc_binary).read_extinction_values())
-
-            self.band_id_from_dcout = self.extinction_values_array[0]
-            self.extinction_values = self.extinction_values_array[2]
-
-            self.idx = numpy.where(self.band_id_from_dcout==int(curve.band_id))[0][0]
-
             if curve.curve_type == "light":
+                dc_params = self.get_dc_params()
+                self.extinction_values_array = numpy.array(wd_io.DCIO(dc_params,
+                                        wd_path=self.main_window.dc_path,
+                                        dc_binary_name=self.main_window.dc_binary).read_extinction_values())
+
+                self.band_id_from_dcout = self.extinction_values_array[0]
+                self.extinction_values = self.extinction_values_array[2]
+
+                self.idx = numpy.where(self.band_id_from_dcout == int(curve.band_id))[0][0]
+
                 lc_params.set_synthetic_curve(
                     curve.band_id,
                     curve.l1,  # l1
