@@ -859,9 +859,6 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             self.extinction_values = self.extinction_values_array[2]
 
             self.idx = numpy.where(self.band_id_from_dcout==int(curve.band_id))[0][0]
-            print(self.idx)
-
-            print(self.idx,float(self.extinction_values[self.idx]))
 
             if curve.curve_type == "light":
                 lc_params.set_synthetic_curve(
