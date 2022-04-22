@@ -61,6 +61,9 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
 
         self.populate_styles()
         self.apply_constraints()
+        self.apply_if3b_constraints()
+        self.apply_ifcgs_constraints()
+        self.apply_extinction_constraints()
         self.check_jdphs()
 
         self.connect_signals()
@@ -114,6 +117,8 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         # constraints
         self.ifcgs_chk.stateChanged.connect(self.apply_ifcgs_constraints)
         self.if3b_groupbox.clicked.connect(self.apply_if3b_constraints)
+        self.ifcgs_chk.stateChanged.connect(self.apply_extinction_constraints)
+        self.maglite_combobox.currentIndexChanged.connect(self.apply_extinction_constraints)
         self.mode_combobox.currentIndexChanged.connect(self.apply_constraints)
         self.pot1_ipt.valueChanged.connect(self.update_input_pairs)
         self.t1_ipt.valueChanged.connect(self.update_input_pairs)
@@ -591,6 +596,7 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
                 self.dc_isym_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_DC2015, "deriv_type"))
                 self.dc_desextinc_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_DC2015, "desextinc"))
                 self.dc_ext_band_spinbox.setValue(parser.getint(constants.CONFIG_SECTION_DC2015, "linkext"))
+                self.apply_extinction_constraints()
 
                 self.dc_widget.read_from_parser(parser)
                 self.configurespot_widget.read_from_parser(parser)
@@ -980,12 +986,30 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
             self.dc_widget.pot1_chk.setChecked(False)
             self.dc_widget.pot2_chk.setChecked(False)
 
+        if str(self.maglite_combobox.currentText()) == "Flux" and self.ifcgs_chk.isChecked() is not True:
+            self.dc_ext_band_spinbox.setValue(0)
+            self.dc_desextinc_ipt.setValue(0)
+            self.dc_ext_band_spinbox.setDisabled(True)
+            self.dc_desextinc_ipt.setDisabled(True)
+        else:
+            self.dc_ext_band_spinbox.setEnabled(True)
+            self.dc_desextinc_ipt.setEnabled(True)
 
         self.check_ld()
         self.check_ipb()
 
+
+    def apply_extinction_constraints(self):
+        if str(self.maglite_combobox.currentText()) == "Flux" and self.ifcgs_chk.isChecked() is not True:
+            self.dc_ext_band_spinbox.setValue(0)
+            self.dc_desextinc_ipt.setValue(0)
+            self.dc_ext_band_spinbox.setDisabled(True)
+            self.dc_desextinc_ipt.setDisabled(True)
+        else:
+            self.dc_ext_band_spinbox.setEnabled(True)
+            self.dc_desextinc_ipt.setEnabled(True)
+
     def apply_ifcgs_constraints(self):
-        self.clear_constraints()
 
         if self.ifcgs_chk.isChecked() is True:
             self.dc_widget.l1_chk.setChecked(False)
@@ -1007,7 +1031,6 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         self.check_ipb()
 
     def apply_if3b_constraints(self):
-        self.clear_constraints()
 
         if self.if3b_groupbox.isChecked() is not True:
             self.dc_widget.a3b_chk.setChecked(False)
