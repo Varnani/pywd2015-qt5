@@ -224,14 +224,17 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
                 x_index = 1
 
             y_index = None
-            if self.main_window.maglite_combobox.currentText() == "Magnitude":
+
+            self.ifcgs_value = lc_params["ifcgs"]._value
+
+            if self.main_window.maglite_combobox.currentText() == "Magnitude" and self.ifcgs_value == 0:
                 y_index = 8
-
-            elif self.main_window.maglite_combobox.currentText() == "Flux":
+            elif self.main_window.maglite_combobox.currentText() == "Flux" and self.ifcgs_value == 0:
                 y_index = 4
-
-            if self.main_window.maglite_combobox.currentText() == "Flux" and lc_params["ifcgs"]._value == 1:
+            elif self.main_window.maglite_combobox.currentText() == "Flux" and self.ifcgs_value == 1:
                 y_index = 5
+            elif self.main_window.maglite_combobox.currentText() == "Magnitude" and self.ifcgs_value == 1:
+                y_index = 6
 
             lc_params.set_synthetic_curve(
                 int(constants.BANDPASS_ID_DICT[self.light_treewidget.itemWidget(selected_item, 1).text()]),
@@ -255,7 +258,7 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
                 data = self.main_window.loadobservations_widget.light_curves[index - 2].get_data()
                 lc_obs = data[0], data[1]
 
-                if lc_params["ifcgs"]._value == 1:
+                if self.main_window.maglite_combobox.currentText() == "Flux" and lc_params["ifcgs"]._value == 1:
                     multiplier = float(self.main_window.loadobservations_widget.light_curves[index - 2].xunit)
                     calibrator = float(self.main_window.loadobservations_widget.light_curves[index - 2].calib)
                     lc_obs = data[0], data[1] * multiplier * calibrator
