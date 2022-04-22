@@ -801,6 +801,12 @@ class DCIO(_WDIO):
 
         return self
 
+    def read_extinction_values(self):
+        extinction_values = self._read_table(self._get_output_path(),
+                                 "band   Wave L    extinc      xunit      calib")
+        return extinction_values
+
+
     def read_results(self, force_tidy_output=False):
         results = self._read_table(self._get_output_path(),
                                    "Input-Output in F Format",
