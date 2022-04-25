@@ -837,10 +837,10 @@ class DCIO(_WDIO):
 
     def read_unweighted_observations(self, split_by_observation=False):
         results = self.read_results()
-        column_limit = 20
+        column_limit = 38 # original was 20, updated to 38 as updated in dc source code
         base_columns = 4
         if self.parameters["jdphs"].get() == 1:
-            column_limit = 23
+            column_limit = 41 # original was 23, updated to 41 as updated in dc source code
             base_columns = 5
         current_columns = len(results[0]) + base_columns
 
