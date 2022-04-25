@@ -222,7 +222,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.nga_ipt.sizePolicy().hasHeightForWidth())
         self.nga_ipt.setSizePolicy(sizePolicy)
         self.nga_ipt.setMinimum(1)
-        self.nga_ipt.setMaximum(999)
+        self.nga_ipt.setMaximum(10)
         self.nga_ipt.setObjectName("nga_ipt")
         self.gridLayout_7.addWidget(self.nga_ipt, 5, 0, 1, 1)
         self.label_115 = QtWidgets.QLabel(self.groupBox_2)
