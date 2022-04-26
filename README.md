@@ -66,7 +66,7 @@ However, Windows 10 users may have to modify the command as shown below:
 python -m pip install PyQT5
 ```  
 
-PyWD2015 has not been tested no Windows 11 yet.
+PyWD2015 has not been tested on Windows 11 yet.
 
 ## Getting Started
 
