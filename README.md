@@ -54,11 +54,19 @@ Installing PyQt5 on Linux depends on your distribution and package manager. In g
 ```  
 
 ### Windows
-You can safely use pip to install PyQt5 on Windows:  
+You can safely use pip to install PyQt5 on Windows 7 and Windows 8.x operating systems:  
 
 ```shell
 python -m pip install python-qt5
 ```  
+
+However, Windows 10 users may have to modify the command as shown below:
+
+```shell
+python -m pip install PyQT5
+```  
+
+PyWD2015 has not been tested no Windows 11 yet.
 
 ## Getting Started
 
