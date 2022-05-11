@@ -1379,27 +1379,43 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             self.curvestat_treewidget.clear()
             curves = self.main_window.loadobservations_widget.get_all_curves()
 
-            if len(self.curve_stats[-1]) > 3:
-                for index, row in enumerate(self.curve_stats):
-                    item = QtWidgets.QTreeWidgetItem(self.curvestat_treewidget)
-                    item.setText(0, os.path.basename(curves[index].filepath))
-                    item.setText(1, str(int(row[1])))
-                    item.setText(2, str(row[2]))
-                    item.setText(3, str(int(row[3])))
-                    item.setText(4, str(row[4]))
-            else:
-                for index, row in enumerate(self.curve_stats):
-                    item = QtWidgets.QTreeWidgetItem(self.curvestat_treewidget)
-                    if index != (len(self.curve_stats)-1):
+            try:
+
+                if len(self.curve_stats[-1]) > 3:
+                    for index, row in enumerate(self.curve_stats):
+                        item = QtWidgets.QTreeWidgetItem(self.curvestat_treewidget)
                         item.setText(0, os.path.basename(curves[index].filepath))
                         item.setText(1, str(int(row[1])))
                         item.setText(2, str(row[2]))
                         item.setText(3, str(int(row[3])))
                         item.setText(4, str(row[4]))
-                    else:
-                        item.setText(0, "Eclipse Times")
-                        item.setText(1, str(int(row[1])))
-                        item.setText(2, str(row[2]))
+                else:
+                    for index, row in enumerate(self.curve_stats):
+                        item = QtWidgets.QTreeWidgetItem(self.curvestat_treewidget)
+                        if index != (len(self.curve_stats)-1):
+                            item.setText(0, os.path.basename(curves[index].filepath))
+                            item.setText(1, str(int(row[1])))
+                            item.setText(2, str(row[2]))
+                            item.setText(3, str(int(row[3])))
+                            item.setText(4, str(row[4]))
+                        else:
+                            item.setText(0, "Eclipse Times")
+                            item.setText(1, str(int(row[1])))
+                            item.setText(2, str(row[2]))
+            except:
+
+                msg = QtWidgets.QMessageBox()
+                msg.setIcon(msg.Warning)
+                msg.setText("PyWD2015 cannot print statistical curve information correctly." 
+                            " There is likely a format issue in dcout.active file, which "
+                            "probably arose from unsuitable KSD value."
+                            " Please check dcout.active file.")
+                #msg.setInformativeText("This might result in a very large lcout file (>100MB), "
+                                       #"take a long time and might crash LC altogether. "
+                                       #"Are you sure you want to render the animation?")
+                msg.setStandardButtons(msg.Ok | msg.Cancel)
+                if msg.exec_() == msg.Cancel:
+                    return 1
 
     def read_dcout(self):
         self.results = self.iterator.dc_io.read_results()
