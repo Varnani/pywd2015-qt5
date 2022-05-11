@@ -1034,21 +1034,25 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
         else:
 
-            dc_params = self.get_dc_params()
-            self.extinction_values_array = numpy.array(wd_io.DCIO(dc_params,
-                                                wd_path=self.main_window.dc_path,
-                                                dc_binary_name=self.main_window.dc_binary).read_extinction_values())
 
-            self.band_id_from_dcout = self.extinction_values_array[0]
-            self.extinction_values = self.extinction_values_array[2]
-
-            self.idx = numpy.where(self.band_id_from_dcout == int(curve.band_id))[0][0]
-
-            mdl_x = obs_x
-            mdl_y = mdl_data[dcout_mdl_y_index]
             if curve.curve_type == "velocity" and float(self.vunit) != 1.0:
                 mdl_y = [i * self.vunit for i in mdl_data[dcout_mdl_y_index]]
+            else:
+                mdl_y = mdl_data[dcout_mdl_y_index]
 
+            if curve.curve_type == "light":
+                dc_params = self.get_dc_params()
+                self.extinction_values_array = numpy.array(wd_io.DCIO(dc_params,
+                                                    wd_path=self.main_window.dc_path,
+                                                    dc_binary_name=self.main_window.dc_binary).read_extinction_values())
+
+                self.band_id_from_dcout = self.extinction_values_array[0]
+                self.extinction_values = self.extinction_values_array[2]
+
+                self.idx = numpy.where(self.band_id_from_dcout == int(curve.band_id))[0][0]
+
+                mdl_x = obs_x
+                mdl_y = mdl_data[dcout_mdl_y_index]
 
             item = self.phys_params_treewidget
             sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff = "None", "None", "None", \
@@ -1110,7 +1114,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
 
             obs_x_phase = [x - 1.0 for x in obs_x] + obs_x + [x + 1.0 for x in obs_x]
-            mdl_x_phase = [x - 1.0 for x in mdl_x] + mdl_x + [x + 1.0 for x in mdl_x]
+            #mdl_x_phase = [x - 1.0 for x in mdl_x] + mdl_x + [x + 1.0 for x in mdl_x]
 
             self.chart.plot(obs_x_phase, obs_y + obs_y + obs_y, clear=False,
                         markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=obs_color)
@@ -1408,12 +1412,12 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 msg.setIcon(msg.Warning)
                 msg.setText("PyWD2015 cannot print statistical curve information correctly." 
                             " There is likely a format issue in dcout.active file, which "
-                            "probably arose from unsuitable KSD value."
-                            " Please check dcout.active file.")
+                            "probably arose from unsuitable input KSD values."
+                            " Please check input KSD values and dcout.active file.")
                 #msg.setInformativeText("This might result in a very large lcout file (>100MB), "
                                        #"take a long time and might crash LC altogether. "
                                        #"Are you sure you want to render the animation?")
-                msg.setStandardButtons(msg.Ok | msg.Cancel)
+                msg.setStandardButtons(msg.Ok)
                 if msg.exec_() == msg.Cancel:
                     return 1
 
