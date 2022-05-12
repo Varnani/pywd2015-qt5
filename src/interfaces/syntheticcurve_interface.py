@@ -164,12 +164,12 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
     def reset_light_treewidget(self):
         self.nlc = 0
         self.light_treewidget.clear()
-        #self.light_treewidget_2.clear()
+        # self.light_treewidget_2.clear()
         self.insert_synthetic_curves()
 
     def reset_widget(self):
         self.reset_light_treewidget()
-        #self.light_chart.clear_all()
+        # self.light_chart.clear_all()
 
     def reset_and_repopulate(self):
         self.reset_widget()
@@ -288,10 +288,11 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
                     results = lc_io.fill_for_synthetic_light_curve().save().run().read_synthetic_light_curve()
 
                 absolute_params, teffs, sma, lds, lums = lc_io.read_abs_params()
-                teffs = float(teffs[0][0])*10000, float(teffs[1][0])*10000
+                teffs = float(teffs[0][0]) * 10000, float(teffs[1][0]) * 10000
                 sma = float(sma[1][0])
-                L1, L2, logL1, logL2 = methods.compute_luminosity(teffs[0],teffs[1],absolute_params[2][0],absolute_params[2][1])
-                #self.light_treewidget_2.clear()
+                lum1, lum2, log_lum1, log_lum2 = methods.compute_luminosity(teffs[0], teffs[1], absolute_params[2][0],
+                                                                            absolute_params[2][1])
+                # self.light_treewidget_2.clear()
                 item = self.light_treewidget_2
 
                 sma = str(sma)
@@ -306,9 +307,8 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
                 bb = str(absolute_params[4][1])
                 cc = str(absolute_params[3][0])
                 dd = str(absolute_params[3][1])
-                ee = str(logL1)
-                ff = str(logL2)
-
+                ee = str(log_lum1)
+                ff = str(log_lum2)
 
                 for index, val in enumerate((sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff)):
                     if val == "nan":
@@ -455,5 +455,6 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
         self.velocity_chart.set_labels("", y_label, index=0)
         self.velocity_chart.set_labels(x_label, "Residuals", index=1)
 
-        self.velocity_chart.axes[0].axhline([self.main_window.vgamma_ipt.value()*vunit], color="black", linestyle="--")
+        self.velocity_chart.axes[0].axhline([self.main_window.vgamma_ipt.value() * vunit], color="black",
+                                            linestyle="--")
         self.velocity_chart.redraw()

@@ -60,6 +60,13 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         self.solution_stats = None
         self.curve_stats = None
 
+        self.vunit = None
+        self.extinction_values = None
+        self.extinction_values_array = None
+        self.band_id_from_dcout = None
+        self.idx = None
+        self.ifcgs_value = None
+
         self.set_default_dels()
 
         self.connect_signals()
@@ -132,7 +139,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                                             str(self.main_window.loadobservations_widget.light_curves[c_id - 1].band_id)
                                         ]
                                         name = name.format(band=band.replace(" ", "~"))
-                                    if par_id == 23.0 and self.main_window.mode_combobox.currentText() in ("Mode 1", "Mode 3"):
+                                    if par_id == 23.0 and self.main_window.mode_combobox.currentText() in (
+                                            "Mode 1", "Mode 3"):
                                         name = "$\Omega_{1}$ = $\Omega_{2}$"
                                     f.write(name + " & " + str(output) + " $\pm$ " + str(stderr) + " \\" + "\\" + "\n")
 
@@ -163,8 +171,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                     info = filepath
                     if selection.objectName() == "latex":
                         info = info + "\n\n" + "Exported values are not truncated and exported as-is. " \
-                                             "Please inspect your solutions carefully and " \
-                                             "truncate your results before using the Latex file."
+                                               "Please inspect your solutions carefully and " \
+                                               "truncate your results before using the Latex file."
                     msg.set_info(info)
                     msg.show()
 
@@ -520,8 +528,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
             if self.main_window.dc_ext_band_spinbox.value() != 0:
                 for ii in range(len(self.band_id_from_dcout)):
-
-                    _update_extinction(ii,float(self.extinction_values[ii]), self.main_window)
+                    _update_extinction(ii, float(self.extinction_values[ii]), self.main_window)
 
             self.main_window.lc_synthetic_curve_widget.reset_and_repopulate()
 
@@ -568,14 +575,14 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             vc1_resd = [i * self.vunit for i in vc1_data[-1]]
             vc2_resd = [i * self.vunit for i in vc2_data[-1]]
 
-        vc1_mdl_x = None
-        vc2_mdl_x = None
-        vc1_mdl_y = None
-        vc2_mdl_y = None
+        # vc1_mdl_x = None
+        # vc2_mdl_x = None
+        # vc1_mdl_y = None
+        # vc2_mdl_y = None
 
         if self.uselc_chk.isChecked():
             x_index = None
-            y_index = None
+            # y_index = None
 
             data = numpy.append(vc1_obs_x, vc2_obs_x)
 
@@ -611,10 +618,10 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             absolute_params, teffs, sma, lds, lums = lc_io.read_abs_params()
             teffs = float(teffs[0][0]) * 10000, float(teffs[1][0]) * 10000
             sma = float(sma[1][0])
-            L1, L2, logL1, logL2 = methods.compute_luminosity(teffs[0], teffs[1], absolute_params[2][0],
-                                                              absolute_params[2][1])
-            r1, r2 = float(absolute_params[2][0])/sma, float(absolute_params[2][1])/sma
-            r1_r2, r2_r1 = "{:6.5f}".format(r1 + r2), "{:6.5f}".format(r2/r1)
+            lum1, lum2, log_lum1, log_lum2 = methods.compute_luminosity(teffs[0], teffs[1], absolute_params[2][0],
+                                                                        absolute_params[2][1])
+            r1, r2 = float(absolute_params[2][0]) / sma, float(absolute_params[2][1]) / sma
+            r1_r2, r2_r1 = "{:6.5f}".format(r1 + r2), "{:6.5f}".format(r2 / r1)
             r1, r2 = "{:6.5f}".format(r1), "{:6.5f}".format(r2)
             x1, x2, y1, y2 = str(lds[1][0]), str(lds[2][0]), str(lds[3][0]), str(lds[4][0])
             lum2_1 = str("{:0.5f}".format(float(lums[2][0] / lums[1][0])))
@@ -622,9 +629,9 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             item = self.phys_params_treewidget
 
             p, e, a, i, q = lc_io.read_K1_2_params()
-            K1, K2 = methods.compute_rv_semi_amplitudes(p, e, a, i, q)
+            k1, k2 = methods.compute_rv_semi_amplitudes(p, e, a, i, q)
 
-            K1, K2 = str(K1), str(K2)
+            k1, k2 = str(k1), str(k2)
             sma = str(sma)
             a = str(absolute_params[1][0])
             b = str(absolute_params[1][1])
@@ -637,8 +644,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             bb = str(absolute_params[4][1])
             cc = str(absolute_params[3][0])
             dd = str(absolute_params[3][1])
-            ee = str(logL1)
-            ff = str(logL2)
+            ee = str(log_lum1)
+            ff = str(log_lum2)
 
             for index, val in enumerate((sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff)):
                 item.topLevelItem(index).setBackground(1, QtGui.QBrush(QtGui.QColor("white")))
@@ -653,7 +660,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 item.topLevelItem(index).setBackground(3, QtGui.QBrush(QtGui.QColor("red")))
                 item.topLevelItem(index).setText(3, val)
 
-            for index, val in enumerate((K1, K2)):
+            for index, val in enumerate((k1, k2)):
                 item.topLevelItem(index).setBackground(5, QtGui.QBrush(QtGui.QColor("white")))
                 if val == "nan":
                     item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
@@ -669,7 +676,6 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 vc1_mdl_y = [i * self.vunit for i in results[6]]
                 vc2_mdl_y = [i * self.vunit for i in results[7]]
 
-
         else:
             vc1_mdl_x = vc1_obs_x
             vc2_mdl_x = vc2_obs_x
@@ -684,20 +690,20 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
             vc1_obs_x_phase = [x - 1.0 for x in vc1_obs_x] + vc1_obs_x + [x + 1.0 for x in vc1_obs_x]
             vc2_obs_x_phase = [x - 1.0 for x in vc2_obs_x] + vc2_obs_x + [x + 1.0 for x in vc2_obs_x]
-            vc1_mdl_x_phase = [x - 1.0 for x in vc1_mdl_x] + vc1_mdl_x + [x + 1.0 for x in vc1_mdl_x]
-            vc2_mdl_x_phase = [x - 1.0 for x in vc2_mdl_x] + vc2_mdl_x + [x + 1.0 for x in vc2_mdl_x]
+            # vc1_mdl_x_phase = [x - 1.0 for x in vc1_mdl_x] + vc1_mdl_x + [x + 1.0 for x in vc1_mdl_x]
+            # vc2_mdl_x_phase = [x - 1.0 for x in vc2_mdl_x] + vc2_mdl_x + [x + 1.0 for x in vc2_mdl_x]
 
             self.chart.plot(vc1_obs_x_phase, vc1_obs_y + vc1_obs_y + vc1_obs_y, clear=False,
                             markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_BLUE)
 
-            #self.chart.plot(vc1_obs_x_extend, vc1_obs_y, clear=False,
-                            #markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_BLUE)
+            # self.chart.plot(vc1_obs_x_extend, vc1_obs_y, clear=False,
+            # markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_BLUE)
 
             self.chart.plot(vc2_obs_x_phase, vc2_obs_y + vc2_obs_y + vc2_obs_y, clear=False,
                             markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_GREEN)
 
-            #self.chart.plot(vc2_obs_x_extend, vc2_obs_y, clear=False,
-                            #markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_GREEN)
+            # self.chart.plot(vc2_obs_x_extend, vc2_obs_y, clear=False,
+            # markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_GREEN)
 
         else:
             self.chart.plot(vc1_obs_x, vc1_obs_y, clear=False,
@@ -705,33 +711,39 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             self.chart.plot(vc2_obs_x, vc2_obs_y, clear=False,
                             markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_GREEN)
 
-
         if self.uselc_chk.isChecked():
 
+            vc1_mdl_x_phase = [x - 1.0 for x in vc1_mdl_x] + vc1_mdl_x + [x + 1.0 for x in vc1_mdl_x]
+            vc2_mdl_x_phase = [x - 1.0 for x in vc2_mdl_x] + vc2_mdl_x + [x + 1.0 for x in vc2_mdl_x]
+
             if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
-                self.chart.plot(vc1_mdl_x_phase, vc1_mdl_y + vc1_mdl_y + vc1_mdl_y, clear=False, color=constants.COLOR_RED)
-                #self.chart.plot(vc1_mdl_x_extend, vc1_mdl_y, clear=False, color=constants.COLOR_RED)
-                self.chart.plot(vc2_mdl_x_phase, vc2_mdl_y + vc2_mdl_y + vc2_mdl_y, clear=False, color=constants.COLOR_ORANGE)
-                #self.chart.plot(vc2_mdl_x_extend, vc2_mdl_y, clear=False, color=constants.COLOR_ORANGE)
+                self.chart.plot(vc1_mdl_x_phase, vc1_mdl_y + vc1_mdl_y + vc1_mdl_y, clear=False,
+                                color=constants.COLOR_RED)
+                # self.chart.plot(vc1_mdl_x_extend, vc1_mdl_y, clear=False, color=constants.COLOR_RED)
+                self.chart.plot(vc2_mdl_x_phase, vc2_mdl_y + vc2_mdl_y + vc2_mdl_y, clear=False,
+                                color=constants.COLOR_ORANGE)
+                # self.chart.plot(vc2_mdl_x_extend, vc2_mdl_y, clear=False, color=constants.COLOR_ORANGE)
             else:
                 self.chart.plot(vc1_mdl_x, vc1_mdl_y, clear=False, color=constants.COLOR_RED)
                 self.chart.plot(vc2_mdl_x, vc2_mdl_y, clear=False, color=constants.COLOR_ORANGE)
 
         else:
+            vc1_mdl_x_phase = [x - 1.0 for x in vc1_mdl_x] + vc1_mdl_x + [x + 1.0 for x in vc1_mdl_x]
+            vc2_mdl_x_phase = [x - 1.0 for x in vc2_mdl_x] + vc2_mdl_x + [x + 1.0 for x in vc2_mdl_x]
             if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
                 self.chart.plot(vc1_mdl_x_phase, vc1_mdl_y + vc1_mdl_y + vc1_mdl_y, clear=False,
                                 markersize=constants.MARKER_SIZE - 1, marker="o",
                                 linestyle="", color=constants.COLOR_RED)
-                #self.chart.plot(vc1_mdl_x_extend, vc1_mdl_y, clear=False,
-                                #markersize=constants.MARKER_SIZE - 1, marker="o",
-                                #linestyle="", color=constants.COLOR_RED)
+                # self.chart.plot(vc1_mdl_x_extend, vc1_mdl_y, clear=False,
+                # markersize=constants.MARKER_SIZE - 1, marker="o",
+                # linestyle="", color=constants.COLOR_RED)
 
                 self.chart.plot(vc2_mdl_x_phase, vc2_mdl_y + vc2_mdl_y + vc2_mdl_y, clear=False,
                                 markersize=constants.MARKER_SIZE - 1, marker="o",
                                 linestyle="", color=constants.COLOR_RED)
-                #self.chart.plot(vc2_mdl_x_extend, vc2_mdl_y, clear=False,
-                                #markersize=constants.MARKER_SIZE - 1, marker="o",
-                                #linestyle="", color=constants.COLOR_RED)
+                # self.chart.plot(vc2_mdl_x_extend, vc2_mdl_y, clear=False,
+                # markersize=constants.MARKER_SIZE - 1, marker="o",
+                # linestyle="", color=constants.COLOR_RED)
             else:
                 self.chart.plot(vc1_mdl_x, vc1_mdl_y, clear=False,
                                 markersize=constants.MARKER_SIZE - 1, marker="o",
@@ -742,15 +754,17 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                                 linestyle="", color=constants.COLOR_RED)
 
         if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
+            vc1_obs_x_phase = [x - 1.0 for x in vc1_obs_x] + vc1_obs_x + [x + 1.0 for x in vc1_obs_x]
+            vc2_obs_x_phase = [x - 1.0 for x in vc2_obs_x] + vc2_obs_x + [x + 1.0 for x in vc2_obs_x]
             self.chart.plot(vc1_obs_x_phase, vc1_resd + vc1_resd + vc1_resd, index=1, clear=False,
                             markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_BLUE)
-            #self.chart.plot(vc1_obs_x_extend, vc1_resd, index=1, clear=False,
-                            #markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_BLUE)
+            # self.chart.plot(vc1_obs_x_extend, vc1_resd, index=1, clear=False,
+            # markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_BLUE)
 
             self.chart.plot(vc2_obs_x_phase, vc2_resd + vc2_resd + vc2_resd, index=1, clear=False,
                             markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_GREEN)
-            #self.chart.plot(vc2_obs_x_extend, vc2_resd, index=1, clear=False,
-                            #markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_GREEN)
+            # self.chart.plot(vc2_obs_x_extend, vc2_resd, index=1, clear=False,
+            # markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_GREEN)
         else:
             self.chart.plot(vc1_obs_x, vc1_resd, index=1, clear=False,
                             markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_BLUE)
@@ -758,9 +772,9 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             self.chart.plot(vc2_obs_x, vc2_resd, index=1, clear=False,
                             markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=constants.COLOR_GREEN)
 
-
         self.chart.axes[1].axhline([0], color=constants.COLOR_RED)
-        self.chart.axes[0].axhline([self.main_window.vgamma_ipt.value()*float(self.vunit)], color="black", linestyle="--")
+        self.chart.axes[0].axhline([self.main_window.vgamma_ipt.value() * float(self.vunit)], color="black",
+                                   linestyle="--")
 
         self.chart.set_labels("", "Km/s", index=0)
 
@@ -774,8 +788,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 self.chart.set_labels("Phase", "Residuals", index=1)
 
         if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
-            self.chart.axes[0].set_xlim(-0.25,1.25)
-            self.chart.axes[1].set_xlim(-0.25,1.25)
+            self.chart.axes[0].set_xlim(-0.25, 1.25)
+            self.chart.axes[1].set_xlim(-0.25, 1.25)
 
         self.chart.redraw()
 
@@ -806,7 +820,6 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             obs_y = [i * self.vunit for i in obs_y]
             residuals = [i * self.vunit for i in residuals]
 
-
         mdl_x = None
         mdl_y = None
 
@@ -817,7 +830,6 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             self.main_window.loadobservations_widget.velocity_curves[1] is not None and
             self.main_window.loadobservations_widget.velocity_curves[0] is None) or \
                 self.data_combobox.currentIndex() == 1:
-
             obs_color = constants.COLOR_GREEN
             mdl_color = constants.COLOR_ORANGE
 
@@ -852,9 +864,9 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
             if curve.curve_type == "light":
                 dc_params = self.get_dc_params()
-                self.extinction_values_array = numpy.array(wd_io.DCIO(dc_params,
-                                        wd_path=self.main_window.dc_path,
-                                        dc_binary_name=self.main_window.dc_binary).read_extinction_values())
+                self.extinction_values_array = numpy.array(wd_io.DCIO(
+                    dc_params, wd_path=self.main_window.dc_path,
+                    dc_binary_name=self.main_window.dc_binary).read_extinction_values())
 
                 self.band_id_from_dcout = self.extinction_values_array[0]
                 self.extinction_values = self.extinction_values_array[2]
@@ -874,7 +886,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                     8.0,  # zero
                     1.0,  # factor
                     0.55,  # wl, dummy
-                    #curve.aextinc,  # aextinc
+                    # curve.aextinc,  # aextinc
                     float(self.extinction_values[self.idx]),
                     curve.calib  # calib
                 )
@@ -898,24 +910,23 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                     y_index = 6
                     results = lc_io.fill_for_synthetic_light_curve().save().run().read_cgs_synthetic_light_curve()
 
-
                 absolute_params, teffs, sma, lds, lums = lc_io.read_abs_params()
-                teffs = float(teffs[0][0])*10000, float(teffs[1][0])*10000
+                teffs = float(teffs[0][0]) * 10000, float(teffs[1][0]) * 10000
                 sma = float(sma[1][0])
-                L1, L2, logL1, logL2 = methods.compute_luminosity(teffs[0],teffs[1],absolute_params[2][0],
-                                                                  absolute_params[2][1])
+                lum1, lum2, log_lum1, log_lum2 = methods.compute_luminosity(teffs[0], teffs[1], absolute_params[2][0],
+                                                                            absolute_params[2][1])
                 r1, r2 = float(absolute_params[2][0]) / sma, float(absolute_params[2][1]) / sma
                 r1_r2, r2_r1 = "{:6.5f}".format(r1 + r2), "{:6.5f}".format(r2 / r1)
                 r1, r2 = "{:6.5f}".format(r1), "{:6.5f}".format(r2)
                 x1, x2, y1, y2 = str(lds[1][0]), str(lds[2][0]), str(lds[3][0]), str(lds[4][0])
                 lum2_1 = str("{:0.5f}".format(float(lums[2][0] / lums[1][0])))
-                #self.light_treewidget_2.clear()
+                # self.light_treewidget_2.clear()
                 item = self.phys_params_treewidget
 
                 p, e, a, i, q = lc_io.read_K1_2_params()
-                K1, K2 = methods.compute_rv_semi_amplitudes(p, e, a, i, q)
+                k1, k2 = methods.compute_rv_semi_amplitudes(p, e, a, i, q)
 
-                K1, K2 = str(K1), str(K2)
+                k1, k2 = str(k1), str(k2)
                 sma = str(sma)
                 a = str(absolute_params[1][0])
                 b = str(absolute_params[1][1])
@@ -928,9 +939,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 bb = str(absolute_params[4][1])
                 cc = str(absolute_params[3][0])
                 dd = str(absolute_params[3][1])
-                ee = str(logL1)
-                ff = str(logL2)
-
+                ee = str(log_lum1)
+                ff = str(log_lum2)
 
                 for index, val in enumerate((sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff)):
                     item.topLevelItem(index).setBackground(1, QtGui.QBrush(QtGui.QColor("white")))
@@ -946,7 +956,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                         val = "NaN"
                     item.topLevelItem(index).setText(3, val)
 
-                for index, val in enumerate((K1, K2)):
+                for index, val in enumerate((k1, k2)):
                     item.topLevelItem(index).setBackground(5, QtGui.QBrush(QtGui.QColor("white")))
                     if val == "nan":
                         item.topLevelItem(index).setBackground(5, QtGui.QBrush(QtGui.QColor("red")))
@@ -966,22 +976,22 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 results = lc_io.fill_for_synthetic_velocity_curve().save().run().read_synthetic_velocity_curve()
 
                 absolute_params, teffs, sma, lds, lums = lc_io.read_abs_params()
-                teffs = float(teffs[0][0])*10000, float(teffs[1][0])*10000
+                teffs = float(teffs[0][0]) * 10000, float(teffs[1][0]) * 10000
                 sma = float(sma[1][0])
-                L1, L2, logL1, logL2 = methods.compute_luminosity(teffs[0],teffs[1],absolute_params[2][0],
-                                                                  absolute_params[2][1])
+                lum1, lum2, log_lum1, log_lum2 = methods.compute_luminosity(teffs[0], teffs[1], absolute_params[2][0],
+                                                                            absolute_params[2][1])
                 r1, r2 = float(absolute_params[2][0]) / sma, float(absolute_params[2][1]) / sma
                 r1_r2, r2_r1 = "{:6.5f}".format(r1 + r2), "{:6.5f}".format(r2 / r1)
                 r1, r2 = "{:6.5f}".format(r1), "{:6.5f}".format(r2)
                 x1, x2, y1, y2 = str(lds[1][0]), str(lds[2][0]), str(lds[3][0]), str(lds[4][0])
                 lum2_1 = str("{:0.5f}".format(float(lums[2][0] / lums[1][0])))
-                #self.light_treewidget_2.clear()
+                # self.light_treewidget_2.clear()
                 item = self.phys_params_treewidget
 
                 p, e, a, i, q = lc_io.read_K1_2_params()
-                K1, K2 = methods.compute_rv_semi_amplitudes(p, e, a, i, q)
+                k1, k2 = methods.compute_rv_semi_amplitudes(p, e, a, i, q)
 
-                K1, K2 = str(K1), str(K2)
+                k1, k2 = str(k1), str(k2)
                 sma = str(sma)
                 a = str(absolute_params[1][0])
                 b = str(absolute_params[1][1])
@@ -994,8 +1004,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 bb = str(absolute_params[4][1])
                 cc = str(absolute_params[3][0])
                 dd = str(absolute_params[3][1])
-                ee = str(logL1)
-                ff = str(logL2)
+                ee = str(log_lum1)
+                ff = str(log_lum2)
 
                 for index, val in enumerate((sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff)):
                     item.topLevelItem(index).setBackground(1, QtGui.QBrush(QtGui.QColor("white")))
@@ -1005,12 +1015,12 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                     item.topLevelItem(index).setText(1, val)
 
                 for index, val in enumerate((str(r1), str(r2), str(r1_r2), str(r2_r1), x1, x2, y1, y2, lum2_1)):
-                    #if val == "nan":
+                    # if val == "nan":
                     val = "None"
                     item.topLevelItem(index).setBackground(3, QtGui.QBrush(QtGui.QColor("red")))
                     item.topLevelItem(index).setText(3, val)
 
-                for index, val in enumerate((K1, K2)):
+                for index, val in enumerate((k1, k2)):
                     item.topLevelItem(index).setBackground(5, QtGui.QBrush(QtGui.QColor("white")))
                     if val == "nan":
                         item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
@@ -1023,7 +1033,6 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                     self.main_window.loadobservations_widget.velocity_curves[1] is not None and
                     self.main_window.loadobservations_widget.velocity_curves[0] is None) or \
                         self.data_combobox.currentIndex() == 1:
-
                     y_index = 7
 
                 mdl_x = results[x_index]
@@ -1033,48 +1042,47 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                     mdl_y = [i * self.vunit for i in results[y_index]]
 
         else:
-
+            mdl_x = obs_x
+            mdl_y = mdl_data[dcout_mdl_y_index]
 
             if curve.curve_type == "velocity" and float(self.vunit) != 1.0:
                 mdl_y = [i * self.vunit for i in mdl_data[dcout_mdl_y_index]]
-            else:
-                mdl_y = mdl_data[dcout_mdl_y_index]
 
             if curve.curve_type == "light":
                 dc_params = self.get_dc_params()
-                self.extinction_values_array = numpy.array(wd_io.DCIO(dc_params,
-                                                    wd_path=self.main_window.dc_path,
-                                                    dc_binary_name=self.main_window.dc_binary).read_extinction_values())
+                self.extinction_values_array = numpy.array(wd_io.DCIO(
+                    dc_params, wd_path=self.main_window.dc_path,
+                    dc_binary_name=self.main_window.dc_binary).read_extinction_values())
 
                 self.band_id_from_dcout = self.extinction_values_array[0]
                 self.extinction_values = self.extinction_values_array[2]
 
                 self.idx = numpy.where(self.band_id_from_dcout == int(curve.band_id))[0][0]
 
-                mdl_x = obs_x
-                mdl_y = mdl_data[dcout_mdl_y_index]
-
             item = self.phys_params_treewidget
             sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff = "None", "None", "None", \
-                                    "None", "None", "None", "None", "None", "None", "None", "None", "None", "None"
+                                                            "None", "None", "None", "None", \
+                                                            "None", "None", "None", "None", \
+                                                            "None", "None"
             for index, val in enumerate((sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff)):
-                #if val == "nan":
+                # if val == "nan":
                 val = "None"
                 item.topLevelItem(index).setBackground(1, QtGui.QBrush(QtGui.QColor("red")))
-                #val = "NaN"
+                # val = "NaN"
                 item.topLevelItem(index).setText(1, val)
 
-            r1, r2, r1_r2, r2_r1, x1, x2, y1, y2, lum2_1 = "None", "None", "None", "None", "None", "None", "None", \
-                                    "None", "None"
+            r1, r2, r1_r2, r2_r1, x1, x2, y1, y2, lum2_1 = "None", "None", "None", "None", \
+                                                           "None", "None", "None", \
+                                                           "None", "None"
             for index, val in enumerate((str(r1), str(r2), str(r1_r2), str(r2_r1), x1, x2, y1, y2, lum2_1)):
-                #if val == "nan":
+                # if val == "nan":
                 val = "None"
                 item.topLevelItem(index).setBackground(3, QtGui.QBrush(QtGui.QColor("red")))
                 item.topLevelItem(index).setText(3, val)
 
-            K1, K2 = "None", "None"
-            for index, val in enumerate((K1, K2)):
-                #if val == "nan":
+            k1, k2 = "None", "None"
+            for index, val in enumerate((k1, k2)):
+                # if val == "nan":
                 val = "None"
                 item.topLevelItem(index).setBackground(5, QtGui.QBrush(QtGui.QColor("red")))
                 item.topLevelItem(index).setText(5, val)
@@ -1101,34 +1109,34 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
             calibrator = curve.calib
 
-            _ = [-2.5 * numpy.log10(x/calibrator) for x in obs_y]
+            _ = [-2.5 * numpy.log10(x / calibrator) for x in obs_y]
             obs_y = _
             if not self.uselc_chk.isChecked():
-                _ = [-2.5 * numpy.log10(x/calibrator) for x in mdl_y]
+                _ = [-2.5 * numpy.log10(x / calibrator) for x in mdl_y]
                 mdl_y = _
                 residuals = numpy.array(obs_y) - numpy.array(mdl_y)
             else:
-                _ = [-2.5 * numpy.log10(x/calibrator) for x in mdl_data[dcout_mdl_y_index]]
+                _ = [-2.5 * numpy.log10(x / calibrator) for x in mdl_data[dcout_mdl_y_index]]
                 residuals = numpy.array(obs_y) - numpy.array(_)
 
         if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
 
             obs_x_phase = [x - 1.0 for x in obs_x] + obs_x + [x + 1.0 for x in obs_x]
-            #mdl_x_phase = [x - 1.0 for x in mdl_x] + mdl_x + [x + 1.0 for x in mdl_x]
+            # mdl_x_phase = [x - 1.0 for x in mdl_x] + mdl_x + [x + 1.0 for x in mdl_x]
 
             self.chart.plot(obs_x_phase, obs_y + obs_y + obs_y, clear=False,
-                        markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=obs_color)
-            #self.chart.plot(obs_x_extend, obs_y, clear=False,
-                        #markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=obs_color)
+                            markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=obs_color)
+            # self.chart.plot(obs_x_extend, obs_y, clear=False,
+            # markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=obs_color)
         else:
             self.chart.plot(obs_x, obs_y, clear=False,
-                        markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=obs_color)
+                            markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=obs_color)
 
         if self.uselc_chk.isChecked():
             mdl_x_phase = [x - 1.0 for x in mdl_x] + mdl_x + [x + 1.0 for x in mdl_x]
             if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
                 self.chart.plot(mdl_x_phase, mdl_y + mdl_y + mdl_y, clear=False, color=mdl_color)
-                #self.chart.plot(mdl_x_extend, mdl_y, clear=False, color=mdl_color)
+                # self.chart.plot(mdl_x_extend, mdl_y, clear=False, color=mdl_color)
             else:
                 self.chart.plot(mdl_x, mdl_y, clear=False, color=mdl_color)
 
@@ -1136,31 +1144,30 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
                 obs_x_phase = [x - 1.0 for x in obs_x] + obs_x + [x + 1.0 for x in obs_x]
                 self.chart.plot(obs_x_phase, mdl_y + mdl_y + mdl_y, clear=False,
-                            markersize=constants.MARKER_SIZE - 1, marker="o",
-                            linestyle="", color=mdl_color)
-                #self.chart.plot(obs_x_extend, mdl_y, clear=False,
-                            #markersize=constants.MARKER_SIZE - 1, marker="o",
-                            #linestyle="", color=mdl_color)
+                                markersize=constants.MARKER_SIZE - 1, marker="o",
+                                linestyle="", color=mdl_color)
+                # self.chart.plot(obs_x_extend, mdl_y, clear=False,
+                # markersize=constants.MARKER_SIZE - 1, marker="o",
+                # linestyle="", color=mdl_color)
             else:
                 self.chart.plot(obs_x, mdl_y, clear=False,
-                            markersize=constants.MARKER_SIZE - 1, marker="o",
-                            linestyle="", color=mdl_color)
+                                markersize=constants.MARKER_SIZE - 1, marker="o",
+                                linestyle="", color=mdl_color)
 
         if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
             obs_x_phase = [x - 1.0 for x in obs_x] + obs_x + [x + 1.0 for x in obs_x]
-            residuals_plot = numpy.concatenate((residuals,residuals,residuals), axis=None)
+            residuals_plot = numpy.concatenate((residuals, residuals, residuals), axis=None)
             self.chart.plot(obs_x_phase, residuals_plot, index=1,
-                        markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=obs_color)
+                            markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=obs_color)
         else:
             self.chart.plot(obs_x, residuals, index=1,
-                        markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=obs_color)
+                            markersize=constants.MARKER_SIZE, marker="o", linestyle="", color=obs_color)
 
         self.chart.axes[1].axhline([0], color=mdl_color)
 
         if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
-            self.chart.axes[0].set_xlim(-0.25,1.25)
-            self.chart.axes[1].set_xlim(-0.25,1.25)
-
+            self.chart.axes[0].set_xlim(-0.25, 1.25)
+            self.chart.axes[1].set_xlim(-0.25, 1.25)
 
         if curve.curve_type == "light" and self.main_window.maglite_combobox.currentText() == "Magnitude":
             self.chart.axes[0].invert_yaxis()
@@ -1171,7 +1178,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
         elif curve.curve_type == "velocity":
             self.chart.set_labels("", "Km/s", index=0)
-            self.chart.axes[0].axhline([self.main_window.vgamma_ipt.value()*float(self.vunit)], color="black", linestyle="--")
+            self.chart.axes[0].axhline([self.main_window.vgamma_ipt.value() * float(self.vunit)], color="black",
+                                       linestyle="--")
 
         if self.forcephase_chk.isChecked():
             self.chart.set_labels("Phase", "Residuals", index=1)
@@ -1370,7 +1378,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             a = str(self.solution_stats[0][0])
             b = str(self.solution_stats[1][0])
             c = str(self.solution_stats[2][0])
-            d = str(runtime)
+            d = str(self.runtime)
 
             for index, val in enumerate((a, b, c, d)):
                 if val == "nan":
@@ -1384,7 +1392,6 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             curves = self.main_window.loadobservations_widget.get_all_curves()
 
             try:
-
                 if len(self.curve_stats[-1]) > 3:
                     for index, row in enumerate(self.curve_stats):
                         item = QtWidgets.QTreeWidgetItem(self.curvestat_treewidget)
@@ -1396,7 +1403,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 else:
                     for index, row in enumerate(self.curve_stats):
                         item = QtWidgets.QTreeWidgetItem(self.curvestat_treewidget)
-                        if index != (len(self.curve_stats)-1):
+                        if index != (len(self.curve_stats) - 1):
                             item.setText(0, os.path.basename(curves[index].filepath))
                             item.setText(1, str(int(row[1])))
                             item.setText(2, str(row[2]))
@@ -1406,29 +1413,28 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                             item.setText(0, "Eclipse Times")
                             item.setText(1, str(int(row[1])))
                             item.setText(2, str(row[2]))
-            except:
-
+            except IndexError:
                 msg = QtWidgets.QMessageBox()
                 msg.setIcon(msg.Warning)
-                msg.setText("PyWD2015 cannot print statistical curve information correctly." 
+                msg.setText("PyWD2015 cannot print statistical curve information correctly."
                             " There is likely a format issue in dcout.active file, which "
                             "probably arose from unsuitable input KSD values."
                             " Please check input KSD values and dcout.active file.")
-                #msg.setInformativeText("This might result in a very large lcout file (>100MB), "
-                                       #"take a long time and might crash LC altogether. "
-                                       #"Are you sure you want to render the animation?")
                 msg.setStandardButtons(msg.Ok)
-                if msg.exec_() == msg.Cancel:
-                    return 1
+                msg.exec_()
+                # if msg.exec_() == msg.Ok:
+                #    return 1
 
     def read_dcout(self):
         self.results = self.iterator.dc_io.read_results()
         self.dimensions = self.iterator.dc_io.read_component_dimensions()
         self.observations = self.iterator.dc_io.read_unweighted_observations(split_by_observation=True)
         self.solution_stats = self.iterator.dc_io.read_solution_stats()
-        self.curve_stats = self.iterator.dc_io._read_table(self.iterator.dc_io._get_output_path(),
-                                                           "    Curve   No. of obs.        Std. dev.",
-                                                           tidy=False)
+        self.curve_stats = self.iterator.dc_io.read_curve_stats()
+        self.runtime = self.iterator.runtime
+        # self.curve_stats = self.iterator.dc_io._read_table(self.iterator.dc_io._get_output_path(),
+        # "    Curve   No. of obs.        Std. dev.",
+        # tidy=False)
 
     def receive_iteration(self):
         _template_msg = "\n\nThis is likely caused by malformed dcout file. Check your inputs, KEEP's and observations."
@@ -1701,19 +1707,19 @@ class IterationWorker(QtCore.QThread):
         super(IterationWorker, self).__init__()
 
         self.dc_io = dc_io
+        self.runtime = None
 
     def run(self):
-        global runtime
+        # global runtime
         starttime = timeit.default_timer()
         self.dc_io.fill_for_solution().save().run()
         self.iteration_done.emit()
-        runtime = (timeit.default_timer() - starttime)
-        if runtime < 120.0:
-            runtime = ("- %0.2f second -" % (timeit.default_timer() - starttime))
+        self.runtime = (timeit.default_timer() - starttime)
+        if self.runtime < 120.0:
+            self.runtime = ("- %0.2f second -" % (timeit.default_timer() - starttime))
         else:
-            runtime = (timeit.default_timer() - starttime)/60.0
-            runtime = ("- %0.2f minutes -" % ( runtime ) )
-
+            self.runtime = (timeit.default_timer() - starttime) / 60.0
+            self.runtime = ("- %0.2f minutes -" % self.runtime)
 
     def stop(self):
         if self.dc_io.process is not None:
