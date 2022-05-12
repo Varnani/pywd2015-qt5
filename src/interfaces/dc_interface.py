@@ -66,6 +66,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         self.band_id_from_dcout = None
         self.idx = None
         self.ifcgs_value = None
+        self.runtime = None
 
         self.set_default_dels()
 
