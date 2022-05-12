@@ -822,6 +822,12 @@ class DCIO(_WDIO):
                                  occurence=self.parameters.keeps["niter"].get())
         return stats
 
+    def read_curve_stats(self):
+        curve_stats = self._read_table(self._get_output_path(),
+                                 "    Curve   No. of obs.        Std. dev.",
+                                 tidy=False)
+        return curve_stats
+
     def read_component_dimensions(self):
         s1_dimensions = self._read_table(self._get_output_path(),
                                          "  1   pole",
