@@ -68,7 +68,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls whether spots age (grow and decay) in radius. Currently there is no aging in spot temperature. Uncheck for no aging, check for aging. Solutions for spot aging need good starting estimates for spot parameters and careful monitoring of solution progress.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="title">
-      <string>Spot Aging</string>
+      <string>Spo&amp;t Aging</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -89,6 +89,9 @@
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="nomax_combobox">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spot aging profile (Triangular-NOMAX=1; or Trapezoidal-NOMAX=0) [?]&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <item>
          <property name="text">
           <string>Triangular</string>
@@ -121,7 +124,7 @@
    <item row="2" column="0" rowspan="2">
     <widget class="QGroupBox" name="groupBox_3">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spot angular drift rate in longitude for star 1 and 2, rate 1.000 means that drift matches the mean orbital angular rate (IFSMV2)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spot angular drift rate in longitude for star 1 and 2, rate 1.000 means that drift matches the mean orbital angular rate (Fspot1, Fspot2)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="title">
       <string>Drift Rates</string>

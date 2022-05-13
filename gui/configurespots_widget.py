@@ -161,13 +161,14 @@ class Ui_SpotConfigureWidget(object):
         self.whatsthis_btn.setText(_translate("SpotConfigureWidget", "?"))
         self.kspev_groupbox.setToolTip(_translate("SpotConfigureWidget", "<html><head/><body><p>Enable spot aging (KSPEV) [?]</p></body></html>"))
         self.kspev_groupbox.setWhatsThis(_translate("SpotConfigureWidget", "<html><head/><body><p>Controls whether spots age (grow and decay) in radius. Currently there is no aging in spot temperature. Uncheck for no aging, check for aging. Solutions for spot aging need good starting estimates for spot parameters and careful monitoring of solution progress.</p></body></html>"))
-        self.kspev_groupbox.setTitle(_translate("SpotConfigureWidget", "Spot Aging"))
+        self.kspev_groupbox.setTitle(_translate("SpotConfigureWidget", "Spo&t Aging"))
         self.label_7.setToolTip(_translate("SpotConfigureWidget", "<html><head/><body><p>Spot aging profile (NOMAX) [?]</p></body></html>"))
         self.label_7.setWhatsThis(_translate("SpotConfigureWidget", "<html><head/><body><p>Tells whether the spot growth and decay timewise profile is trapezoidal or triangular. Setting this to triangular eliminates the interval of constant size that otherwise exists at spot maximum.</p></body></html>"))
         self.label_7.setText(_translate("SpotConfigureWidget", "Aging Profile"))
+        self.nomax_combobox.setToolTip(_translate("SpotConfigureWidget", "<html><head/><body><p>Spot aging profile (Triangular-NOMAX=1; or Trapezoidal-NOMAX=0) [?]</p></body></html>"))
         self.nomax_combobox.setItemText(0, _translate("SpotConfigureWidget", "Triangular"))
         self.nomax_combobox.setItemText(1, _translate("SpotConfigureWidget", "Trapezoidal"))
-        self.groupBox_3.setToolTip(_translate("SpotConfigureWidget", "<html><head/><body><p>Spot angular drift rate in longitude for star 1 and 2, rate 1.000 means that drift matches the mean orbital angular rate (IFSMV2)</p></body></html>"))
+        self.groupBox_3.setToolTip(_translate("SpotConfigureWidget", "<html><head/><body><p>Spot angular drift rate in longitude for star 1 and 2, rate 1.000 means that drift matches the mean orbital angular rate (Fspot1, Fspot2)</p></body></html>"))
         self.groupBox_3.setTitle(_translate("SpotConfigureWidget", "Drift Rates"))
         self.label_5.setText(_translate("SpotConfigureWidget", "Star 1"))
         self.label_6.setText(_translate("SpotConfigureWidget", "Star 2"))
@@ -184,4 +185,14 @@ class Ui_SpotConfigureWidget(object):
         self.kspot_chk.setWhatsThis(_translate("SpotConfigureWidget", "<html><head/><body><p>Controls whether the old simple spot algorithm or the much more precise Vector Fractional Area algorithm <span style=\" font-weight:600;\">(Wilson 2012b)</span> is applied.</p></body></html>"))
         self.kspot_chk.setText(_translate("SpotConfigureWidget", "Use \"VFA\""))
         self.clear_a_b_button.setText(_translate("SpotConfigureWidget", "Clear A and B"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    SpotConfigureWidget = QtWidgets.QWidget()
+    ui = Ui_SpotConfigureWidget()
+    ui.setupUi(SpotConfigureWidget)
+    SpotConfigureWidget.show()
+    sys.exit(app.exec_())
 
