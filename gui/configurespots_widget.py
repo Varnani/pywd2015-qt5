@@ -179,7 +179,7 @@ class Ui_SpotConfigureWidget(object):
         self.ifsmv1_chk.setText(_translate("SpotConfigureWidget", "Allow for Spot A"))
         self.ifsmv2_chk.setToolTip(_translate("SpotConfigureWidget", "<html><head/><body><p>Allow spot B to move in longitude (IFSMV2)</p></body></html>"))
         self.ifsmv2_chk.setText(_translate("SpotConfigureWidget", "Allow for Spot B"))
-        self.label_17.setText(_translate("SpotConfigureWidget", "Add spots and configure spot realeted parameters"))
+        self.label_17.setText(_translate("SpotConfigureWidget", "Add spots and configure spot related parameters"))
         self.star1_groupbox.setTitle(_translate("SpotConfigureWidget", "Star 1"))
         self.kspot_chk.setToolTip(_translate("SpotConfigureWidget", "<html><head/><body><p>Use &quot;Vector Fractional Area&quot; algorithm (KSPOT) [?]</p></body></html>"))
         self.kspot_chk.setWhatsThis(_translate("SpotConfigureWidget", "<html><head/><body><p>Controls whether the old simple spot algorithm or the much more precise Vector Fractional Area algorithm <span style=\" font-weight:600;\">(Wilson 2012b)</span> is applied.</p></body></html>"))
