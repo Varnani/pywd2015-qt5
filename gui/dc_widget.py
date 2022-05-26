@@ -720,7 +720,7 @@ class Ui_DCWidget(object):
         self.gridLayout_8.addWidget(self.del_s1lng_ipt, 7, 1, 1, 1)
         self.del_e_ipt = QtWidgets.QDoubleSpinBox(self.tab_12)
         self.del_e_ipt.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
-        self.del_e_ipt.setDecimals(4)
+        self.del_e_ipt.setDecimals(5)
         self.del_e_ipt.setMinimum(0.0001)
         self.del_e_ipt.setSingleStep(0.001)
         self.del_e_ipt.setProperty("value", 0.001)
