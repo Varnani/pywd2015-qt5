@@ -789,7 +789,7 @@ class Ui_DCWidget(object):
         self.gridLayout_8.addWidget(self.del_q_ipt, 3, 3, 1, 1)
         self.del_pshift_ipt = QtWidgets.QDoubleSpinBox(self.tab_12)
         self.del_pshift_ipt.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
-        self.del_pshift_ipt.setDecimals(4)
+        self.del_pshift_ipt.setDecimals(6)
         self.del_pshift_ipt.setMinimum(0.0001)
         self.del_pshift_ipt.setSingleStep(0.001)
         self.del_pshift_ipt.setProperty("value", 0.002)
