@@ -50,15 +50,16 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
             if filepath is not None:
                 output = "# Itr" + delimiter
                 for result in self.solutions[0]:
-                    output = output + constants.KEEPS_ID_NAME_DICT[result[0]] + delimiter
+                    output = output + constants.KEEPS_ID_NAME_DICT[result[0]] + delimiter + "adjustment" + delimiter +\
+                             "error" + delimiter
                 output = output + "MRfIV" + delimiter + "MRP" + delimiter + "\n"
 
                 for idx, solution in enumerate(self.solutions):
                     output = output + str(idx + 1) + delimiter
                     for row in solution:
-                        output = output + str(row[4]) + delimiter
+                        output = output + str(row[4]) + delimiter + str(row[3]) + delimiter + str(row[5]) + delimiter
 
-                    output = output + delimiter + str("{:0.16f}".format(self.stats[idx][0][0])) + delimiter + \
+                    output = output + str("{:0.16f}".format(self.stats[idx][0][0])) + delimiter + \
                              str("{:0.16f}".format(self.stats[idx][1][0])) + "\n"
 
                 with open(filepath, "w") as destination:
