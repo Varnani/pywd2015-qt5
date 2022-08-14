@@ -61,11 +61,14 @@ You can safely use pip to install PyQt5 on Windows 7 and Windows 8.x operating s
 python -m pip install python-qt5
 ```  
 
-However, Windows 10 users may have to modify the command as shown below:
+However, for the latest version of Python (3.7+) Windows 10 users may have to modify 
+the command as shown below:
 
 ```shell
 python -m pip install PyQT5
 ```  
+
+In some Windows operating systems with older Python versions (especially 3.5 or 3.6), users may experience "dll import error" when trying to run PyWD2015. This issue is usually related to PyQT5 and may not have a unique reason. In many case, finding a solution might be time-consuming. In order to avoid this issue, uninstalling the older version and then installing the latest available Python version is strongly recommended. After that, users can install required libraries as described above, as well as PyQT5. 
 
 PyWD2015 has not been tested on Windows 11 yet.
 
