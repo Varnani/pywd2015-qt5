@@ -185,7 +185,8 @@ class Widget(QtWidgets.QWidget, starpositions_widget.Ui_StarPositionWidget):
     def start_render(self):
         self.clear_animator()
         if self.single_chk.isChecked() is not True:
-            if self.render_stars() is not 1:
+            #if self.render_stars() is not 1:
+            if self.render_stars() != 1:
                 self.setup_slider()
 
         else:
