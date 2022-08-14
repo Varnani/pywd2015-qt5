@@ -195,7 +195,7 @@ class CurveProperty:
         self.xunit = parser.getfloat(section, "xunit")
         self.calib = parser.getfloat(section, "calib")
 
-        self.ksd = parser.getfloat(section, "ksd")
+        self.ksd = parser.getint(section, "ksd")
         self.noise = parser.getint(section, "noise")
         self.sigma = parser.getfloat(section, "sigma")
         self.opsf = parser.getfloat(section, "opsf")
