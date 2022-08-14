@@ -61,7 +61,7 @@ You can safely use pip to install PyQt5 on Windows 7 and Windows 8.x operating s
 python -m pip install python-qt5
 ```  
 
-However, for the latest version of Python (3.7+) Windows 10 users may have to modify 
+However, for the latest versions of Python (3.7+) Windows 10 users may have to modify 
 the command as shown below:
 
 ```shell
