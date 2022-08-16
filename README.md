@@ -7,6 +7,8 @@ PyWD2015 v1.0.0 is released (16th August 2022). Please visit [releases](https://
 
 A comprehensive user manual is also available in [this link](https://github.com/Varnani/pywd2015-qt5/releases/download/v1.0.0/PyWD2015_qt5_manual.pdf).
 
+Single executable file is [available](https://github.com/Varnani/pywd2015-qt5/releases/download/v1.0.0/pywd2015_win64bit_16August2022.exe) for Windows 7, 8.x and 10 (all 64 bit) operating systems.
+
 ## First Things First
 If you happen to use this software in a scientific work, please cite PyWD2015 release proceeding:  
 [CoSka (2020), 50, 535](https://ui.adsabs.harvard.edu/abs/2020CoSka..50..535G/abstract)  
