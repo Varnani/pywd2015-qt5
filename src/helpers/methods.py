@@ -706,7 +706,7 @@ def compute_roche_potentials(w, e, q, phase, phase_shift, plot_elements=None):
             axis.contour(X, Z, all_pots, outer_potential, colors=constants.COLOR_BLUE)
         axis.contourf(X_primary, Z_primary, all_pots_primary, [pot1, pot1 * 1000], cmap='Dark2', vmin=0, vmax=1)
         axis.contourf(X_secondary, Z_secondary, all_pots_secondary, [pot2, pot2 * 1000], cmap='Dark2', vmin=0, vmax=1)
-        axis.plot([0, separation_at_phase, center_of_mass], [0, 0, 0], linestyle="",
+        axis.plot([numpy.zeros(1), separation_at_phase, center_of_mass], numpy.zeros(3), linestyle="",
                   marker="+", markersize=10, color=constants.COLOR_RED)
 
     return inner_potential, outer_potential
