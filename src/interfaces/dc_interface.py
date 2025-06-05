@@ -570,11 +570,11 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         vc2_resd = vc2_data[-1]
 
         if float(self.vunit) != 1.0:
-            vc1_obs_y = [i * self.vunit for i in vc1_data[dcout_obs_y_index]]
-            vc2_obs_y = [i * self.vunit for i in vc2_data[dcout_obs_y_index]]
+            vc1_obs_y = [float(i) * self.vunit for i in vc1_data[dcout_obs_y_index]]
+            vc2_obs_y = [float(i) * self.vunit for i in vc2_data[dcout_obs_y_index]]
 
-            vc1_resd = [i * self.vunit for i in vc1_data[-1]]
-            vc2_resd = [i * self.vunit for i in vc2_data[-1]]
+            vc1_resd = [float(i) * self.vunit for i in vc1_data[-1]]
+            vc2_resd = [float(i) * self.vunit for i in vc2_data[-1]]
 
         # vc1_mdl_x = None
         # vc2_mdl_x = None
@@ -674,8 +674,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             vc2_mdl_y = results[7]
 
             if float(self.vunit) != 1.0:
-                vc1_mdl_y = [i * self.vunit for i in results[6]]
-                vc2_mdl_y = [i * self.vunit for i in results[7]]
+                vc1_mdl_y = [float(i) * self.vunit for i in results[6]]
+                vc2_mdl_y = [float(i) * self.vunit for i in results[7]]
 
         else:
             vc1_mdl_x = vc1_obs_x
@@ -684,8 +684,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             vc2_mdl_y = vc2_data[dcout_mdl_y_index]
 
             if float(self.vunit) != 1.0:
-                vc1_mdl_y = [i * self.vunit for i in vc1_data[dcout_mdl_y_index]]
-                vc2_mdl_y = [i * self.vunit for i in vc2_data[dcout_mdl_y_index]]
+                vc1_mdl_y = [float(i) * self.vunit for i in vc1_data[dcout_mdl_y_index]]
+                vc2_mdl_y = [float(i) * self.vunit for i in vc2_data[dcout_mdl_y_index]]
 
         if self.forcephase_chk.isChecked() or self.main_window.jdphs_combobox.currentText() == "Phase":
 
@@ -818,8 +818,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         residuals = mdl_data[dcout_residual_index]
 
         if curve.curve_type == "velocity" and float(self.vunit) != 1.0:
-            obs_y = [i * self.vunit for i in obs_y]
-            residuals = [i * self.vunit for i in residuals]
+            obs_y = [float(i) * self.vunit for i in obs_y]
+            residuals = [float(i) * self.vunit for i in residuals]
 
         mdl_x = None
         mdl_y = None
@@ -1040,14 +1040,14 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 mdl_y = results[y_index]
 
                 if float(self.vunit) != 1.0:
-                    mdl_y = [i * self.vunit for i in results[y_index]]
+                    mdl_y = [float(i) * self.vunit for i in results[y_index]]
 
         else:
             mdl_x = obs_x
             mdl_y = mdl_data[dcout_mdl_y_index]
 
             if curve.curve_type == "velocity" and float(self.vunit) != 1.0:
-                mdl_y = [i * self.vunit for i in mdl_data[dcout_mdl_y_index]]
+                mdl_y = [float(i) * self.vunit for i in mdl_data[dcout_mdl_y_index]]
 
             if curve.curve_type == "light":
                 dc_params = self.get_dc_params()
