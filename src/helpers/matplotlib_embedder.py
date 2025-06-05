@@ -137,7 +137,7 @@ class MatplotlibWidget:
     def toggle_grid(self):
 
         for ax in self.axes:
-            ax.grid(b=self.grid_checkbox.isChecked())
+            ax.grid(visible=self.grid_checkbox.isChecked())
 
         self.redraw()
 
