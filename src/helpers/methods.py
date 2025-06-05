@@ -413,7 +413,7 @@ def from_jd_to_phase(x, t0, p):
     :return: x in phases
     """
 
-    _x = [((jd - t0) / p) - int((jd - t0) / p) for jd in x]
+    _x = [((jd - t0) / p) % 1 for jd in x]
 
     return _x
 
@@ -447,7 +447,7 @@ def alias_phased_obs_with_phase(x, y, start, end):
     if len(x) != len(y):
         raise ValueError("x and y must be the same size.")
 
-    distance = int(start - min(x))
+    distance = int(start - min(x)) #- 1
     if (distance == 0 and min(x) > start) or (distance < 0 < min(x)):
         distance = distance - 1
 
