@@ -222,8 +222,8 @@ class LCIO(_WDIO):
                 self.parameters["hjd0"].format(15, 6, "F") + \
                 self.parameters["pzero"].format(17, 10, "D") + \
                 self.parameters["dpdt"].format(14, 6, "D") + \
-                self.parameters["pshift"].format(10, 4, "D") + \
-                self.parameters["delph"].format(8, 5, "F") + \
+                self.parameters["pshift"].format(10, 6, "D") + \
+                self.parameters["delph"].format(8, 5, "D") + \
                 self.parameters["nga"].format(3, 0, "") + \
                 self.parameters["stdev"].format(11, 4, "D") + \
                 self.parameters["noise"].format(2, 0, "") + \
@@ -695,8 +695,8 @@ class DCIO(_WDIO):
                 self.parameters["hjd0"].format(15, 6, "F") + \
                 self.parameters["pzero"].format(17, 10, "D") + \
                 self.parameters["dpdt"].format(14, 6, "D") + \
-                self.parameters["pshift"].format(10, 4, "D") + \
-                self.parameters["delph"].format(8, 5, "F") + \
+                self.parameters["pshift"].format(10, 6, "D") + \
+                self.parameters["delph"].format(8, 5, "D") + \
                 self.parameters["nga"].format(3, 0, "") + "\n"
 
         line9 = self.parameters["mode"].format(2, 0, "") + \
