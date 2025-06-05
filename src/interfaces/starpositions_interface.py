@@ -197,7 +197,7 @@ class Widget(QtWidgets.QWidget, starpositions_widget.Ui_StarPositionWidget):
         self.message_label.repaint()
 
     def update_progress_bar(self, value):
-        self.progressBar.setValue(value)
+        self.progressBar.setValue(int(value))
         self.progressBar.repaint()
 
     def render_stars(self):
