@@ -142,7 +142,7 @@ class Ui_LCDCPickerDialog(object):
         self.label_65.setText(_translate("LCDCPickerDialog", "WD Homepage:"))
         self.lineEdit.setText(_translate("LCDCPickerDialog", "github.com/Varnani/PyWD2015"))
         self.label_66.setText(_translate("LCDCPickerDialog", "GitHub:"))
-        self.lineEdit_2.setText(_translate("LCDCPickerDialog", "ftp://ftp.astro.ufl.edu/pub/wilson/"))
+        self.lineEdit_2.setText(_translate("LCDCPickerDialog", "github.com/rewilsonufl/ebmodel"))
         self.label_2.setText(_translate("LCDCPickerDialog", "PyWD2015 is a GUI for 2015 version of LC and DC programs of Wilson - Devinney (WD) eclipsing binary modeling code. PyWD2015 needs these programs to function. Please provide their paths below.\n"
 "\n"
 "Precompiled WD binaries and associated limb darkening tables are hosted on GitHub release page with permissions of Dr. Robert E. Wilson and Dr. Walter Van Hamme. You can also obtain source codes and limb darkening tables from the WD Homepage and compile LC and DC codes yourself."))
