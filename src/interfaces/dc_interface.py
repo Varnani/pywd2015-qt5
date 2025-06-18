@@ -1272,7 +1272,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             if math.isnan(val) is not True:
                 if par_id in (19.0, 20.0):
                     val = val * 10000.0
-                itm.setText(idx, str(val))
+                itm.setText(idx, f"{val:.10f}")
 
             else:
                 itm.setText(idx, "NaN")
@@ -1398,22 +1398,22 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                         item = QtWidgets.QTreeWidgetItem(self.curvestat_treewidget)
                         item.setText(0, os.path.basename(curves[index].filepath))
                         item.setText(1, str(int(row[1])))
-                        item.setText(2, str(row[2]))
+                        item.setText(2, f"{row[2]:.10f}")
                         item.setText(3, str(int(row[3])))
-                        item.setText(4, str(row[4]))
+                        item.setText(4, f"{row[4]:.10f}")
                 else:
                     for index, row in enumerate(self.curve_stats):
                         item = QtWidgets.QTreeWidgetItem(self.curvestat_treewidget)
                         if index != (len(self.curve_stats) - 1):
                             item.setText(0, os.path.basename(curves[index].filepath))
                             item.setText(1, str(int(row[1])))
-                            item.setText(2, str(row[2]))
+                            item.setText(2, f"{row[2]:.10f}")
                             item.setText(3, str(int(row[3])))
-                            item.setText(4, str(row[4]))
+                            item.setText(4, f"{row[4]:.10f}")
                         else:
                             item.setText(0, "Eclipse Times")
                             item.setText(1, str(int(row[1])))
-                            item.setText(2, str(row[2]))
+                            item.setText(2, f"{row[2]:.10f}")
             except IndexError:
                 msg = QtWidgets.QMessageBox()
                 msg.setIcon(msg.Warning)
