@@ -1608,7 +1608,7 @@ class Ui_MainWindow(object):
         self.t_pot_pot_otpt = QtWidgets.QDoubleSpinBox(self.groupBox_22)
         self.t_pot_pot_otpt.setReadOnly(True)
         self.t_pot_pot_otpt.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
-        self.t_pot_pot_otpt.setDecimals(10)
+        self.t_pot_pot_otpt.setDecimals(6)
         self.t_pot_pot_otpt.setMaximum(99999.0)
         self.t_pot_pot_otpt.setObjectName("t_pot_pot_otpt")
         self.verticalLayout.addWidget(self.t_pot_pot_otpt)

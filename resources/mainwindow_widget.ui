@@ -3639,7 +3639,7 @@ zero for zero output noise</string>
                     <enum>QAbstractSpinBox::NoButtons</enum>
                    </property>
                    <property name="decimals">
-                    <number>10</number>
+                    <number>6</number>
                    </property>
                    <property name="maximum">
                     <double>99999.000000000000000</double>
