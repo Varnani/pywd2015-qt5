@@ -69,7 +69,7 @@ def create_bandpass_menu(parent):
     bb.setObjectName("Bessel B")
     bv = bessel.addAction("V")
     bv.setObjectName("Bessel V")
-    br = bessel.addAction("R")
+    br = bessel.addAction("V")
     br.setObjectName("Bessel R")
     bi = bessel.addAction("I")
     bi.setObjectName("Bessel I")
