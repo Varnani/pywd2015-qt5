@@ -460,7 +460,7 @@ class Ui_DCWidget(object):
         self.vlr_ipt = QtWidgets.QDoubleSpinBox(self.tab_11)
         self.vlr_ipt.setMaximumSize(QtCore.QSize(16777215, 25))
         self.vlr_ipt.setDecimals(3)
-        self.vlr_ipt.setMaximum(1.0)
+        self.vlr_ipt.setMaximum(99.0)
         self.vlr_ipt.setSingleStep(0.01)
         self.vlr_ipt.setProperty("value", 1.0)
         self.vlr_ipt.setObjectName("vlr_ipt")
