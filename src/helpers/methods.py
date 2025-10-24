@@ -765,3 +765,11 @@ def compute_rv_semi_amplitudes(p, e, a, i, q):
     K1, K2 = "{:0.3f}".format(K1), "{:0.3f}".format(K2)
 
     return K1, K2
+
+def compute_sync_velocities(p, r1, r2):
+
+    V_sync_1 = 2.0*numpy.pi*r1*696000.0/(p*86400.0)
+    V_sync_2 = 2.0*numpy.pi*r2*696000.0/(p*86400.0)
+    V_sync_1, V_sync_2  = "{:0.1f}".format(V_sync_1), "{:0.1f}".format(V_sync_2)
+
+    return V_sync_1, V_sync_2
