@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>600</height>
+    <width>1003</width>
+    <height>619</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,51 +24,6 @@
        <string>Light Curve</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="2" colspan="2">
-        <widget class="QGroupBox" name="groupBox_3">
-         <property name="title">
-          <string>Options</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QCheckBox" name="light_plotmodel_chk">
-            <property name="toolTip">
-             <string>Compute and plot synthetic curve</string>
-            </property>
-            <property name="text">
-             <string>Plot Model</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="light_plotobs_chk">
-            <property name="toolTip">
-             <string>Include observation in plot</string>
-            </property>
-            <property name="text">
-             <string>Plot Observation</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="light_alias_chk">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If working with phase and output is set as phase, observations will be folded or cut to make observations fit into model boundaries.&lt;/p&gt;&lt;p&gt;If working with phase and output is set to JD, observations will be converted to JD and then folded or cut regarding to model boundaries.&lt;/p&gt;&lt;p&gt;If working with JD and output is set as phase, observations will be converted to phases and then folded or cut regarding to model boundaries.&lt;/p&gt;&lt;p&gt;If working with HJD and input is in HJD, nothing will be done.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="text">
-             <string>Alias Observation with Model</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="0" column="0" rowspan="3">
         <widget class="QGroupBox" name="groupBox_4">
          <property name="title">
@@ -95,11 +50,11 @@
             <property name="selectionMode">
              <enum>QAbstractItemView::SingleSelection</enum>
             </property>
-            <attribute name="headerDefaultSectionSize">
-             <number>53</number>
-            </attribute>
             <attribute name="headerMinimumSectionSize">
              <number>30</number>
+            </attribute>
+            <attribute name="headerDefaultSectionSize">
+             <number>53</number>
             </attribute>
             <attribute name="headerStretchLastSection">
              <bool>true</bool>
@@ -179,23 +134,10 @@
          </layout>
         </widget>
        </item>
-       <item row="2" column="2" colspan="2">
-        <widget class="QPushButton" name="light_plot_btn">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Plot</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="4">
-        <widget class="Line" name="line_3">
+       <item row="4" column="1">
+        <widget class="Line" name="line_6">
          <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+          <enum>Qt::Vertical</enum>
          </property>
         </widget>
        </item>
@@ -215,10 +157,82 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
-        <widget class="Line" name="line_6">
+       <item row="3" column="0" colspan="4">
+        <widget class="Line" name="line_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2" colspan="2">
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>Options</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QCheckBox" name="light_plotmodel_chk">
+            <property name="toolTip">
+             <string>Compute and plot synthetic curve</string>
+            </property>
+            <property name="text">
+             <string>Plot Model</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="light_plotobs_chk">
+            <property name="toolTip">
+             <string>Include observation in plot</string>
+            </property>
+            <property name="text">
+             <string>Plot Observation</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="light_alias_chk">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If working with phase and output is set as phase, observations will be folded or cut to make observations fit into model boundaries.&lt;/p&gt;&lt;p&gt;If working with phase and output is set to JD, observations will be converted to JD and then folded or cut regarding to model boundaries.&lt;/p&gt;&lt;p&gt;If working with JD and output is set as phase, observations will be converted to phases and then folded or cut regarding to model boundaries.&lt;/p&gt;&lt;p&gt;If working with HJD and input is in HJD, nothing will be done.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Alias Observation with Model</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="2" colspan="2">
+        <widget class="QPushButton" name="light_plot_btn">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Plot</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1" rowspan="3">
+        <widget class="Line" name="line">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2" colspan="2">
+        <widget class="Line" name="line_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
@@ -242,6 +256,9 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAsNeeded</enum>
+         </property>
          <property name="sizeAdjustPolicy">
           <enum>QAbstractScrollArea::AdjustIgnored</enum>
          </property>
@@ -257,6 +274,9 @@
          <property name="selectionBehavior">
           <enum>QAbstractItemView::SelectItems</enum>
          </property>
+         <property name="autoExpandDelay">
+          <number>-1</number>
+         </property>
          <property name="indentation">
           <number>5</number>
          </property>
@@ -269,17 +289,23 @@
          <property name="headerHidden">
           <bool>false</bool>
          </property>
+         <property name="expandsOnDoubleClick">
+          <bool>true</bool>
+         </property>
+         <attribute name="headerVisible">
+          <bool>true</bool>
+         </attribute>
          <attribute name="headerCascadingSectionResizes">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="headerDefaultSectionSize">
-          <number>110</number>
-         </attribute>
-         <attribute name="headerHighlightSections">
           <bool>false</bool>
          </attribute>
          <attribute name="headerMinimumSectionSize">
           <number>30</number>
+         </attribute>
+         <attribute name="headerDefaultSectionSize">
+          <number>125</number>
+         </attribute>
+         <attribute name="headerHighlightSections">
+          <bool>false</bool>
          </attribute>
          <attribute name="headerStretchLastSection">
           <bool>true</bool>
@@ -359,20 +385,16 @@
            <string>log (L2/L☉)</string>
           </property>
          </item>
-        </widget>
-       </item>
-       <item row="1" column="2" colspan="2">
-        <widget class="Line" name="line_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1" rowspan="3">
-        <widget class="Line" name="line">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
+         <item>
+          <property name="text">
+           <string>Vrot1 (km/s)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Vrot2 (km/s)</string>
+          </property>
+         </item>
         </widget>
        </item>
       </layout>

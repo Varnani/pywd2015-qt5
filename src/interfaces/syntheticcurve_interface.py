@@ -292,6 +292,9 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
                 sma = float(sma[1][0])
                 lum1, lum2, log_lum1, log_lum2 = methods.compute_luminosity(teffs[0], teffs[1], absolute_params[2][0],
                                                                             absolute_params[2][1])
+
+                V_sync_1, V_sync_2 = methods.compute_sync_velocities(self.main_window.p0_ipt.value(),
+                                                float(absolute_params[2][0]), float(absolute_params[2][1]))
                 # self.light_treewidget_2.clear()
                 item = self.light_treewidget_2
 
@@ -309,8 +312,10 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
                 dd = str(absolute_params[3][1])
                 ee = str(log_lum1)
                 ff = str(log_lum2)
+                gg = str(V_sync_1)
+                hh = str(V_sync_2)
 
-                for index, val in enumerate((sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff)):
+                for index, val in enumerate((sma, a, b, c, d, e, f, aa, bb, cc, dd, ee, ff, gg, hh)):
                     if val == "nan":
                         item.topLevelItem(index).setBackground(index, QtGui.QBrush(QtGui.QColor("red")))
                         val = "NaN"
