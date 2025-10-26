@@ -86,7 +86,7 @@ After installing required dependencies, you can get the source code of the progr
 python pywd2015.py
 ```
 
-To run calculations, you need to provide the paths of compiled DC and LC programs of the Wilson - Devinney code. Precompiled versions are hosted here with the permission of Dr. Robert E. Wilson. These too can be found on the "Releases" page. You can also compile the WD binaries yourself. Source files can be found at ftp://ftp.astro.ufl.edu/pub/wilson/lcdc2015/ (the WD Homepage).
+To run calculations, you need to provide the paths of compiled DC and LC programs of the Wilson - Devinney code. Precompiled versions are hosted here with the permission of Dr. Robert E. Wilson. These too can be found on the "Releases" page. You can also compile the WD binaries yourself. Source files can be found at https://github.com/rewilsonufl/ebmodel/ (the WD github Homepage).
 
 GUI is mostly self-explanatory, and most labels contain tooltips, but "Releases" page also contains a user manual. While this manual is based on a deprecated, Qt4 version of PyWD2015, nearly all the concepts discussed there also applies to the Qt5 version.
 
