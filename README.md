@@ -1,13 +1,15 @@
 # PyWD2015-Qt5
 A Qt5 GUI written in Python for Wilson - Devinney eclipsing binary modeling software.
 
+UPDATE: The version 1.0.0 has now some small but useful updates. Check the source code or precompiled windows executable file available [here](https://github.com/Varnani/pywd2015-qt5/releases/download/v1.0.0/pywd2015_win64bit_1November2025.exe).
+
 IMPORTANT NOTE: TESS bandpass was added to PyWD2015. However, users must get updated atmosphere and limb darkening files from https://faculty.fiu.edu/~vanhamme/wdfiles/lcdc-datafiles-2019.tar.gz in order to run PyWD2015 properly.
 
 PyWD2015 v1.0.0 is released (16th August 2022). Please visit [releases](https://github.com/Varnani/pywd2015-qt5/releases) page and [download](https://github.com/Varnani/pywd2015-qt5/releases/download/v1.0.0/wd-precompiled.zip) all required files, including executable binaries, auxiliary files and source codes. 
 
 A comprehensive user manual is also available in [this link](https://github.com/Varnani/pywd2015-qt5/releases/download/v1.0.0/PyWD2015_qt5_manual.pdf).
 
-Single executable file is [available](https://github.com/Varnani/pywd2015-qt5/releases/download/v1.0.0/pywd2015_win64bit_16August2022.exe) for Windows 7, 8.x and 10 (all 64 bit) operating systems.
+Single executable file is [available](https://github.com/Varnani/pywd2015-qt5/releases/download/v1.0.0/pywd2015_win64bit_1November2025.exe) for Windows 7, 8.x, 10 and 11 (all 64 bit) operating systems.
 
 ## First Things First
 If you happen to use this software in a scientific work, please cite PyWD2015 release proceeding:  
