@@ -1,7 +1,7 @@
 # PyWD2015-Qt5
 A Qt5 GUI written in Python for Wilson - Devinney eclipsing binary modeling software.
 
-UPDATE: The version 1.0.0 has now some small but useful updates. Check the source code or precompiled windows executable file available [here](https://github.com/Varnani/pywd2015-qt5/releases/download/v1.0.0/pywd2015_win64bit_1November2025.exe).
+UPDATE: Version 1.0.0 now has some small but useful updates. Download and try the source code or the precompiled Windows executable file available [here](https://github.com/Varnani/pywd2015-qt5/releases/download/v1.0.0/pywd2015_win64bit_1November2025.exe).
 
 IMPORTANT NOTE: TESS bandpass was added to PyWD2015. However, users must get updated atmosphere and limb darkening files from https://faculty.fiu.edu/~vanhamme/wdfiles/lcdc-datafiles-2019.tar.gz in order to run PyWD2015 properly.
 
