@@ -1,0 +1,93 @@
+{
+  "release_url": "https://github.com/Varnani/pywd2015-qt5/releases/tag/v1.0.0",
+  "archive_sha256": "5bfa347dfcaf858e5cf3c3bcd8bbc9adf2ce553906df5a32e0bd519f49279116",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "python": "3.12.11",
+  "base_source": "756aab0d6af826ddd857fb850ae226c6ff0d0bda",
+  "description": "Real Windows release LC velocity and DC fit: e=0.2, inclination=85 deg, period=2 d, a=5 Rsun, q=0.8, T1=6500 K, T2=6000 K, potentials=5. 21 observations with +0.5 km/s offset; DC fits a and systemic velocity. Generated with corrected source; reproducibility reference, not independent physics certification.",
+  "engine_sha256": {
+    "dc_source.f": "173a81f1de72a435486d484e4cab296216f62d3d3d25b134904eca544fefb53b",
+    "dc_static_win64bit.exe": "087731b6736e62aec56b3d25f1f60d1f6183c40c7499ec04848910bb1985ed00",
+    "lc_source.f": "f81fa90d2851f0cef69a3a38d7ae573fdc6ff12740a5245b5d6e81347cfc5173",
+    "lc_static_win64bit.exe": "a43d620684b5bd9a7e7e697a244a15deb5ecc861709ea5b283d6b03452fe14c5"
+  },
+  "auxiliary_sha256": {
+    "atmcof.dat": "ce39a6ff81bd78c6ef7212862d94b240472da33ab796a1167df17c253460a2f9",
+    "atmcofplanck.dat": "6071a8c7fafcd6a4dd8ebcb32a9784165738fcf36abdbaa66ec799ef391f655c",
+    "critout.tab": "19f67096813e79955899efc38b9e4a940fa5cbb4ec0290627e13e8c4ee74b428",
+    "effwvl.dat": "a56cd1b99911069acfedd02b9a3364e58160759777dd3abafa7fe4ede167cb05",
+    "limcof_bp_m01.dat": "1f380f91182740ecf2dfff6d86a0f9b7ee2a706c09c304a01c5d9c4018472818",
+    "limcof_bp_m02.dat": "7489da5f6472264f184452ec100639a19ee279c440cb04c241be1649ec5c6809",
+    "limcof_bp_m03.dat": "91c5aa3867ed5cb25424659fcd5f87b68fdcb11174ec783867f9ed6dd5036239",
+    "limcof_bp_m05.dat": "c2c56a7d854ba4f2b2e754c1c7853e2cad21c464a1f5601d5e80926530c5b995",
+    "limcof_bp_m10.dat": "c11d7e1d72dac8f0a39a761e481bdef4f0734c85d2e4ee695b1e8c49657a30ed",
+    "limcof_bp_m15.dat": "381bf656ff94afd3c655a3a26128a2aa8aa9da38514ab18ff5d282dc85ce326b",
+    "limcof_bp_m20.dat": "097370291baacae57c03e4df14315ba9e171aec532d3773a3a2779ce93d87789",
+    "limcof_bp_m25.dat": "6cae563c04d6f1344ed346c9237e8d88e98849a341cf8faaf5c888a5c62fe4a7",
+    "limcof_bp_m30.dat": "d11376324649cfd6311e4ad0502b6b803faf4185c5d0beb28f3f6a1642bf3610",
+    "limcof_bp_m35.dat": "fc8fff0c0dfc4824d98893b5d2d436f1dc630bbf1d91c9eecf90d121e9e49708",
+    "limcof_bp_m40.dat": "f027266f09a43a9ff997186ffde3366dbfb841b1adde64fff6bc79d5a8eeea25",
+    "limcof_bp_m45.dat": "ad772aaf6e6c1bb401a5c2c3e664bf51fc2f01a98568af32466ce2bde0ba1e5b",
+    "limcof_bp_m50.dat": "d6a6dd6a031d4b7e0f4f8ff345fd7e1c9f360480130b2b7ded31dfd2a132cefd",
+    "limcof_bp_p00.dat": "7eac7341d9ccb5b076c0b9ca2d88a7339d875c40fde9fbba310189772723f9e7",
+    "limcof_bp_p01.dat": "3a548def79096342be57a605c52b57dde78cfdf1e156d08f45ec44f887c7915c",
+    "limcof_bp_p02.dat": "54579e02cf9c71791f65db16e95b0381851bf105269dfd11dc2fee33685e4e7e",
+    "limcof_bp_p03.dat": "a8d4a63698ae6492bcde7b064305117289c58cae41aafc8ef1f7eba31e54682c",
+    "limcof_bp_p05.dat": "5de6b37e7451a70ed4d3aad4d2b8ef62e614d8213970b3056448274e08135776",
+    "limcof_bp_p10.dat": "4c239017b3b966bd21e4f7e1e8d0a2c20c33b436bd0e7b1bd389488256d0c6d5",
+    "limcof_bp_preamble_m01.dat": "d40d1b2190992f043c8ab93f7a21577aa79e41758cfa32f322fd3de50811a4eb",
+    "limcof_bp_preamble_m02.dat": "d40d1b2190992f043c8ab93f7a21577aa79e41758cfa32f322fd3de50811a4eb",
+    "limcof_bp_preamble_m03.dat": "d40d1b2190992f043c8ab93f7a21577aa79e41758cfa32f322fd3de50811a4eb",
+    "limcof_bp_preamble_m05.dat": "d40d1b2190992f043c8ab93f7a21577aa79e41758cfa32f322fd3de50811a4eb",
+    "limcof_bp_preamble_m10.dat": "5d522085271662c267899b452f2b61307ac56a179fa25a2791aab3d5ff110694",
+    "limcof_bp_preamble_m15.dat": "610d6b9d6367fc212e43cc276a4cccb6288294c34229a8bf6fa0ef06edb03872",
+    "limcof_bp_preamble_m20.dat": "f0440a8e0ae765ed3e3e10a865b61470568538a1eb3eb64160edb4b1bf0b02c7",
+    "limcof_bp_preamble_m25.dat": "ca01eb30001901bc9a8271b0069d2289e036ecec89bcee546971bfe1d2492b41",
+    "limcof_bp_preamble_m30.dat": "75a053a1cf334c4fc9f22fa03c740b9916ac45de97adc99969a433bbd8dc3c93",
+    "limcof_bp_preamble_m35.dat": "4e45be4b9d12067c74cd12ea626fbd1a128a895f5cd7133cd6e238b3c1ff5e7d",
+    "limcof_bp_preamble_m40.dat": "fda5059bab101f0eeb93b11a9d3dd381b15875f078288208eb3910b0f452c298",
+    "limcof_bp_preamble_m45.dat": "834ced24b592211b33e5789f84ec45eec7a9df9e9f0d9143bf977b59be3d4175",
+    "limcof_bp_preamble_m50.dat": "76efd05a72dbdff80d68acd960aa76b64be2bda1a47a5a5c04c966b201f49eed",
+    "limcof_bp_preamble_p00.dat": "46539d5172e74d0bcfa84ec9caee7af0f28a184ee11b6368e0d03c8917693b55",
+    "limcof_bp_preamble_p01.dat": "a7820cac7dce376f21ef92db394f85878606213162291a889c793ae445aabd2d",
+    "limcof_bp_preamble_p02.dat": "28544ea49e1d15c60ee2d4d2dbb464d17eb4d72336e30de31a0367dd8376c7ac",
+    "limcof_bp_preamble_p03.dat": "1dae07319f2291f738e382b07d19acead2d58e1f607771a314c577dfb532ffe8",
+    "limcof_bp_preamble_p05.dat": "55fa0bad6ac809c2d762c2146f8160a3be13febcbb59f9b5d5395db6e731988f",
+    "limcof_bp_preamble_p10.dat": "3bb6e021ee19e8c8f20e5423e2efe7c29b1ce3a36cffdc5c770937ad5a7a47da"
+  },
+  "fixture_sha256": {
+    "dc-mode1-ifoc0-niter2/dcin.active": "f79ddf78fe5ae7ff6d1a3ca5a41b3ec2eabebdd3425139a3b9a304023953405a",
+    "dc-mode1-ifoc0-niter2/dcout.active": "15391baa588c714979c1a88350fbdbe0ea114f0ee9d90165115997bdbdf34de2",
+    "dc-mode1-ifoc1-niter2/dcin.active": "f26581618ccafeb9a83ddbd9b5dc4054fc7b3e1b4edb74a38b5896e61e67cf47",
+    "dc-mode1-ifoc1-niter2/dcout.active": "f2d101cfae901d2609232cc2ccaff3292aa27b28f038c4f1af1c8ae4ef95f665",
+    "dc-mode2-ifoc0-niter2/dcin.active": "87e42532bfa1ce79c8d30ea0c43433dfaa2525fc9c2571dfc525afd3e5d515ff",
+    "dc-mode2-ifoc0-niter2/dcout.active": "b02645365234268f2b821c6f97dd3aec80fe1b92b383f9ee7fe2bb615a47c874",
+    "dcin.active": "a8c8f2c56d84253a9d06fd1245dd0e9ceda95a229f2ba6adda743b89e370d74d",
+    "dcout.active": "6c93b188eb3e769b5b7823a799188b26094ba35fbadf3d273c516c586b7245f5",
+    "lcin.active": "135b908a298d6d36461dfe68bdfb91ac7a4e29a418725d57a353a491d97ba64b",
+    "lcout.active": "8ae7985283a06ed2718f7f4a5fbd9eea0627133db972b289b23971c74e33a92f"
+  },
+  "additional_cases": [
+    {
+      "jdphs": 1,
+      "ifoc": 1,
+      "niter": 2,
+      "directory": "dc-mode1-ifoc1-niter2",
+      "final_systemic_velocity_km_s": 0.500000622
+    },
+    {
+      "jdphs": 2,
+      "ifoc": 0,
+      "niter": 2,
+      "directory": "dc-mode2-ifoc0-niter2",
+      "final_systemic_velocity_km_s": 0.500000622
+    },
+    {
+      "jdphs": 1,
+      "ifoc": 0,
+      "niter": 2,
+      "directory": "dc-mode1-ifoc0-niter2",
+      "final_systemic_velocity_km_s": 0.500000622
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import inspect
+from PyQt5.QtCore import QStandardPaths
 import os
 
 
@@ -8,8 +8,10 @@ CONFIG_VERSION = "0.2.0"
 EXPORT_DELIMITER = "\t"
 
 # paths
-MAIN_DIR = os.path.dirname(os.path.abspath(inspect.stack()[-1][1]))  # script dir
-PYWD_CONFIG_PATH = os.path.join(MAIN_DIR, "pywd_config.dat")
+MAIN_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+LEGACY_CONFIG_PATH = os.path.join(MAIN_DIR, "pywd_config.dat")
+CONFIG_DIR = os.path.join(QStandardPaths.writableLocation(QStandardPaths.GenericConfigLocation), "PyWD2015")
+PYWD_CONFIG_PATH = os.path.join(CONFIG_DIR, "pywd_config.dat")
 RESOURCES_DIR = os.path.join(MAIN_DIR, "resources")
 MAIN_ICON_PATH = os.path.join(RESOURCES_DIR, "pywd.ico")
 PLAY_ICON_PATH = os.path.join(RESOURCES_DIR, "play.png")

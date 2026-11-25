@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtGui
 from gui import eclipsetimings_widget
 from src.helpers import methods, messenger
+from src.helpers.observations import read_timings
 import numpy
 from src import constants
 
@@ -27,44 +28,23 @@ class Widget(QtWidgets.QWidget, eclipsetimings_widget.Ui_EclipseWidget):
             self.load_timings(filepath)
 
     def get_data(self):
-        data = numpy.loadtxt(self.filepath_label.text(), unpack=True)
-
-        if len(data) == 2:
-            _ = list(data)
-            _.append([])
-            data = numpy.array(_)
-
-        if self.constant_weight_checkbox.isChecked():
-            data[2] = numpy.ones(len(data[1]))
-
-        return data
+        return read_timings(self.filepath_label.text(), self.constant_weight_checkbox.isChecked())
 
     def load_timings(self, filepath):
         try:
-            data = numpy.loadtxt(filepath, unpack=True)
-            if 1 > len(data):
-                raise IndexError("File has less than 2 columns.")
-
-        except ValueError as e:
-            msg = messenger.Messenger("error", "A ValueError has occured:")
-            msg.set_info(e.args[0] + "\nEclipse times are not loaded.")
+            data = read_timings(filepath, self.constant_weight_checkbox.isChecked())
+        except (ValueError, OSError) as error:
+            msg = messenger.Messenger("error", "Eclipse times could not be loaded:")
+            msg.set_info(str(filepath) + "\n" + str(error))
             msg.show()
             return False
-
-        except IndexError as e:
-            msg = messenger.Messenger("error", "An IndexError has occured:")
-            msg.set_info(e.args[0] + "\nEclipse times are not loaded.")
-            msg.show()
-            return False
-
         self.datawidget.clear()
-
-        for row_idx in range(len(data[0])):
+        for row in data.T:
             item = QtWidgets.QTreeWidgetItem(self.datawidget)
-            for col_idx in range(len(data)):
-                item.setText(col_idx, str(data[col_idx][row_idx]))
-
+            for column, value in enumerate(row):
+                item.setText(column, str(value))
         self.filepath_label.setText(filepath)
+        return True
 
     def clear_timings(self):
         self.datawidget.clear()

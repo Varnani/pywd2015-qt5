@@ -95,6 +95,7 @@ class Widget(QtWidgets.QWidget, starpositions_widget.Ui_StarPositionWidget):
         elif self.roche_groupbox.isChecked():
             self.plot_roche()
 
+    @methods.handle_errors
     def plot_positions(self):
         self.chart.set_axis_title("Star Positions")
 
@@ -122,7 +123,7 @@ class Widget(QtWidgets.QWidget, starpositions_widget.Ui_StarPositionWidget):
         w = self.main_window.perr0_ipt.value()
         e = self.main_window.e_ipt.value()
         q = self.main_window.q_ipt.value()
-        phase = self.main_window.p0_ipt.value()
+        phase = self.phase_spinbox.value()
         pshift = self.main_window.pshift_ipt.value()
         pot1 = self.main_window.pot1_ipt.value()
         pot2 = self.main_window.pot2_ipt.value()
@@ -200,6 +201,7 @@ class Widget(QtWidgets.QWidget, starpositions_widget.Ui_StarPositionWidget):
         self.progressBar.setValue(int(value))
         self.progressBar.repaint()
 
+    @methods.handle_errors
     def render_stars(self):
         increment = None
         fmt = None
@@ -211,7 +213,8 @@ class Widget(QtWidgets.QWidget, starpositions_widget.Ui_StarPositionWidget):
             increment = self.main_window.lc_jd_incr_ipt.value()
             fmt = "{:7.6f}"
 
-            iterations = int((mx - mn) / increment)
+            from src.helpers.observations import validate_interval
+            iterations = validate_interval(mn, mx, increment)
 
         elif self.main_window.phase_radiobtn.isChecked():
             mn = self.main_window.lc_phs_start_ipt.value()
@@ -219,7 +222,8 @@ class Widget(QtWidgets.QWidget, starpositions_widget.Ui_StarPositionWidget):
             increment = self.main_window.lc_phs_incr_ipt.value()
             fmt = "{:4.3f}"
 
-            iterations = int((mx - mn) / increment)
+            from src.helpers.observations import validate_interval
+            iterations = validate_interval(mn, mx, increment)
 
         if iterations > 500:
             msg = QtWidgets.QMessageBox()
@@ -242,6 +246,8 @@ class Widget(QtWidgets.QWidget, starpositions_widget.Ui_StarPositionWidget):
 
         results = lc_io.fill_for_star_positions().save().run().read_star_positions()
 
+        if not results:
+            raise ValueError("LC returned no animation frames.")
         self.rendered_frames = []
 
         self.update_message_label("Rendering plots...")
@@ -250,7 +256,7 @@ class Widget(QtWidgets.QWidget, starpositions_widget.Ui_StarPositionWidget):
         current_progress = 0.0
 
         for idx, result in enumerate(results):
-            qpixmap = self.render_frame(result[0], result[1], increment * idx, fmt=fmt)
+            qpixmap = self.render_frame(result[0], result[1], mn + increment * idx, fmt=fmt)
             self.rendered_frames.append(qpixmap)
 
             current_progress = current_progress + progress_increment
@@ -263,6 +269,7 @@ class Widget(QtWidgets.QWidget, starpositions_widget.Ui_StarPositionWidget):
 
         self.single_frame = False
 
+    @methods.handle_errors
     def render_single(self):
         lc_params = self.main_window.get_lc_params()
 

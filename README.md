@@ -26,59 +26,25 @@ You must also properly cite relevant Wilson - Devinney papers:
 
 ## Installing Dependencies
 
-> **WARNING** | Some Linux distributions use Python 3.x as their default Python interpreter. In that case 'python' command and package name prefix will actually refer to Python 3.x and 'python2' will refer to Python 2.7. Please refer to your distributions package manager database if you are unsure. On Windows, multiple Python installations may conflict with each other, and your 'python' command might run a different version rather than what you intented. Run 'python --version' from command line to check your Python version. 
+Use CPython **3.12** in a dedicated virtual environment. Python 2.7 and older Python 3 releases are no longer supported by this source tree. PyQt5 is retained; a Qt6 migration is not required.
 
-PyWD2015 supports Python 2.7 and 3.5+. It also relies on Numpy, Scipy, Matplotlib libraries. These libraries can be installed using pip, the Python package installer. Pip should be automatically installed alongside Python on Windows. On Linux, you may need to install pip with your package manager. On Ubuntu and Debian, you can issue:
-
-```shell
-(For Python 2.7) sudo apt install python-pip
-(For Python 3.x) sudo apt install python3-pip
-```   
-
-to install pip. You can then install the dependencies with the following command:  
-
-```shell
-Linux: 
-(For Python 2.7) sudo python -m pip install numpy scipy matplotlib
-(For Python 3.x) sudo python3 -m pip install numpy scipy matplotlib
-
-Windows:
-python -m pip install numpy scipy matplotlib
+```sh
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# Linux: source .venv/bin/activate
+python -m pip install --require-hashes -r requirements.lock
+python pywd2015.py
 ```
 
-On Debian, you may encounter a "backports.functools_lru_cache" and/or "tkinter" error on a fresh matplotlib installation under Python 2.7. To fix this, you can issue:  
+The lock includes the full runtime dependency set, with platform-specific Qt packages. Development checks use `requirements-dev.lock` and `python -m pytest`. The Windows source path is validated with CPython 3.12.11 and offscreen Qt; Linux CI is configured but has not been executed locally. Interactive platform acceptance and native Qt security are separate from Python package advisory results.
 
-```shell
-sudo apt install python-backports.functools-lru-cache python-tk
-```  
+Each calculation uses a private temporary job directory and copies the WD `.dat`/`.tab` auxiliary files from the executable directory. Keep those data files beside the selected LC/DC binaries. The executable directory is never used for job output. The last LC/DC input and output buttons open the current session's private job files, which are temporary. Application settings are written to the user's config directory; legacy adjacent config is still readable.
 
-After that, you need to install the PyQt5 library.
+LC calculations show a cancellable modal progress window; the Qt event loop remains responsive. Its time limit defaults to 60 minutes and can be changed while running. DC has the same configurable limit in its calculation controls. Failed, timed-out and cancelled jobs do not enter result/history publication.
 
-### Linux
-Installing PyQt5 on Linux depends on your distribution and package manager. In general, you should not use pip to install PyQt5, instead use your distributions package manager. On Ubuntu and Debian you can use:  
+Project loading validates all saved fields and observation references before applying state. Project files keep the existing INI format and literal `%` text. Calendar conversion uses the historical Julian/Gregorian transition: Julian through 1582-10-04, Gregorian from 1582-10-15; the intervening dates are rejected. Supported calendar years are 1–9999. No local timezone, JD/HJD or time-scale conversion is implied.
 
-```shell
-(For Python 2.7) sudo apt install python-pyqt5
-(For Python 3.x) sudo apt install python3-pyqt5
-```  
-
-### Windows
-You can safely use pip to install PyQt5 on Windows 7 and Windows 8.x operating systems:  
-
-```shell
-python -m pip install python-qt5
-```  
-
-However, for the latest versions of Python (3.7+) Windows 10 users may have to modify 
-the command as shown below:
-
-```shell
-python -m pip install PyQT5
-```  
-
-In some Windows operating systems with older Python versions (especially 3.5 or 3.6), users may experience "dll import error" when trying to run PyWD2015. This issue is usually related to PyQT5 and may not have a unique reason. In many case, finding a solution might be time-consuming. In order to avoid this issue, uninstalling the older version and then installing the latest available Python version is strongly recommended. After that, users should install required libraries as described above, as well as PyQT5. 
-
-PyWD2015 has not been tested on Windows 11 yet.
+See [audit validation](docs/audit-validation.md) for the per-finding evidence, native engine provenance and remaining limits. New releases must include a clean source commit, `tools/release_manifest.py` output and an SBOM; no new application executable is produced by these source corrections.
 
 ## Getting Started
 
