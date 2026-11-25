@@ -25,7 +25,7 @@ def main():
     manifest = {
         'source_commit': git('rev-parse', 'HEAD'),
         'source_dirty': bool(git('status', '--porcelain')),
-        'source_sha256': {str(path.relative_to(root)): digest(path) for path in paths
+        'source_sha256': {path.relative_to(root).as_posix(): digest(path) for path in paths
                           if path.is_file() and path.resolve() != args.output.resolve()},
         'engine_sha256': {path.name: digest(path) for path in sorted(args.engine_dir.iterdir()) if path.is_file()},
         'python_dependencies': {package: importlib.metadata.version(package)
