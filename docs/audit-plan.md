@@ -11,8 +11,11 @@ Source: user-provided PyWD2015 Qt5 audit, baseline 756aab0d6af826ddd857fb850ae22
 - [x] M01–M03/M06: pinned dependencies, Windows/Linux CI, resource/config locations, release provenance tooling.
 - [x] Final: run full regression suite, dependency audit, native LC/DC fixture checks, independent review; report any unverified acceptance criteria.
 
-Keep the MIT license and existing physics/formats. No upstream push, release or desktop interaction is authorized by this request. Each nontrivial correction gets a failing regression test before implementation. Native engine validation must be distinguished from controlled process fixtures.
+Keep the MIT license and existing physics/formats. The 2026-11-28 follow-up authorizes pushing the correction branch and opening an upstream PR; release and desktop interaction are outside this request. Each nontrivial correction gets a failing regression test before implementation. Native engine validation must be distinguished from controlled process fixtures.
 
 Ruling: Roche uses an explicitly labeled selectable phase, separate from orbital period; reuse a shared control outside either mode group.
 
 Validation boundaries and externally unexecuted checks are recorded in audit-validation.md; CI/native scientific certification are not claimed complete.
+
+- [x] PR follow-up: reproduce/fix final-iteration curve statistics, independently review lifecycle, and generate real wide native phase/time fixtures.
+- [x] Final expanded Windows suite: 112 passed with native engines; repeat locally and inspect Windows/Linux CI during PR submission.

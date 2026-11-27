@@ -36,7 +36,7 @@ python -m pip install --require-hashes -r requirements.lock
 python pywd2015.py
 ```
 
-The lock includes the full runtime dependency set, with platform-specific Qt packages. Development checks use `requirements-dev.lock` and `python -m pytest`. The Windows source path is validated with CPython 3.12.11 and offscreen Qt; Linux CI is configured but has not been executed locally. Interactive platform acceptance and native Qt security are separate from Python package advisory results.
+The lock includes the full runtime dependency set, with platform-specific Qt packages. Development checks use `requirements-dev.lock` and `python -m pytest`. The Windows source path is validated with CPython 3.12.11 and offscreen Qt; Windows/Linux CI runs on each push and pull request; Windows additionally executes the hash-verified reference WD engines. Interactive platform acceptance and native Qt security are separate from Python package advisory results.
 
 Each calculation uses a private temporary job directory and copies the WD `.dat`/`.tab` auxiliary files from the executable directory. Keep those data files beside the selected LC/DC binaries. The executable directory is never used for job output. The last LC/DC input and output buttons open the current session's private job files, which are temporary. Application settings are written to the user's config directory; legacy adjacent config is still readable.
 

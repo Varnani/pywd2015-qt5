@@ -65,7 +65,11 @@
     "dcin.active": "a8c8f2c56d84253a9d06fd1245dd0e9ceda95a229f2ba6adda743b89e370d74d",
     "dcout.active": "6c93b188eb3e769b5b7823a799188b26094ba35fbadf3d273c516c586b7245f5",
     "lcin.active": "135b908a298d6d36461dfe68bdfb91ac7a4e29a418725d57a353a491d97ba64b",
-    "lcout.active": "8ae7985283a06ed2718f7f4a5fbd9eea0627133db972b289b23971c74e33a92f"
+    "lcout.active": "8ae7985283a06ed2718f7f4a5fbd9eea0627133db972b289b23971c74e33a92f",
+    "dc-mode2-ifoc1-wide35/dcin.active": "caae7c1cf36455f20c9f3275cea1d845de40c97c23ba275eda1d7e6ada3dfeaf",
+    "dc-mode2-ifoc1-wide35/dcout.active": "8b33e5bc5e7f314fa336a2797b7d2cb09c09e7c28175d00b22ca18aaff0e5f94",
+    "dc-mode1-ifoc1-wide37/dcin.active": "46f22aa1cbb8c71fdfc56753bdcd06b5fe739aa23db3abf8280dff957b5d1c34",
+    "dc-mode1-ifoc1-wide37/dcout.active": "f99e9ba09bda606e29cdf2faaea887f5acd209a464bd5b66a6dce107f51973ad"
   },
   "additional_cases": [
     {
@@ -89,5 +93,28 @@
       "directory": "dc-mode1-ifoc0-niter2",
       "final_systemic_velocity_km_s": 0.500000622
     }
-  ]
+  ],
+  "wide_cases": [
+    {
+      "directory": "dc-mode2-ifoc1-wide35",
+      "jdphs": 2,
+      "ifoc": 1,
+      "niter": 1,
+      "fitted_parameters": 35,
+      "observations": 735,
+      "logical_columns": 39,
+      "output_luminosity": 1.0086008038
+    },
+    {
+      "directory": "dc-mode1-ifoc1-wide37",
+      "jdphs": 1,
+      "ifoc": 1,
+      "niter": 1,
+      "fitted_parameters": 37,
+      "observations": 777,
+      "logical_columns": 42,
+      "output_luminosity": 1.0086008038
+    }
+  ],
+  "wide_case_description": "Real release DC binary, independent 21-point light curves of the same eccentric reference system, fitting L1 (parameter 56) for each curve. Observations are reference LC total flux plus 0.001. Phase 35-parameter output wraps after 38 fields; time 37-parameter output wraps after 41. Input files reproduce both cases with the hashed engine/data set."
 }

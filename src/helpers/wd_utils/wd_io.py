@@ -917,9 +917,24 @@ class DCIO(_WDIO):
             self._read_table(StringIO(self._final_result_tail()), header), 3)
 
     def read_curve_stats(self):
-        curve_stats = self._read_table(self._get_output_path(),
-                                 "    Curve   No. of obs.        Std. dev.",
-                                 tidy=False)
+        import math
+        from io import StringIO
+        with open(self._get_output_path()) as source:
+            text = source.read()
+        result_header = "Input-Output in F Format"
+        result_position = text.rfind(result_header)
+        previous_result = text.rfind(result_header, 0, result_position)
+        header = "    Curve   No. of obs.        Std. dev."
+        position = text.rfind(header, 0, result_position)
+        if result_position == -1 or position <= previous_result:
+            raise ValueError("No curve statistics for the selected DC solution.")
+        curve_stats = self._read_table(StringIO(text[position:result_position]), header, tidy=False)
+        # Eclipse, velocity and light curves have 3, 5 and 7 fields respectively.
+        if not curve_stats or any(
+                len(row) not in (3, 5, 7) or
+                any(not isinstance(value, (int, float)) or not math.isfinite(value) for value in row)
+                for row in curve_stats):
+            raise ValueError("Malformed or non-finite DC curve statistics.")
         return curve_stats
 
     def read_component_dimensions(self):

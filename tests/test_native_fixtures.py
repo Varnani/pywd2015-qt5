@@ -147,3 +147,62 @@ def test_truncated_final_solution_never_borrows_previous_stats(tmp_path):
     second=text[:text.index('   Mean residual for input values')]
     Path(io._get_output_path()).write_text(text+second)
     with pytest.raises(ValueError):io.read_solution_stats()
+
+
+def test_curve_stats_match_final_native_iteration(tmp_path):
+    params = DCParameterContainer()
+    params.keeps['niter'] = 2
+    io = DCIO(params, str(tmp_path), 'unused')
+    fixture = ROOT / 'dc-mode1-ifoc1-niter2' / 'dcout.active'
+    shutil.copyfile(fixture, io._get_output_path())
+    stats = io.read_curve_stats()
+    assert stats[0][1] == 21
+    assert stats[0][2] == pytest.approx(0.000025119343)
+
+
+@pytest.mark.parametrize('replacement', [None, '      1           21        invalid'])
+def test_final_curve_stats_cannot_borrow_previous_or_publish_invalid(tmp_path, replacement):
+    params = DCParameterContainer()
+    params.keeps['niter'] = 2
+    io = DCIO(params, str(tmp_path), 'unused')
+    text = (ROOT / 'dc-mode1-ifoc1-niter2' / 'dcout.active').read_text()
+    header = '    Curve   No. of obs.        Std. dev.'
+    start = text.rfind(header)
+    end = text.index('\n \n', start)
+    if replacement is None:
+        text = text[:start] + text[end:]
+    else:
+        row_start = text.index('\n', start) + 1
+        text = text[:row_start] + replacement + text[end:]
+    Path(io._get_output_path()).write_text(text)
+    with pytest.raises(ValueError):
+        io.read_curve_stats()
+
+
+@pytest.mark.parametrize('mode,nparams,columns', [(2, 35, 39), (1, 37, 42)])
+@pytest.mark.parametrize('execute', [False, True], ids=['golden', 'native'])
+def test_native_wide_dc_records(tmp_path, mode, nparams, columns, execute):
+    import os
+    engine_dir = os.environ.get('PYWD_ENGINE_DIR')
+    if execute and not engine_dir:
+        pytest.skip('Set PYWD_ENGINE_DIR for optional native binary integration checks.')
+    params = DCParameterContainer()
+    params['jdphs'] = mode
+    io = DCIO(params, engine_dir or str(tmp_path), 'dc_static_win64bit.exe')
+    fixture = ROOT / f'dc-mode{mode}-ifoc1-wide{nparams}'
+    if execute:
+        io._input = (fixture / 'dcin.active').read_text()
+        io.timeout = 180
+        io.save().run()
+    else:
+        shutil.copyfile(fixture / 'dcout.active', io._get_output_path())
+    results = io.read_results()
+    assert len(results) == nparams
+    assert [row[0] for row in results] == [56] * nparams
+    assert [row[1] for row in results] == list(range(1, nparams + 1))
+    assert [row[4] for row in results] == pytest.approx([1.0086008038] * nparams, abs=1e-8)
+    table = io.read_unweighted_observations()
+    assert len(table) == columns
+    assert all(len(column) == 21 * nparams for column in table)
+    assert table[0][:21] == pytest.approx([i * (0.1 if mode == 1 else 0.05) for i in range(21)])
+    assert len(io.read_curve_stats()) == nparams
