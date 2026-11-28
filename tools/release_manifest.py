@@ -1,4 +1,4 @@
-"""Create release provenance; never build or publish an application binary."""
+"""Record source, engine and dependency hashes for a release."""
 import argparse
 import hashlib
 import importlib.metadata
@@ -32,7 +32,7 @@ def main():
                                 for package in ('numpy', 'scipy', 'matplotlib', 'PyQt5', 'PyQt5-Qt5', 'PyQt5-sip')},
         'sbom_file': args.sbom.name,
         'sbom_sha256': digest(args.sbom),
-        'note': 'A release must use a clean source commit. A dirty manifest is a local validation snapshot only.'
+        'note': 'source_dirty indicates uncommitted changes when the manifest was generated.'
     }
     args.output.write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
 

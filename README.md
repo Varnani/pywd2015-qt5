@@ -26,7 +26,7 @@ You must also properly cite relevant Wilson - Devinney papers:
 
 ## Installing Dependencies
 
-Use CPython **3.12** in a dedicated virtual environment. Python 2.7 and older Python 3 releases are no longer supported by this source tree. PyQt5 is retained; a Qt6 migration is not required.
+Use CPython 3.12 and a virtual environment:
 
 ```sh
 python -m venv .venv
@@ -36,15 +36,13 @@ python -m pip install --require-hashes -r requirements.lock
 python pywd2015.py
 ```
 
-The lock includes the full runtime dependency set, with platform-specific Qt packages. Development checks use `requirements-dev.lock` and `python -m pytest`. The Windows source path is validated with CPython 3.12.11 and offscreen Qt; Windows/Linux CI runs on each push and pull request; Windows additionally executes the hash-verified reference WD engines. Interactive platform acceptance and native Qt security are separate from Python package advisory results.
+For development, install `requirements-dev.lock` and run `python -m pytest -q`. Tests run offscreen on Windows and Linux. To run the native LC/DC tests on Windows, set `PYWD_ENGINE_DIR` to the extracted `wd-precompiled` directory. Engine versions and fixture hashes are recorded in `tests/fixtures/wd2015-win64/provenance.json`.
 
-Each calculation uses a private temporary job directory and copies the WD `.dat`/`.tab` auxiliary files from the executable directory. Keep those data files beside the selected LC/DC binaries. The executable directory is never used for job output. The last LC/DC input and output buttons open the current session's private job files, which are temporary. Application settings are written to the user's config directory; legacy adjacent config is still readable.
+Keep the WD `.dat`/`.tab` files beside the selected LC/DC binaries. Each calculation copies them to its own temporary directory. The input/output viewer opens files from the latest job; export any results you want to keep before exiting. Application settings use the user's config directory, with a fallback for existing settings beside the application.
 
-LC calculations show a cancellable modal progress window; the Qt event loop remains responsive. Its time limit defaults to 60 minutes and can be changed while running. DC has the same configurable limit in its calculation controls. Failed, timed-out and cancelled jobs do not enter result/history publication.
+LC and DC calculations can be cancelled and have an adjustable 60-minute time limit. Failed or cancelled calculations do not add results to the history.
 
 Project loading validates all saved fields and observation references before applying state. Project files keep the existing INI format and literal `%` text. Calendar conversion uses the historical Julian/Gregorian transition: Julian through 1582-10-04, Gregorian from 1582-10-15; the intervening dates are rejected. Supported calendar years are 1–9999. No local timezone, JD/HJD or time-scale conversion is implied.
-
-See [audit validation](docs/audit-validation.md) for the per-finding evidence, native engine provenance and remaining limits. New releases must include a clean source commit, `tools/release_manifest.py` output and an SBOM; no new application executable is produced by these source corrections.
 
 ## Getting Started
 

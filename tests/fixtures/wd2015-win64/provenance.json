@@ -4,7 +4,7 @@
   "platform": "Windows-11-10.0.26300-SP0",
   "python": "3.12.11",
   "base_source": "756aab0d6af826ddd857fb850ae226c6ff0d0bda",
-  "description": "Real Windows release LC velocity and DC fit: e=0.2, inclination=85 deg, period=2 d, a=5 Rsun, q=0.8, T1=6500 K, T2=6000 K, potentials=5. 21 observations with +0.5 km/s offset; DC fits a and systemic velocity. Generated with corrected source; reproducibility reference, not independent physics certification.",
+  "description": "Real Windows release LC velocity and DC fit: e=0.2, inclination=85 deg, period=2 d, a=5 Rsun, q=0.8, T1=6500 K, T2=6000 K, potentials=5. 21 observations with +0.5 km/s offset; DC fits a and systemic velocity.",
   "engine_sha256": {
     "dc_source.f": "173a81f1de72a435486d484e4cab296216f62d3d3d25b134904eca544fefb53b",
     "dc_static_win64bit.exe": "087731b6736e62aec56b3d25f1f60d1f6183c40c7499ec04848910bb1985ed00",
