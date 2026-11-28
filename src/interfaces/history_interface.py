@@ -45,7 +45,7 @@ class Widget(QtWidgets.QWidget, history_widget.Ui_HistoryWidget):
         self.export_btn.clicked.connect(self.export_data)
 
     def export_data(self):
-        if len(self.solutions) is not None:
+        if self.solutions:
             filepath = methods.save_file(self, suffix="txt")
             if filepath is not None:
                 output = "# Itr" + delimiter

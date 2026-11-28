@@ -73,6 +73,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         self.connect_signals()
 
     def connect_signals(self):
+        self.timeout_spinbox.valueChanged.connect(self.update_timeout)
         self.rundc2015_btn.clicked.connect(self.start_differential_correction)
         self.plot_btn.clicked.connect(self.plot)
         self.viewlastdcin_btn.clicked.connect(self.open_dcin)
@@ -82,11 +83,20 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         self.setdeldefaults_btn.clicked.connect(self.set_default_dels)
         self.exportresults_btn.clicked.connect(self.export_data)
 
+    def update_timeout(self, minutes):
+        if self.iterator is not None:
+            self.iterator.dc_io.timeout = minutes * 60
+
     def open_dcin(self):
-        webbrowser.open(os.path.join(self.main_window.dc_path, "dcin.active"))
+        self.open_job_file("_get_input_path")
 
     def open_dcout(self):
-        webbrowser.open(os.path.join(self.main_window.dc_path, "dcout.active"))
+        self.open_job_file("_get_output_path")
+
+    def open_job_file(self, accessor):
+        io = getattr(wd_io.DCIO, "last_run", None)
+        if io is not None:
+            webbrowser.open(getattr(io, accessor)())
 
     def export_data(self):
         if self.results is not None:
@@ -111,14 +121,14 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
                         for result in self.results:
 
-                            output = result[2]
+                            output = result[4]
                             stderr = result[5]
                             par_id = result[0]
                             c_id = int(result[1])
 
                             if par_id in (19.0, 20.0):
-                                output = int(output * 10000.0)
-                                stderr = int(stderr * 10000.0)
+                                output = output * 10000.0
+                                stderr = stderr * 10000.0
 
                             if selection.objectName() == "plaintext":
                                 name = constants.KEEPS_ID_NAME_DICT[par_id]
@@ -541,6 +551,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
             elif self.data_combobox.currentText() != "":
                 self.plot_curve()
 
+    @methods.handle_errors
     def plot_both_vc(self):
         self.chart.clear_all()
 
@@ -794,6 +805,7 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
         self.chart.redraw()
 
+    @methods.handle_errors
     def plot_curve(self):
         self.chart.clear_all()
         self.vunit = float(self.main_window.vunit_ipt.value())
@@ -1213,59 +1225,68 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                                                                          self.iteration_spinbox.value()))
 
     def clear_iterator(self):
-        if self.iterator is not None:
+        if self.iterator is not None and self.iterator.isRunning():
             self.iterator.stop()
-            self.iterator.iteration_done.disconnect()
-            self.iterator = None
+            return False
+        self.iterator = None
+        return True
 
     def prepare_iterator(self):
-        self.clear_iterator()
-
-        dc_params = self.get_dc_params()
-
-        dc_io = wd_io.DCIO(dc_params,
-                           wd_path=self.main_window.dc_path,
-                           dc_binary_name=self.main_window.dc_binary)
-
+        if not self.clear_iterator():
+            raise RuntimeError("Previous WD job is still stopping.")
+        dc_io = wd_io.DCIO(self.get_dc_params(), wd_path=self.main_window.dc_path,
+                          dc_binary_name=self.main_window.dc_binary)
+        dc_io.timeout = self.timeout_spinbox.value() * 60
         self.iterator = IterationWorker(dc_io)
-        self.iterator.iteration_done.connect(self.receive_iteration)
+        self.iterator.finished.connect(self.finish_iteration)
 
     def start_differential_correction(self):
+        if self.iterator is not None and self.iterator.isRunning():
+            return
+        try:
+            self.prepare_iterator()
+        except Exception as error:
+            self.show_job_error(str(error))
+            return
         self.lock_ui()
-
         self.update_abort_button_label()
-
-        self.rundc2015_btn.disconnect()
+        self.rundc2015_btn.clicked.disconnect()
         self.rundc2015_btn.clicked.connect(self.abort_differential_correction)
-
-        # self.result_treewidget.clear()
-        # self.residual_treewidget.clear()
-        # self.curvestat_treewidget.clear()
-        # self.component_treewidget.clear()
-
-        # self.results = None
-        # self.dimensions = None
-        # self.observations = None
-        # self.solution_stats = None
-        # self.curve_stats = None
-
-        # self.data_combobox.clear()
-
-        # self.chart.clear_all()
-
-        self.prepare_iterator()
         self.iterator.start()
 
-    def abort_differential_correction(self):
-        self.clear_iterator()
+    def show_job_error(self, text):
+        msg = messenger.Messenger("error", "WD calculation failed:")
+        msg.set_info(text)
+        msg.show()
 
-        self.rundc2015_btn.disconnect()
+    def finish_iteration(self):
+        worker = self.sender()
+        if worker is not self.iterator:
+            return
+        if worker.cancelled or worker.error is not None:
+            error = worker.error if not worker.cancelled else None
+            self.reset_run_button()
+            if error:
+                self.show_job_error(error)
+            return
+        self.receive_iteration()
+
+    def reset_run_button(self):
+        self.iterator = None
+        self.rundc2015_btn.clicked.disconnect()
         self.rundc2015_btn.clicked.connect(self.start_differential_correction)
         self.rundc2015_btn.setText("Run DC")
-
+        self.rundc2015_btn.setEnabled(True)
         self.current_iteration = 1
-
         self.release_ui()
+
+    def abort_differential_correction(self):
+        if self.iterator is not None and self.iterator.isRunning():
+            self.iterator.stop()
+            self.rundc2015_btn.setText("Cancelling...")
+            self.rundc2015_btn.setEnabled(False)
+            return
+        self.reset_run_button()
 
     def update_result_treewidget(self):
         def _format(idx, itm, val, par_id):
@@ -1427,15 +1448,21 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
                 #    return 1
 
     def read_dcout(self):
-        self.results = self.iterator.dc_io.read_results()
-        self.dimensions = self.iterator.dc_io.read_component_dimensions()
-        self.observations = self.iterator.dc_io.read_unweighted_observations(split_by_observation=True)
-        self.solution_stats = self.iterator.dc_io.read_solution_stats()
-        self.curve_stats = self.iterator.dc_io.read_curve_stats()
+        io = self.iterator.dc_io
+        results = io.read_results()
+        dimensions = io.read_component_dimensions()
+        observations = io.read_unweighted_observations(split_by_observation=True)
+        solution_stats = io.read_solution_stats()
+        curve_stats = io.read_curve_stats()
+        if not results or not solution_stats or not curve_stats or not all(dimensions):
+            raise ValueError("Required DC result tables are missing.")
+        if any(len(row) != 6 or not all(isinstance(v, (int, float)) and math.isfinite(v) for v in row)
+               for row in results):
+            raise ValueError("Malformed or non-finite DC parameters.")
+        self.results, self.dimensions, self.observations = results, dimensions, observations
+        self.solution_stats, self.curve_stats = solution_stats, curve_stats
         self.runtime = self.iterator.runtime
-        # self.curve_stats = self.iterator.dc_io._read_table(self.iterator.dc_io._get_output_path(),
-        # "    Curve   No. of obs.        Std. dev.",
-        # tidy=False)
+        wd_io.DCIO.last_run = io
 
     def receive_iteration(self):
         _template_msg = "\n\nThis is likely caused by malformed dcout file. Check your inputs, KEEP's and observations."
@@ -1443,8 +1470,8 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
         try:
             self.read_dcout()
 
-        except ValueError as e:
-            msg = messenger.Messenger("error", "An ValueError has occured:")
+        except (ValueError, OSError, RuntimeError, TypeError) as e:
+            msg = messenger.Messenger("error", "WD output could not be read:")
             msg.set_info(e.args[0] + _template_msg)
             msg.show()
 
@@ -1703,26 +1730,29 @@ class Widget(QtWidgets.QWidget, dc_widget.Ui_DCWidget):
 
 class IterationWorker(QtCore.QThread):
     iteration_done = QtCore.pyqtSignal(name="done")
+    failed = QtCore.pyqtSignal(str)
 
     def __init__(self, dc_io):
         super(IterationWorker, self).__init__()
-
         self.dc_io = dc_io
         self.runtime = None
+        self.error = None
+        self.cancelled = False
 
     def run(self):
-        # global runtime
         starttime = timeit.default_timer()
-        self.dc_io.fill_for_solution().save().run()
-        self.iteration_done.emit()
-        self.runtime = (timeit.default_timer() - starttime)
-        if self.runtime < 120.0:
-            self.runtime = ("- %0.2f second -" % (timeit.default_timer() - starttime))
-        else:
-            self.runtime = (timeit.default_timer() - starttime) / 60.0
-            self.runtime = ("- %0.2f minutes -" % self.runtime)
+        try:
+            if not self.cancelled:
+                self.dc_io.fill_for_solution().save().run()
+        except Exception as error:
+            self.error = str(error)
+        finally:
+            self.runtime = "- {0:.2f} seconds -".format(timeit.default_timer() - starttime)
+        if self.error is not None and not self.cancelled:
+            self.failed.emit(self.error)
+        elif not self.cancelled:
+            self.iteration_done.emit()
 
     def stop(self):
-        if self.dc_io.process is not None:
-            self.blockSignals(True)
-            self.dc_io.process.kill()
+        self.cancelled = True
+        self.dc_io.cancel()

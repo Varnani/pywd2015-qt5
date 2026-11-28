@@ -1,9 +1,10 @@
+from src.helpers.project_io import atomic_write_parser, read_ini_text
 from PyQt5 import QtWidgets, QtGui
 from gui import lcdcpicker_dialog
 from src import constants
 from src.helpers import methods, messenger
 from functools import partial
-from configparser import ConfigParser, NoOptionError
+from configparser import ConfigParser, Error
 import os
 
 
@@ -27,10 +28,11 @@ class Widget(QtWidgets.QDialog, lcdcpicker_dialog.Ui_LCDCPickerDialog):
         self.exit_btn.clicked.connect(self.exit)
 
     def check_config(self):
-        if os.path.isfile(constants.PYWD_CONFIG_PATH):
+        config_path = constants.PYWD_CONFIG_PATH if os.path.isfile(constants.PYWD_CONFIG_PATH) else constants.LEGACY_CONFIG_PATH
+        if os.path.isfile(config_path):
             try:
-                config = ConfigParser()
-                config.read(constants.PYWD_CONFIG_PATH)
+                config = ConfigParser(interpolation=None)
+                config.read_string(read_ini_text(config_path))
                 lc_path = config.get("wd_paths", "lc_path")
                 dc_path = config.get("wd_paths", "dc_path")
 
@@ -44,7 +46,7 @@ class Widget(QtWidgets.QDialog, lcdcpicker_dialog.Ui_LCDCPickerDialog):
                     msg.set_info("Please reselect wd binary paths.")
                     msg.show()
                     return self.exec_()
-            except NoOptionError as ex:
+            except (Error, OSError, UnicodeError) as ex:
                 msg = messenger.Messenger("error", "A NoOptionError occured during config file read.")
                 msg.set_info("Config file is malformed. Please reselect wd binary paths.\nAdditional info:\n" +
                              ex.args[0])
@@ -54,6 +56,7 @@ class Widget(QtWidgets.QDialog, lcdcpicker_dialog.Ui_LCDCPickerDialog):
         else:
             return self.exec_()
 
+    @methods.handle_errors
     def save(self):
         error = ""
 
@@ -64,12 +67,12 @@ class Widget(QtWidgets.QDialog, lcdcpicker_dialog.Ui_LCDCPickerDialog):
             error = error + "\nCan't DC find file in path:\n" + self.dcpath_label.text()
 
         if error == "":
-            config = ConfigParser()
+            config = ConfigParser(interpolation=None)
             config.add_section("wd_paths")
             config.set("wd_paths", "lc_path", self.lcpath_label.text())
             config.set("wd_paths", "dc_path", self.dcpath_label.text())
-            with open(constants.PYWD_CONFIG_PATH, "w") as f:
-                config.write(f)
+            os.makedirs(constants.CONFIG_DIR, exist_ok=True)
+            atomic_write_parser(config, constants.PYWD_CONFIG_PATH)
 
             self.accept()
 

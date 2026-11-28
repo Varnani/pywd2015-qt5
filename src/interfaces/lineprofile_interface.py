@@ -1,3 +1,4 @@
+from src.helpers import methods
 from PyQt5 import QtWidgets, QtGui
 from gui import lineprofile_widget
 from src.helpers.matplotlib_embedder import MatplotlibWidget
@@ -76,6 +77,7 @@ class Widget(QtWidgets.QWidget, lineprofile_widget.Ui_LineProfileWidget):
         if selected_item is not None:
             widget.headerItem().removeChild(selected_item)
 
+    @methods.handle_errors
     def plot_lines(self):
         self.chart.clear_all()
 

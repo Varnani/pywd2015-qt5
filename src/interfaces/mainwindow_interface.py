@@ -132,6 +132,15 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         self.q_ipt.valueChanged.connect(self.update_potentials)
 
     def closeEvent(self, *args, **kwargs):
+        worker = self.dc_widget.iterator
+        if worker is not None and worker.isRunning():
+            worker.stop()
+            if not getattr(self, "_waiting_for_dc", False):
+                self._waiting_for_dc = True
+                worker.finished.connect(self.close)
+            if args:
+                args[0].ignore()
+            return
         self.loadobservations_widget.close()
         self.configurespot_widget.close()
         self.eclipsetimings_widget.close()
@@ -147,10 +156,16 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         self.dc_history_widget.close()
 
     def open_lcin(self):
-        webbrowser.open(os.path.join(self.lc_path, "lcin.active"))
+        self.open_lc_job_file("_get_input_path")
 
     def open_lcout(self):
-        webbrowser.open(os.path.join(self.lc_path, "lcout.active"))
+        self.open_lc_job_file("_get_output_path")
+
+    def open_lc_job_file(self, accessor):
+        from src.helpers.wd_utils.wd_io import LCIO
+        io = getattr(LCIO, "last_run", None)
+        if io is not None:
+            webbrowser.open(getattr(io, accessor)())
 
     def set_default_seed(self):
         self.lc_seed_ipt.setValue(138472375.0)
@@ -232,6 +247,7 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         self.lc_synthetic_curve_widget.reset_and_repopulate()
         self.dc_widget.clear()
 
+    @methods.handle_errors
     def compute_jd(self):
         year = self.t_time_year_ipt.value()
         month = self.t_time_month_ipt.value()
@@ -307,309 +323,239 @@ class Widget(QtWidgets.QMainWindow, mainwindow_widget.Ui_MainWindow):
         except:
             self.t_pot_pot_otpt.setValue(0.0)
 
+    def project_parser(self):
+        parser = ConfigParser(interpolation=None)
+
+        parser.add_section(constants.CONFIG_SECTION_INFO)
+        parser.set(constants.CONFIG_SECTION_INFO, "version", constants.MAIN_VERSION)
+        parser.set(constants.CONFIG_SECTION_INFO, "config", constants.CONFIG_VERSION)
+
+        parser.add_section(constants.CONFIG_SECTION_MAIN)
+        parser.set(constants.CONFIG_SECTION_MAIN, "system_name", self.systemname_tipt.text())
+        parser.set(constants.CONFIG_SECTION_MAIN, "operation_mode", str(self.mode_combobox.currentIndex()))
+        parser.set(constants.CONFIG_SECTION_MAIN, "jdphs", str(self.jdphs_combobox.currentIndex()))
+        parser.set(constants.CONFIG_SECTION_MAIN, "maglite", str(self.maglite_combobox.currentIndex()))
+        parser.set(constants.CONFIG_SECTION_MAIN, "rv_corr_1", str(self.icor1_chk.isChecked()))
+        parser.set(constants.CONFIG_SECTION_MAIN, "rv_corr_2", str(self.icor2_chk.isChecked()))
+        parser.set(constants.CONFIG_SECTION_MAIN, "ifcgs", str(self.ifcgs_chk.isChecked()))
+
+        parser.add_section(constants.CONFIG_SECTION_SYSTEM)
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "jd0", str(self.jd0_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "period", str(self.p0_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "dpdt", str(self.dpdt_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "ecc", str(self.e_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "omega", str(self.perr0_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "dperdt", str(self.dperdt_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "incl", str(self.incl_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "a", str(self.a_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "pshift", str(self.pshift_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "vgam", str(self.vgamma_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "vunit", str(self.vunit_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "logd", str(self.dpclog_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "q", str(self.q_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "abunin", str(self.abunin_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "t1", str(self.t1_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "t2", str(self.t2_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "pot1", str(self.pot1_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "pot2", str(self.pot2_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "f1", str(self.f1_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "f2", str(self.f2_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "the", str(self.the_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "delph", str(self.delph_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SYSTEM, "nga", str(self.nga_ipt.value()))
+
+        parser.add_section(constants.CONFIG_SECTION_SURFACE)
+        parser.set(constants.CONFIG_SECTION_SURFACE, "ifat1", str(self.ifat1_combobox.currentIndex()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "ifat2", str(self.ifat2_combobox.currentIndex()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "alb1", str(self.alb1_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "alb2", str(self.alb2_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "gr1", str(self.gr1_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "gr2", str(self.gr2_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "n1", str(self.n1_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "n2", str(self.n2_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "n1l", str(self.n1l_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "n2l", str(self.n2l_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "ld1", str(self.ld1_combobox.currentIndex()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "ld2", str(self.ld2_combobox.currentIndex()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "ld1_fixed", str(self.ld1_chk.isChecked()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "ld2_fixed", str(self.ld2_chk.isChecked()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "ipb", str(self.ipb_chk.isChecked()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "mref", str(self.mref_chk.isChecked()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "nref", str(self.nref_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "xbol_s1", str(self.xbol1_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "xbol_s2", str(self.xbol2_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "ybol_s1", str(self.ybol1_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_SURFACE, "ybol_s2", str(self.ybol2_ipt.value()))
+
+        parser.add_section(constants.CONFIG_SECTION_3B)
+        parser.set(constants.CONFIG_SECTION_3B, "if3b", str(self.if3b_groupbox.isChecked()))
+        parser.set(constants.CONFIG_SECTION_3B, "a_3b", str(self.a3b_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_3B, "p_3b", str(self.p3b_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_3B, "incl_3b", str(self.incl3b_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_3B, "ecc_3b", str(self.e3b_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_3B, "omega_3b", str(self.perr03b_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_3B, "conj_time", str(self.conj3b_ipt.value()))
+
+        parser.add_section(constants.CONFIG_SECTION_LC2015)
+        parser.set(constants.CONFIG_SECTION_LC2015, "std_dev", str(self.lc_fract_std_dev_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_LC2015, "noise", str(self.lc_noise_combobox.currentIndex()))
+        parser.set(constants.CONFIG_SECTION_LC2015, "seed", str(self.lc_seed_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_LC2015, "jd_start", str(self.lc_jd_start_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_LC2015, "jd_stop", str(self.lc_jd_end_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_LC2015, "jd_incr", str(self.lc_jd_incr_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_LC2015, "phase_start", str(self.lc_phs_start_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_LC2015, "phase_stop", str(self.lc_phs_stop_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_LC2015, "phase_incr", str(self.lc_phs_incr_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_LC2015, "lsp", str(self.lc_lsp_spinbox.value()))
+        parser.set(constants.CONFIG_SECTION_LC2015, "tobs", str(self.lc_tobs_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_LC2015, "phobs", str(self.lc_phobs_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_LC2015, "phn", str(self.lc_phn_ipt.value()))
+
+        parser.add_section(constants.CONFIG_SECTION_DC2015)
+        parser.set(constants.CONFIG_SECTION_DC2015, "deriv_type", str(self.dc_isym_combobox.currentIndex()))
+        parser.set(constants.CONFIG_SECTION_DC2015, "desextinc", str(self.dc_desextinc_ipt.value()))
+        parser.set(constants.CONFIG_SECTION_DC2015, "linkext", str(self.dc_ext_band_spinbox.value()))
+
+        parser = self.dc_widget.write_into_parser(parser)
+        parser = self.configurespot_widget.write_into_parser(parser)
+        parser = self.eclipsetimings_widget.write_into_parser(parser)
+        parser = self.loadobservations_widget.write_into_parser(parser)
+
+        return parser
+
+    @methods.handle_errors
     def save_project(self):
+        from src.helpers.project_io import atomic_write_parser
         save_path = methods.save_file(self, suffix=".pywdproject", name_filter="PyWD2015 project file (*.pywdproject)")
         if save_path is not None:
-            parser = ConfigParser()
-
-            parser.add_section(constants.CONFIG_SECTION_INFO)
-            parser.set(constants.CONFIG_SECTION_INFO, "version", constants.MAIN_VERSION)
-            parser.set(constants.CONFIG_SECTION_INFO, "config", constants.CONFIG_VERSION)
-
-            parser.add_section(constants.CONFIG_SECTION_MAIN)
-            parser.set(constants.CONFIG_SECTION_MAIN, "system_name", self.systemname_tipt.text())
-            parser.set(constants.CONFIG_SECTION_MAIN, "operation_mode", str(self.mode_combobox.currentIndex()))
-            parser.set(constants.CONFIG_SECTION_MAIN, "jdphs", str(self.jdphs_combobox.currentIndex()))
-            parser.set(constants.CONFIG_SECTION_MAIN, "maglite", str(self.maglite_combobox.currentIndex()))
-            parser.set(constants.CONFIG_SECTION_MAIN, "rv_corr_1", str(self.icor1_chk.isChecked()))
-            parser.set(constants.CONFIG_SECTION_MAIN, "rv_corr_2", str(self.icor2_chk.isChecked()))
-            parser.set(constants.CONFIG_SECTION_MAIN, "ifcgs", str(self.ifcgs_chk.isChecked()))
-
-            parser.add_section(constants.CONFIG_SECTION_SYSTEM)
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "jd0", str(self.jd0_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "period", str(self.p0_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "dpdt", str(self.dpdt_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "ecc", str(self.e_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "omega", str(self.perr0_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "dperdt", str(self.dperdt_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "incl", str(self.incl_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "a", str(self.a_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "pshift", str(self.pshift_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "vgam", str(self.vgamma_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "vunit", str(self.vunit_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "logd", str(self.dpclog_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "q", str(self.q_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "abunin", str(self.abunin_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "t1", str(self.t1_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "t2", str(self.t2_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "pot1", str(self.pot1_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "pot2", str(self.pot2_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "f1", str(self.f1_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "f2", str(self.f2_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "the", str(self.the_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "delph", str(self.delph_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SYSTEM, "nga", str(self.nga_ipt.value()))
-
-            parser.add_section(constants.CONFIG_SECTION_SURFACE)
-            parser.set(constants.CONFIG_SECTION_SURFACE, "ifat1", str(self.ifat1_combobox.currentIndex()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "ifat2", str(self.ifat2_combobox.currentIndex()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "alb1", str(self.alb1_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "alb2", str(self.alb2_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "gr1", str(self.gr1_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "gr2", str(self.gr2_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "n1", str(self.n1_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "n2", str(self.n2_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "n1l", str(self.n1l_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "n2l", str(self.n2l_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "ld1", str(self.ld1_combobox.currentIndex()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "ld2", str(self.ld2_combobox.currentIndex()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "ld1_fixed", str(self.ld1_chk.isChecked()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "ld2_fixed", str(self.ld2_chk.isChecked()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "ipb", str(self.ipb_chk.isChecked()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "mref", str(self.mref_chk.isChecked()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "nref", str(self.nref_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "xbol_s1", str(self.xbol1_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "xbol_s2", str(self.xbol2_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "ybol_s1", str(self.ybol1_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_SURFACE, "ybol_s2", str(self.ybol2_ipt.value()))
-
-            parser.add_section(constants.CONFIG_SECTION_3B)
-            parser.set(constants.CONFIG_SECTION_3B, "if3b", str(self.if3b_groupbox.isChecked()))
-            parser.set(constants.CONFIG_SECTION_3B, "a_3b", str(self.a3b_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_3B, "p_3b", str(self.p3b_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_3B, "incl_3b", str(self.incl3b_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_3B, "ecc_3b", str(self.e3b_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_3B, "omega_3b", str(self.perr03b_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_3B, "conj_time", str(self.conj3b_ipt.value()))
-
-            parser.add_section(constants.CONFIG_SECTION_LC2015)
-            parser.set(constants.CONFIG_SECTION_LC2015, "std_dev", str(self.lc_fract_std_dev_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_LC2015, "noise", str(self.lc_noise_combobox.currentIndex()))
-            parser.set(constants.CONFIG_SECTION_LC2015, "seed", str(self.lc_seed_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_LC2015, "jd_start", str(self.lc_jd_start_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_LC2015, "jd_stop", str(self.lc_jd_end_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_LC2015, "jd_incr", str(self.lc_jd_incr_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_LC2015, "phase_start", str(self.lc_phs_start_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_LC2015, "phase_stop", str(self.lc_phs_stop_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_LC2015, "phase_incr", str(self.lc_phs_incr_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_LC2015, "lsp", str(self.lc_lsp_spinbox.value()))
-            parser.set(constants.CONFIG_SECTION_LC2015, "tobs", str(self.lc_tobs_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_LC2015, "phobs", str(self.lc_phobs_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_LC2015, "phn", str(self.lc_phn_ipt.value()))
-
-            parser.add_section(constants.CONFIG_SECTION_DC2015)
-            parser.set(constants.CONFIG_SECTION_DC2015, "deriv_type", str(self.dc_isym_combobox.currentIndex()))
-            parser.set(constants.CONFIG_SECTION_DC2015, "desextinc", str(self.dc_desextinc_ipt.value()))
-            parser.set(constants.CONFIG_SECTION_DC2015, "linkext", str(self.dc_ext_band_spinbox.value()))
-
-            parser = self.dc_widget.write_into_parser(parser)
-            parser = self.configurespot_widget.write_into_parser(parser)
-            parser = self.eclipsetimings_widget.write_into_parser(parser)
-            parser = self.loadobservations_widget.write_into_parser(parser)
-
-            with open(save_path, "w") as destination:
-                parser.write(destination)
-
+            atomic_write_parser(self.project_parser(), save_path)
             msg = messenger.Messenger("info", "Save completed:")
             msg.set_info(save_path)
             msg.show()
 
+    @methods.handle_errors
     def load_project(self):
-        msg = messenger.Messenger("warning", "Loading a project file will reset all widgets and clear all plots.")
-        msg.set_info("Are you sure?")
-        msg.msg_box.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
-
-        if msg.show() == QtWidgets.QMessageBox.Cancel:
-            return 1
-
+        from src.helpers.project_io import ProjectModel
         load_path = methods.load_file(self, suffix=".pywdproject", name_filter="PyWD2015 project file (*.pywdproject)")
-        if load_path is not None:
-            parser = ConfigParser()
-            with open(load_path, "r") as source:
-                parser.read_file(source)
+        if load_path is None:
+            return
+        model = ProjectModel.read(load_path, self)
+        from PyQt5 import QtCore
+        objects = self.findChildren(QtCore.QObject)
+        for child in (self.dc_widget, self.configurespot_widget, self.eclipsetimings_widget,
+                      self.loadobservations_widget):
+            objects.extend(child.findChildren(QtCore.QObject))
+        blockers = [QtCore.QSignalBlocker(obj) for obj in objects]
+        try:
+            self.apply_project(model)
+        finally:
+            blockers.clear()
+        self.apply_constraints()
+        self.apply_if3b_constraints()
+        self.apply_ifcgs_constraints()
+        self.apply_extinction_constraints()
+        self.check_jdphs()
+        # Constraint handlers clear KEEP checkboxes; restore saved selections afterwards.
+        self.dc_widget.read_from_parser(model.parser)
+        self.system_name_changed()
+        self.clear_children()
+        msg = messenger.Messenger("info", "Load completed:")
+        msg.set_info(load_path)
+        msg.show()
 
-                if constants.MAIN_VERSION != parser.get(constants.CONFIG_SECTION_INFO, "version"):
-                    msg = messenger.Messenger("error", "This file is saved with a different version of the program "
-                                                       "and cannot be loaded.")
-                    msg.set_info("Program Version: " + constants.MAIN_VERSION + "\nFile Version: " +
-                                 parser.get(constants.CONFIG_SECTION_INFO, "version"))
-                    msg.show()
+    def apply_project(self, model):
+        parser = model.parser
+        self.systemname_tipt.setText(parser.get(constants.CONFIG_SECTION_MAIN, "system_name"))
+        self.mode_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_MAIN, "operation_mode"))
+        self.jdphs_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_MAIN, "jdphs"))
+        self.maglite_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_MAIN, "maglite"))
+        self.icor1_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_MAIN, "rv_corr_1"))
+        self.icor2_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_MAIN, "rv_corr_2"))
+        self.ifcgs_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_MAIN, "ifcgs"))
 
-                    return 1
+        self.jd0_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "jd0"))
+        self.p0_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "period"))
+        self.dpdt_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "dpdt"))
+        self.e_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "ecc"))
+        self.perr0_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "omega"))
+        self.dperdt_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "dperdt"))
+        self.incl_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "incl"))
+        self.a_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "a"))
+        self.pshift_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "pshift"))
+        self.vgamma_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "vgam"))
+        self.vunit_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "vunit"))
+        self.dpclog_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "logd"))
+        self.q_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "q"))
+        self.abunin_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "abunin"))
+        self.t1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "t1"))
+        self.t2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "t2"))
+        self.pot1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "pot1"))
+        self.pot2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "pot2"))
+        self.f1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "f1"))
+        self.f2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "f2"))
+        self.the_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "the"))
+        self.delph_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "delph"))
+        self.nga_ipt.setValue(parser.getint(constants.CONFIG_SECTION_SYSTEM, "nga"))
 
-                if constants.CONFIG_VERSION != parser.get(constants.CONFIG_SECTION_INFO, "config"):
-                    msg = messenger.Messenger("error", "This file is saved with a different config version "
-                                                       "and cannot be loaded.")
-                    msg.set_info("Program Config Version: " + constants.CONFIG_VERSION + "\nFile Config Version: " +
-                                 parser.get(constants.CONFIG_SECTION_INFO, "config"))
-                    msg.show()
+        self.ifat1_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_SURFACE, "ifat1"))
+        self.ifat2_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_SURFACE, "ifat2"))
+        self.alb1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "alb1"))
+        self.alb2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "alb2"))
+        self.gr1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "gr1"))
+        self.gr2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "gr2"))
+        self.n1_ipt.setValue(parser.getint(constants.CONFIG_SECTION_SURFACE, "n1"))
+        self.n2_ipt.setValue(parser.getint(constants.CONFIG_SECTION_SURFACE, "n2"))
+        self.n1l_ipt.setValue(parser.getint(constants.CONFIG_SECTION_SURFACE, "n1l"))
+        self.n2l_ipt.setValue(parser.getint(constants.CONFIG_SECTION_SURFACE, "n2l"))
+        self.ld1_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_SURFACE, "ld1"))
+        self.ld2_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_SURFACE, "ld2"))
+        self.ld1_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_SURFACE, "ld1_fixed"))
+        self.ld2_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_SURFACE, "ld2_fixed"))
+        self.ipb_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_SURFACE, "ipb"))
+        self.mref_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_SURFACE, "mref"))
+        self.nref_ipt.setValue(parser.getint(constants.CONFIG_SECTION_SURFACE, "nref"))
+        self.xbol1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "xbol_s1"))
+        self.xbol2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "xbol_s2"))
+        self.ybol1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "ybol_s1"))
+        self.ybol2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "ybol_s2"))
 
-                    return 1
+        self.if3b_groupbox.setChecked(parser.getboolean(constants.CONFIG_SECTION_3B, "if3b"))
 
-                path_errors = ""
+        self.apply_if3b_constraints()
 
-                def _check_for_file(pth, second_dir):
-                    if os.path.isfile(pth) is not True:
-                        second_path = os.path.join(os.path.dirname(second_dir), os.path.basename(pth))
-                        if os.path.isfile(second_path):
-                            return second_path
-                        else:
-                            return None
-                    else:
-                        return pth
+        self.a3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "a_3b"))
+        self.p3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "p_3b"))
+        self.incl3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "incl_3b"))
+        self.e3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "ecc_3b"))
+        self.perr03b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "omega_3b"))
+        self.conj3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "conj_time"))
 
-                lc_count = parser.getint(constants.CONFIG_SECTION_CURVE_COUNTS, "light_curves")
+        self.lc_fract_std_dev_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "std_dev"))
+        self.lc_noise_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_LC2015, "noise"))
+        self.lc_seed_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "seed"))
+        self.lc_jd_start_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "jd_start"))
+        self.lc_jd_end_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "jd_stop"))
+        self.lc_jd_incr_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "jd_incr"))
+        self.lc_phs_start_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "phase_start"))
+        self.lc_phs_stop_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "phase_stop"))
+        self.lc_phs_incr_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "phase_incr"))
+        self.lc_lsp_spinbox.setValue(parser.getint(constants.CONFIG_SECTION_LC2015, "lsp"))
+        self.lc_tobs_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "tobs"))
+        self.lc_phobs_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "phobs"))
+        self.lc_phn_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "phn"))
 
-                if lc_count > 0:
-                    i = 1
-                    while i <= lc_count:
-                        sct = constants.CONFIG_SECTION_LIGHT_CURVE_STUB + str(i)
-                        path = parser.get(sct, "filepath")
-                        n_path = _check_for_file(path, load_path)
-                        if n_path is None:
-                            path_errors = path_errors + path + "\n"
+        self.dc_isym_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_DC2015, "deriv_type"))
+        self.dc_desextinc_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_DC2015, "desextinc"))
+        self.dc_ext_band_spinbox.setValue(parser.getint(constants.CONFIG_SECTION_DC2015, "linkext"))
+        self.apply_extinction_constraints()
 
-                        else:
-                            parser.set(sct, "filepath", n_path)
+        self.dc_widget.read_from_parser(parser)
+        self.configurespot_widget.read_from_parser(parser)
+        self.eclipsetimings_widget.read_from_parser(parser)
+        self.loadobservations_widget.velocity_curves = model.velocity_curves
+        self.loadobservations_widget.light_curves = model.light_curves
+        self.loadobservations_widget.update_curve_list()
 
-                        i = i + 1
-
-                vc1 = parser.getboolean(constants.CONFIG_SECTION_CURVE_COUNTS, "velocity_curve_1")
-                vc2 = parser.getboolean(constants.CONFIG_SECTION_CURVE_COUNTS, "velocity_curve_2")
-
-                if vc1:
-                    sct = constants.CONFIG_SECTION_VELOCITY_CURVE_STUB + "1"
-                    path = parser.get(sct, "filepath")
-                    n_path = _check_for_file(path, load_path)
-                    if n_path is None:
-                        path_errors = path_errors + path + "\n"
-
-                    else:
-                        parser.set(sct, "filepath", n_path)
-
-                if vc2:
-                    sct = constants.CONFIG_SECTION_VELOCITY_CURVE_STUB + "2"
-                    path = parser.get(sct, "filepath")
-                    n_path = _check_for_file(path, load_path)
-                    if n_path is None:
-                        path_errors = path_errors + path + "\n"
-
-                    else:
-                        parser.set(sct, "filepath", n_path)
-
-                eclipse_path = parser.get(constants.CONFIG_SECTION_ECLIPSE_TIMINGS, "filepath")
-
-                if eclipse_path != "None":
-                    n_path = _check_for_file(eclipse_path, load_path)
-                    if n_path is None:
-                        path_errors = path_errors + eclipse_path + "\n"
-
-                    else:
-                        parser.set(constants.CONFIG_SECTION_ECLIPSE_TIMINGS, "filepath", n_path)
-
-                if path_errors != "":
-                    msg = messenger.Messenger("error", "Some files can not be found:")
-                    msg.set_info(path_errors)
-                    msg.show()
-
-                    return 1
-
-                self.systemname_tipt.setText(parser.get(constants.CONFIG_SECTION_MAIN, "system_name"))
-                self.mode_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_MAIN, "operation_mode"))
-                self.jdphs_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_MAIN, "jdphs"))
-                self.maglite_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_MAIN, "maglite"))
-                self.icor1_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_MAIN, "rv_corr_1"))
-                self.icor2_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_MAIN, "rv_corr_2"))
-                self.ifcgs_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_MAIN, "ifcgs"))
-
-                self.jd0_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "jd0"))
-                self.p0_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "period"))
-                self.dpdt_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "dpdt"))
-                self.e_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "ecc"))
-                self.perr0_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "omega"))
-                self.dperdt_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "dperdt"))
-                self.incl_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "incl"))
-                self.a_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "a"))
-                self.pshift_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "pshift"))
-                self.vgamma_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "vgam"))
-                self.vunit_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "vunit"))
-                self.dpclog_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "logd"))
-                self.q_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "q"))
-                self.abunin_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "abunin"))
-                self.t1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "t1"))
-                self.t2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "t2"))
-                self.pot1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "pot1"))
-                self.pot2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "pot2"))
-                self.f1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "f1"))
-                self.f2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "f2"))
-                self.the_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "the"))
-                self.delph_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SYSTEM, "delph"))
-                self.nga_ipt.setValue(parser.getint(constants.CONFIG_SECTION_SYSTEM, "nga"))
-
-                self.ifat1_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_SURFACE, "ifat1"))
-                self.ifat2_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_SURFACE, "ifat2"))
-                self.alb1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "alb1"))
-                self.alb2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "alb2"))
-                self.gr1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "gr1"))
-                self.gr2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "gr2"))
-                self.n1_ipt.setValue(parser.getint(constants.CONFIG_SECTION_SURFACE, "n1"))
-                self.n2_ipt.setValue(parser.getint(constants.CONFIG_SECTION_SURFACE, "n2"))
-                self.n1l_ipt.setValue(parser.getint(constants.CONFIG_SECTION_SURFACE, "n1l"))
-                self.n2l_ipt.setValue(parser.getint(constants.CONFIG_SECTION_SURFACE, "n2l"))
-                self.ld1_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_SURFACE, "ld1"))
-                self.ld2_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_SURFACE, "ld2"))
-                self.ld1_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_SURFACE, "ld1_fixed"))
-                self.ld2_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_SURFACE, "ld2_fixed"))
-                self.ipb_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_SURFACE, "ipb"))
-                self.mref_chk.setChecked(parser.getboolean(constants.CONFIG_SECTION_SURFACE, "mref"))
-                self.nref_ipt.setValue(parser.getint(constants.CONFIG_SECTION_SURFACE, "nref"))
-                self.xbol1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "xbol_s1"))
-                self.xbol2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "xbol_s2"))
-                self.ybol1_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "ybol_s1"))
-                self.ybol2_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_SURFACE, "ybol_s2"))
-
-                self.if3b_groupbox.setChecked(parser.getboolean(constants.CONFIG_SECTION_3B, "if3b"))
-
-                self.apply_if3b_constraints()
-
-                self.a3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "a_3b"))
-                self.p3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "p_3b"))
-                self.incl3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "incl_3b"))
-                self.e3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "ecc_3b"))
-                self.perr03b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "omega_3b"))
-                self.conj3b_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_3B, "conj_time"))
-
-                self.lc_fract_std_dev_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "std_dev"))
-                self.lc_noise_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_LC2015, "noise"))
-                self.lc_seed_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "seed"))
-                self.lc_jd_start_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "jd_start"))
-                self.lc_jd_end_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "jd_stop"))
-                self.lc_jd_incr_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "jd_incr"))
-                self.lc_phs_start_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "phase_start"))
-                self.lc_phs_stop_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "phase_stop"))
-                self.lc_phs_incr_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "phase_incr"))
-                self.lc_lsp_spinbox.setValue(parser.getint(constants.CONFIG_SECTION_LC2015, "lsp"))
-                self.lc_tobs_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "tobs"))
-                self.lc_phobs_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "phobs"))
-                self.lc_phn_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_LC2015, "phn"))
-
-                self.dc_isym_combobox.setCurrentIndex(parser.getint(constants.CONFIG_SECTION_DC2015, "deriv_type"))
-                self.dc_desextinc_ipt.setValue(parser.getfloat(constants.CONFIG_SECTION_DC2015, "desextinc"))
-                self.dc_ext_band_spinbox.setValue(parser.getint(constants.CONFIG_SECTION_DC2015, "linkext"))
-                self.apply_extinction_constraints()
-
-                self.dc_widget.read_from_parser(parser)
-                self.configurespot_widget.read_from_parser(parser)
-                self.eclipsetimings_widget.read_from_parser(parser)
-                self.loadobservations_widget.read_from_parser(parser)
-
-                self.clear_children()
-                self.dc_widget.clear()
-                self.lc_synthetic_curve_widget.reset_and_repopulate()
-
-                msg = messenger.Messenger("info", "Load completed:")
-                msg.set_info(load_path)
-                msg.show()
 
     @staticmethod
     def evaluate_checkbox(checkbox, reverse=False):

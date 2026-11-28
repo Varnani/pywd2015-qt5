@@ -1,0 +1,2 @@
+# Preserve native Fortran fixtures byte for byte, including significant fixed-width whitespace.
+tests/fixtures/**/*.active -text -whitespace

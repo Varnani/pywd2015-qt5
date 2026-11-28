@@ -69,6 +69,7 @@ class Widget(QtWidgets.QWidget, oc_widget.Ui_OCWidget):
             msg.set_info(filepath)
             msg.show()
 
+    @methods.handle_errors
     def compute_oc(self):
         eclipse_timings_path = self.main_window.eclipsetimings_widget.filepath_label.text()
         if os.path.isfile(eclipse_timings_path):
@@ -77,7 +78,7 @@ class Widget(QtWidgets.QWidget, oc_widget.Ui_OCWidget):
 
             lc_params = self.main_window.get_lc_params()
 
-            ec_data = numpy.loadtxt(eclipse_timings_path, unpack=True)
+            ec_data = self.main_window.eclipsetimings_widget.get_data()
             lc_params.add_eclipse_times(ec_data[0], ec_data[1])
 
             lc_io = wd_io.LCIO(lc_params,

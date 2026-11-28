@@ -207,6 +207,7 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
 
         return n_x, n_y
 
+    @methods.handle_errors
     def plot_selected_light_curve(self):
         selected_item = self.selected_light_item()
         if selected_item is not None:
@@ -348,6 +349,7 @@ class Widget(QtWidgets.QWidget, syntheticcurve_widget.Ui_SyntheticCurveWidget):
             self.light_chart.set_labels("", y_label, index=0)
             self.light_chart.set_labels(x_label, "Residuals", index=1)
 
+    @methods.handle_errors
     def plot_selected_velocity_curve(self):
         self.velocity_chart.clear_all()
         lc_params = self.main_window.get_lc_params()

@@ -1,3 +1,4 @@
+from src.helpers import methods
 from PyQt5 import QtWidgets, QtGui
 from gui import dimensions_widget
 from src.helpers.matplotlib_embedder import MatplotlibWidget
@@ -72,6 +73,7 @@ class Widget(QtWidgets.QWidget, dimensions_widget.Ui_DimensionWidget):
         if self.s2_back_chk.isChecked():
             self.s2_chart.plot(self.x, self.s2_back, clear=False, color=constants.COLOR_GREEN)
 
+    @methods.handle_errors
     def calculate_component_radii(self):
         lc_params = self.main_window.get_lc_params()
 

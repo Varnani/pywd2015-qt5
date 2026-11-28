@@ -346,12 +346,29 @@ def convert_jd_to_ut(jd, add_24=False):
 
 
 def convert_ut_to_jd(year, month, day, hour, minute, second):
-
-    jd = 367.0 * year - int(7.0 * (year + int((month + 9.0) / 12.0)) / 4.0) + int(275.0 * month / 9.0) - \
-         int(3.0 * ((year + (month - 9.0) / 7.0) / 100.0 + 1.0) / 4.0) + 1721028.5 + day + hour / 24.0 + \
-         minute / 1440.0 + second / 86400.0
-
-    return jd
+    # Match convert_jd_to_ut: Julian through 1582-10-04, Gregorian from 1582-10-15.
+    import math
+    if not 1 <= year <= 9999 or not 1 <= month <= 12:
+        raise ValueError("Calendar date is outside the supported range.")
+    gregorian = (year, month, day) >= (1582, 10, 15)
+    leap = year % 4 == 0 and (not gregorian or year % 100 != 0 or year % 400 == 0)
+    days = (31, 29 if leap else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+    if not 1 <= day <= days[month - 1]:
+        raise ValueError("Invalid calendar day.")
+    if (1582, 10, 5) <= (year, month, day) < (1582, 10, 15):
+        raise ValueError("Date falls in the Gregorian calendar transition gap.")
+    if not (0 <= hour < 24 and 0 <= minute < 60 and 0 <= second < 60):
+        raise ValueError("Invalid time of day.")
+    original_date = (year, month, day)
+    if month <= 2:
+        year -= 1
+        month += 12
+    correction = 0
+    if original_date >= (1582, 10, 15):
+        century = year // 100
+        correction = 2 - century + century // 4
+    return (math.floor(365.25 * (year + 4716)) + math.floor(30.6001 * (month + 1))
+            + day + correction - 1524.5 + (hour * 3600 + minute * 60 + second) / 86400)
 
 
 def convert_hjd_to_jd(hjd, ra_h, ra_m, ra_s, dec_d, dec_m, dec_s):
@@ -430,96 +447,36 @@ def from_phase_to_jd(x, t0, p):
     return _x
 
 
-def alias_phased_obs_with_phase(x, y, start, end):
-    """
-    :param x: a list containing phases
-    :param y: a list containing observations
-    :param start: start phase
-    :param end: end phase
-    :return: aliased phases and observations
-    """
-
-    x = [float(n) for n in x]
-    y = [float(n) for n in y]
-
-    if start > end:
-        raise ValueError("Start phase can't be larger than stop phase.")
+def _alias_observations(x, y, start, end, period):
+    import math
+    if not all(math.isfinite(v) for v in (start, end, period)) or period <= 0 or start > end:
+        raise ValueError("Require finite ordered boundaries and a positive period.")
     if len(x) != len(y):
         raise ValueError("x and y must be the same size.")
+    points = []
+    for base, value in zip(x, y):
+        if not math.isfinite(base) or not math.isfinite(value):
+            raise ValueError("Observations must be finite.")
+        # Subtracting large JDs can round an exact endpoint across an integer cycle.
+        # Include adjacent cycles, then use the actual generated coordinates to filter.
+        first = math.ceil((start - base) / period) - 1
+        last = math.floor((end - base) / period) + 1
+        for cycle in range(first, last + 1):
+            position = base + cycle * period
+            if start <= position <= end:
+                points.append((position, value))
+    points.sort(key=lambda item: item[0])
+    return [v[0] for v in points], [v[1] for v in points]
 
-    distance = int(start - min(x)) #- 1
-    if (distance == 0 and min(x) > start) or (distance < 0 < min(x)):
-        distance = distance - 1
 
-    x = [phase + distance for phase in x]
-
-    new_x = x[:]
-    new_y = y[:]
-
-    i = 1
-    while max(new_x) < end:
-        x_temp = [phase + i for phase in x]
-        new_x = new_x + x_temp
-        new_y = new_y + y[:]
-        i = i + 1
-
-    _x = []
-    _y = []
-
-    for phase, value in zip(new_x, new_y):
-        if start <= phase <= end:
-            _x.append(phase)
-            _y.append(value)
-
-    return _x, _y
+def alias_phased_obs_with_phase(x, y, start, end):
+    return _alias_observations(x, y, start, end, 1.0)
 
 
 def alias_phased_obs_with_jd(x, y, start, end, t0, p):
-    """
-    :param x: a list containing phases
-    :param y: a list containing observations
-    :param start: start jd
-    :param end: end jd
-    :param t0: ephemeris
-    :param p: period
-    :return: aliased jd and observations
-    """
-
-    if start > end:
-        raise ValueError("Start phase can't be larger than stop phase.")
-    if len(x) != len(y):
-        raise ValueError("x and y must be the same size.")
-
-    new_x = x[:]
-    new_y = y[:]
-
-    new_x = from_phase_to_jd(new_x, t0, p)
-
-    new_x = numpy.array(new_x)
-    new_y = numpy.array(new_y)
-
-    distance = start - min(new_x)
-    distance_in_phase = numpy.modf(distance / p)[1] + (1 * numpy.sign(distance))
-    new_x = new_x + (distance_in_phase * p)
-
-    xx = new_x.copy()
-
-    while max(new_x) < end:
-        xx = xx + p
-        new_x = numpy.insert(new_x, new_x.shape[0], xx.copy())
-        new_y = numpy.insert(new_y, new_y.shape[0], y.copy())
-
-    _x = []
-    _y = []
-
-    for jd, value in zip(new_x, new_y):
-        if start <= jd <= end:
-            _x.append(jd)
-            _y.append(value)
-
-    return _x, _y
-
-    pass
+    if not numpy.isfinite(t0):
+        raise ValueError("Ephemeris must be finite.")
+    return _alias_observations(from_phase_to_jd(x, t0, p), y, start, end, p)
 
 
 def alias_jd_obs_with_phase(x, y, start, end, t0, p):
@@ -773,3 +730,20 @@ def compute_sync_velocities(p, r1, r2):
     V_sync_1, V_sync_2  = "{:0.1f}".format(V_sync_1), "{:0.1f}".format(V_sync_2)
 
     return V_sync_1, V_sync_2
+
+
+def handle_errors(function):
+    """Keep failed calculations inside their Qt action boundary."""
+    from functools import wraps
+    from configparser import Error
+    @wraps(function)
+    def wrapped(*args, **kwargs):
+        try:
+            return function(*args, **kwargs)
+        except (OSError, RuntimeError, ValueError, IndexError, TypeError, Error) as error:
+            from src.helpers.messenger import Messenger
+            msg = Messenger("error", "Calculation could not be completed:")
+            msg.set_info(str(error))
+            msg.show()
+            return 1
+    return wrapped

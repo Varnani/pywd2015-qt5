@@ -33,15 +33,19 @@ class _ParameterContainer:
                 if self._value == 0.0:
                     return (" " * (width - 3)) + "0.0"
                 elif 1.0 > self._value > -1.0:
-                    output = "{:{width}.{precision}g}".format(self._value, width=width, precision=precision)
+                    specifier = "f" if exponent == "F" else "g"
+                    output = format(self._value, "{0}.{1}{2}".format(width, precision, specifier))
                     if "." not in output and "e" in output:
                         output = output.split("e")[0].strip(" ") + ".0e" + output.split("e")[1].strip(" ")
                 elif self._value >= 1.0 or self._value <= -1.0:
                     output = "{:{width}.{precision}f}".format(self._value, width=width, precision=precision)
 
-                output = output.rstrip("0")
-                if output[-1] == "." or output[-2] in ("+", "-"):
-                    output = output + "0"
+                mantissa, marker, power = output.strip().partition("e")
+                if "." in mantissa:
+                    mantissa = mantissa.rstrip("0")
+                    if mantissa.endswith("."):
+                        mantissa += "0"
+                output = mantissa + marker + power
                 output = " " * (width - len(output)) + output
 
                 if len(output) > width:

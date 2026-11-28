@@ -26,59 +26,23 @@ You must also properly cite relevant Wilson - Devinney papers:
 
 ## Installing Dependencies
 
-> **WARNING** | Some Linux distributions use Python 3.x as their default Python interpreter. In that case 'python' command and package name prefix will actually refer to Python 3.x and 'python2' will refer to Python 2.7. Please refer to your distributions package manager database if you are unsure. On Windows, multiple Python installations may conflict with each other, and your 'python' command might run a different version rather than what you intented. Run 'python --version' from command line to check your Python version. 
+Use CPython 3.12 and a virtual environment:
 
-PyWD2015 supports Python 2.7 and 3.5+. It also relies on Numpy, Scipy, Matplotlib libraries. These libraries can be installed using pip, the Python package installer. Pip should be automatically installed alongside Python on Windows. On Linux, you may need to install pip with your package manager. On Ubuntu and Debian, you can issue:
-
-```shell
-(For Python 2.7) sudo apt install python-pip
-(For Python 3.x) sudo apt install python3-pip
-```   
-
-to install pip. You can then install the dependencies with the following command:  
-
-```shell
-Linux: 
-(For Python 2.7) sudo python -m pip install numpy scipy matplotlib
-(For Python 3.x) sudo python3 -m pip install numpy scipy matplotlib
-
-Windows:
-python -m pip install numpy scipy matplotlib
+```sh
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# Linux: source .venv/bin/activate
+python -m pip install --require-hashes -r requirements.lock
+python pywd2015.py
 ```
 
-On Debian, you may encounter a "backports.functools_lru_cache" and/or "tkinter" error on a fresh matplotlib installation under Python 2.7. To fix this, you can issue:  
+For development, install `requirements-dev.lock` and run `python -m pytest -q`. Tests run offscreen on Windows and Linux. To run the native LC/DC tests on Windows, set `PYWD_ENGINE_DIR` to the extracted `wd-precompiled` directory. Engine versions and fixture hashes are recorded in `tests/fixtures/wd2015-win64/provenance.json`.
 
-```shell
-sudo apt install python-backports.functools-lru-cache python-tk
-```  
+Keep the WD `.dat`/`.tab` files beside the selected LC/DC binaries. Each calculation copies them to its own temporary directory. The input/output viewer opens files from the latest job; export any results you want to keep before exiting. Application settings use the user's config directory, with a fallback for existing settings beside the application.
 
-After that, you need to install the PyQt5 library.
+LC and DC calculations can be cancelled and have an adjustable 60-minute time limit. Failed or cancelled calculations do not add results to the history.
 
-### Linux
-Installing PyQt5 on Linux depends on your distribution and package manager. In general, you should not use pip to install PyQt5, instead use your distributions package manager. On Ubuntu and Debian you can use:  
-
-```shell
-(For Python 2.7) sudo apt install python-pyqt5
-(For Python 3.x) sudo apt install python3-pyqt5
-```  
-
-### Windows
-You can safely use pip to install PyQt5 on Windows 7 and Windows 8.x operating systems:  
-
-```shell
-python -m pip install python-qt5
-```  
-
-However, for the latest versions of Python (3.7+) Windows 10 users may have to modify 
-the command as shown below:
-
-```shell
-python -m pip install PyQT5
-```  
-
-In some Windows operating systems with older Python versions (especially 3.5 or 3.6), users may experience "dll import error" when trying to run PyWD2015. This issue is usually related to PyQT5 and may not have a unique reason. In many case, finding a solution might be time-consuming. In order to avoid this issue, uninstalling the older version and then installing the latest available Python version is strongly recommended. After that, users should install required libraries as described above, as well as PyQT5. 
-
-PyWD2015 has not been tested on Windows 11 yet.
+Project loading validates all saved fields and observation references before applying state. Project files keep the existing INI format and literal `%` text. Calendar conversion uses the historical Julian/Gregorian transition: Julian through 1582-10-04, Gregorian from 1582-10-15; the intervening dates are rejected. Supported calendar years are 1–9999. No local timezone, JD/HJD or time-scale conversion is implied.
 
 ## Getting Started
 

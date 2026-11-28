@@ -67,6 +67,7 @@ class Widget(QtWidgets.QWidget, conjunction_widget.Ui_conjunctionwidget):
             msg.set_info(filepath)
             msg.show()
 
+    @methods.handle_errors
     def compute_conjunction(self):
         self.data_treewidget.clear()
 

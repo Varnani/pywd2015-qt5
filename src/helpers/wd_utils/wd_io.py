@@ -1,18 +1,24 @@
 from .wd_containers import _ParameterContainer
 import os
-import sys
-# below snippet is taken from subprocess32 manual
-if os.name == 'posix' and sys.version_info[0] < 3:
-    import subprocess32 as subprocess
-else:
-    import subprocess
+import shutil
+import tempfile
+import threading
+import time
+import subprocess
 
 
 class _WDIO:
     def __init__(self, container, wd_path, wd_binary_name):
         self.parameters = container
         self._input = ""
-        self._cwd = wd_path
+        self._binary_directory = os.path.abspath(wd_path)
+        self._binary_path = os.path.abspath(os.path.join(wd_path, wd_binary_name))
+        self._job = tempfile.TemporaryDirectory(prefix="pywd-job-")
+        self._cwd = self._job.name
+        self.command_arguments = []
+        self.timeout = 3600.0
+        self._cancelled = threading.Event()
+        self.succeeded = False
         self._type = ""
         self._wd_binary_name = wd_binary_name
 
@@ -25,7 +31,8 @@ class _WDIO:
         self.process = None
 
     def set_working_directory(self, path):
-        self._cwd = path
+        self._binary_directory = os.path.abspath(path)
+        self._binary_path = os.path.join(self._binary_directory, self._wd_binary_name)
 
     def _get_input_path(self):
         return os.path.join(self._cwd, self._type + "in.active")
@@ -34,19 +41,86 @@ class _WDIO:
         return os.path.join(self._cwd, self._type + "out.active")
 
     def save(self):
+        self.succeeded = False
+        # WD opens auxiliary data relative to cwd, not relative to its executable.
+        for name in os.listdir(self._binary_directory):
+            if name.lower().endswith((".dat", ".tab")):
+                source = os.path.join(self._binary_directory, name)
+                if os.path.isfile(source):
+                    shutil.copyfile(source, os.path.join(self._cwd, name))
         with open(self._get_input_path(), "w") as output:
             output.write(self._input)
         return self
 
+    def cancel(self):
+        # Persistent even when the child has not been spawned yet.
+        self._cancelled.set()
+
+    def _run_process(self):
+        self.succeeded = False
+        if self._cancelled.is_set():
+            raise RuntimeError("WD job cancelled.")
+        if not os.path.isfile(self._binary_path):
+            raise OSError("Cannot find WD binary: " + self._binary_path)
+        output = self._get_output_path()
+        if os.path.lexists(output):
+            os.unlink(output)
+        started = time.monotonic()
+        try:
+            with open(os.path.join(self._cwd, "stdout.log"), "wb") as stdout, \
+                    open(os.path.join(self._cwd, "stderr.log"), "wb") as stderr:
+                self.process = subprocess.Popen([self._binary_path] + self.command_arguments,
+                                                cwd=self._cwd, shell=False, stdin=subprocess.DEVNULL,
+                                                stdout=stdout, stderr=stderr,
+                                                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+                while self.process.poll() is None:
+                    if self._cancelled.is_set():
+                        raise RuntimeError("WD job cancelled.")
+                    if time.monotonic() - started >= self.timeout:
+                        raise RuntimeError("WD job timed out.")
+                    try:
+                        self.process.wait(timeout=0.05)
+                    except subprocess.TimeoutExpired:
+                        pass
+                if self._cancelled.is_set():
+                    raise RuntimeError("WD job cancelled.")
+                if self.process.returncode != 0:
+                    raise RuntimeError("WD exited with code {0}. Logs: {1}".format(self.process.returncode, self._cwd))
+            if not os.path.isfile(output) or os.path.getsize(output) == 0:
+                raise RuntimeError("WD produced no output file. Logs: " + self._cwd)
+            self.succeeded = True
+        finally:
+            if self.process is not None:
+                if self.process.poll() is None:
+                    self.process.kill()
+                self.process.wait()
+                self.process = None
+        return self
+
     def run(self):
-        cmd = os.path.join(self._cwd, self._wd_binary_name)
-        if os.path.isfile(cmd):
-            self.process = subprocess.Popen(cmd, cwd=self._cwd)
-            self.process.wait()
-            self.process = None
-            return self
-        else:
-            raise IOError("Cannot find WD binary:\n" + cmd)
+        from PyQt5 import QtCore, QtWidgets
+        app = QtWidgets.QApplication.instance()
+        try:
+            if app is not None and QtCore.QThread.currentThread() == app.thread():
+                from src.helpers.wd_utils.qt_job import run_with_progress
+                run_with_progress(self)
+            else:
+                self._run_process()
+        finally:
+            type(self).last_run = self
+        return self
+
+    @staticmethod
+    def _validate_numeric_table(table, minimum_columns):
+        import math
+        if len(table) < minimum_columns or not table[0]:
+            raise ValueError("Required WD output table is missing or incomplete.")
+        if len({len(column) for column in table}) != 1:
+            raise ValueError("WD output table has unequal column lengths.")
+        if any(not isinstance(value, (int, float)) or not math.isfinite(value)
+               for column in table for value in column):
+            raise ValueError("WD output table contains invalid or non-finite numbers.")
+        return table
 
     @staticmethod
     def _format_eccentricity(ipt):
@@ -110,6 +184,8 @@ class _WDIO:
     def _tidy_table(table):
         if len(table) == 0:
             return []
+        if any(len(row) != len(table[0]) for row in table):
+            raise ValueError("WD output table has inconsistent row widths.")
         columns = [[] for _ in table[0]]
         for line in table:
             for index, data in enumerate(line):
@@ -122,7 +198,8 @@ class _WDIO:
         flag = False
         start = 0
         occured = 0
-        with open(source, "r") as src:
+        from contextlib import nullcontext
+        with (nullcontext(source) if hasattr(source, "read") else open(source, "r")) as src:
             for line in src:
                 if header in line:
                     occured = occured + 1
@@ -201,6 +278,10 @@ class LCIO(_WDIO):
     def _fill_input(self, mpage, ktstep=0):
 
         self.parameters.check_values()
+        from src.helpers.observations import validate_interval
+        prefix = ("hjdst", "hjdsp", "hjdin") if self.parameters["jdphs"].get() == 1 else ("phstrt", "phstop", "phin")
+        validate_interval(*(self.parameters[key].get() for key in prefix))
+
 
         line1 = str(mpage) + " " + \
                 self.parameters["nref"].format(1, 0, "") + " " + \
@@ -390,17 +471,17 @@ class LCIO(_WDIO):
     def read_synthetic_light_curve(self):
         lc = self._read_table(self._get_output_path(),
                               "      JD               Phase     light 1       light 2")
-        return lc
+        return self._validate_numeric_table(lc, 4)
 
     def read_cgs_synthetic_light_curve(self):
         lc = self._read_table(self._get_output_path(),
                               "      JD               Phase       cgs1          cgs2          cgstot")
-        return lc
+        return self._validate_numeric_table(lc, 4)
 
     def read_synthetic_velocity_curve(self):
         vc = self._read_table(self._get_output_path(),
                               "      JD              Phase     V Rad 1")
-        return vc
+        return self._validate_numeric_table(vc, 4)
 
     def read_spectral_lines(self):
         star1_spec_lines = self._read_all_tables(self._get_output_path(),
@@ -414,24 +495,26 @@ class LCIO(_WDIO):
     def read_component_dimensions(self):
         dimensions = self._read_table(self._get_output_path(),
                                       "      JD             Phase     r1pol      r1pt")
-        return dimensions
+        return self._validate_numeric_table(dimensions, 10)
 
     def read_star_positions(self):
         positions = self._read_all_tables(self._get_output_path(),
                                           "   Y Sky Coordinate    Z Sky Coordinate\n")
-        return positions
+        if not positions:
+            raise ValueError("LC returned no star positions.")
+        return [self._validate_numeric_table(table, 2) for table in positions]
 
     def read_etv(self):
         etv = self._read_table(self._get_output_path(),
                                "eclipse timing   type         wt.",
                                offset=2)
-        return etv
+        return self._validate_numeric_table(etv, 6)
 
     def read_conjunction(self):
         conjunction = self._read_table(self._get_output_path(),
                                        "conj. time   type         wt.",
                                        offset=2)
-        return conjunction
+        return self._validate_numeric_table(conjunction, 2)
 
     def read_abs_params(self):
         abs_params = self._read_table(self._get_output_path(),
@@ -808,61 +891,116 @@ class DCIO(_WDIO):
 
 
     def read_results(self, force_tidy_output=False):
-        results = self._read_table(self._get_output_path(),
-                                   "Input-Output in F Format",
-                                   offset=3,
-                                   splitmap=[5, 9, 28, 46, 65, 83],
-                                   occurence=self.parameters.keeps["niter"].get(),
-                                   tidy=force_tidy_output)
-        return results
+        with open(self._get_output_path()) as source:
+            count = source.read().count("Input-Output in F Format")
+        if count < self.parameters.keeps["niter"].get():
+            raise ValueError("DC output is missing completed iterations.")
+        results = self._read_table(self._get_output_path(), "Input-Output in F Format", offset=3,
+                                   splitmap=[5, 9, 28, 46, 65, 83], occurence=count, tidy=False)
+        if not results:
+            raise ValueError("DC output has no fitted parameters.")
+        self._validate_numeric_table(self._tidy_table(results), 6)
+        return self._tidy_table(results) if force_tidy_output else results
+
+    def _final_result_tail(self):
+        with open(self._get_output_path()) as source:
+            text = source.read()
+        position = text.rfind("Input-Output in F Format")
+        if position == -1:
+            raise ValueError("DC has no final solution block.")
+        return text[position:]
 
     def read_solution_stats(self):
-        stats = self._read_table(self._get_output_path(),
-                                 "   Mean residual for input values",
-                                 occurence=self.parameters.keeps["niter"].get())
-        return stats
+        from io import StringIO
+        header = "   Mean residual for input values"
+        return self._validate_numeric_table(
+            self._read_table(StringIO(self._final_result_tail()), header), 3)
 
     def read_curve_stats(self):
-        curve_stats = self._read_table(self._get_output_path(),
-                                 "    Curve   No. of obs.        Std. dev.",
-                                 tidy=False)
+        import math
+        from io import StringIO
+        with open(self._get_output_path()) as source:
+            text = source.read()
+        result_header = "Input-Output in F Format"
+        result_position = text.rfind(result_header)
+        previous_result = text.rfind(result_header, 0, result_position)
+        header = "    Curve   No. of obs.        Std. dev."
+        position = text.rfind(header, 0, result_position)
+        if result_position == -1 or position <= previous_result:
+            raise ValueError("No curve statistics for the selected DC solution.")
+        curve_stats = self._read_table(StringIO(text[position:result_position]), header, tidy=False)
+        # Eclipse, velocity and light curves have 3, 5 and 7 fields respectively.
+        if not curve_stats or any(
+                len(row) not in (3, 5, 7) or
+                any(not isinstance(value, (int, float)) or not math.isfinite(value) for value in row)
+                for row in curve_stats):
+            raise ValueError("Malformed or non-finite DC curve statistics.")
         return curve_stats
 
     def read_component_dimensions(self):
-        s1_dimensions = self._read_table(self._get_output_path(),
-                                         "  1   pole",
-                                         offset=0,
-                                         splitmap=[3, 10, 24, 38, 52, 66])
-
-        s2_dimensions = self._read_table(self._get_output_path(),
-                                         "  2   pole",
-                                         offset=0,
-                                         splitmap=[3, 10, 24, 38, 52, 66])
-
-        return [s1_dimensions, s2_dimensions]
+        from io import StringIO
+        text = self._final_result_tail()
+        dimensions = []
+        for star in (1, 2):
+            header = "  {0}   pole".format(star)
+            if header not in text:
+                raise ValueError("Final DC component dimensions are missing.")
+            table = self._read_table(StringIO(text), header, offset=0,
+                                     splitmap=[3, 10, 24, 38, 52, 66])
+            if len(table) != 6:
+                raise ValueError("Malformed DC component dimensions.")
+            self._validate_numeric_table([table[0]] + table[2:], 5)
+            dimensions.append(table)
+        return dimensions
 
     def read_unweighted_observations(self, split_by_observation=False):
+        import math
         results = self.read_results()
-        column_limit = 38 # original was 20, updated to 38 as updated in dc source code
-        base_columns = 4
-        if self.parameters["jdphs"].get() == 1:
-            column_limit = 41 # original was 23, updated to 41 as updated in dc source code
-            base_columns = 5
-        current_columns = len(results[0]) + base_columns
-
-        if current_columns > column_limit:
-            oc_table = self._read_table(self._get_output_path(), "Unweighted Observational Equations", offset=3,
-                                        tidy=False)
-            table = []
-            idx = 0
-            max_idx = len(oc_table)
-            while idx < max_idx:
-                table.append(oc_table[idx] + oc_table[idx + 1])
-                idx = idx + 2
-            oc_table = self._tidy_table(table)
-
-        else:
-            oc_table = self._read_table(self._get_output_path(), "Unweighted Observational Equations", offset=3)
+        with open(self._get_output_path()) as source:
+            text = source.read()
+        result_header = "Input-Output in F Format"
+        result_position = text.rfind(result_header)
+        previous_result = text.rfind(result_header, 0, result_position)
+        equation_header = "Unweighted Observational Equations"
+        equation_position = text.rfind(equation_header, 0, result_position)
+        if equation_position <= previous_result:
+            raise ValueError("No observational equations for the selected DC solution.")
+        ifoc = self.parameters["ifoc"].get()
+        if ifoc not in (0, 1):
+            raise ValueError("Unsupported DC ifoc value.")
+        base_columns = (2 if self.parameters["jdphs"].get() == 1 else 1) + 2 * ifoc + 1
+        expected = len(results) + base_columns
+        lines = text[equation_position:].splitlines()[3:]
+        table, pending = [], []
+        for line in lines:
+            if not line.strip():
+                break
+            # Native formats: F20.10 phase records; F13.5 then F20.10 time records.
+            # Continuations can use any wrap width; logical width comes from this solution.
+            first_width = 13 if self.parameters["jdphs"].get() == 1 else 20
+            fields = [line[:first_width]]
+            fields.extend(line[i:i + 20] for i in range(first_width, len(line.rstrip()), 20))
+            try:
+                values = [float(field.replace("D", "E")) for field in fields if field.strip()]
+            except ValueError as error:
+                raise ValueError("Malformed DC equation field.") from error
+            if not all(math.isfinite(value) for value in values):
+                raise ValueError("Non-finite DC equation.")
+            pending.extend(values)
+            if len(pending) > expected:
+                raise ValueError("Too many fields in DC observational equation.")
+            if len(pending) == expected:
+                table.append(pending)
+                pending = []
+        if pending or not table:
+            raise ValueError("Incomplete DC observational equation.")
+        expected_rows = sum(len(curve.data["velocity_data"][0]) for curve in self.parameters.velocity_curves if curve is not None)
+        expected_rows += sum(len(curve.data["light_data"][0]) for curve in self.parameters.light_curves)
+        if self.parameters.eclipse_timings is not None:
+            expected_rows += len(self.parameters.eclipse_timings.data["eclipse_data"][0])
+        if expected_rows and len(table) != expected_rows:
+            raise ValueError("DC equation count does not match input observations.")
+        oc_table = self._tidy_table(table)
 
         if split_by_observation:
             obs_table = []

@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets, QtGui
+from src.helpers.observations import read_columns, select_columns
 import numpy
 from gui import curveproperties_dialog
 from src.helpers import methods, messenger
@@ -211,18 +212,8 @@ class CurveProperty:
 
     def get_data(self):
         if self.filepath is not None:
-            data = numpy.loadtxt(self.filepath, unpack=True)
-
-            x = data[self.col1_idx]
-            y = data[self.col2_idx]
-            z = []
-
-            if self.constant_weights:
-                z = numpy.ones(len(x))
-            else:
-                z = data[self.col3_idx]
-
-            return x, y, z
+            return select_columns(read_columns(self.filepath), self.col1_idx, self.col2_idx,
+                                  None if self.constant_weights else self.col3_idx)
 
 
 class Widget(QtWidgets.QDialog, curveproperties_dialog.Ui_CurvePropertiesDialog):
@@ -291,6 +282,16 @@ class Widget(QtWidgets.QDialog, curveproperties_dialog.Ui_CurvePropertiesDialog)
         self.repick_btn.clicked.connect(self.repick_data)
 
     def accept_changes(self):
+        try:
+            select_columns(read_columns(self.filepath), self.time_combobox.currentIndex(),
+                           self.obs_combobox.currentIndex(),
+                           None if self.weight_combobox.currentText() == "Constant (1.0)"
+                           else self.weight_combobox.currentIndex())
+        except (ValueError, OSError) as error:
+            msg = messenger.Messenger("error", "Invalid observation columns:")
+            msg.set_info(str(self.filepath) + "\n" + str(error))
+            msg.show()
+            return
         self.done(1)
 
     def discard_changes(self):
@@ -305,8 +306,9 @@ class Widget(QtWidgets.QDialog, curveproperties_dialog.Ui_CurvePropertiesDialog)
                 self.obs_combobox.setCurrentIndex(1)
                 self.weight_combobox.setCurrentIndex(2)
 
+    @methods.handle_errors
     def plot_preview_data(self):
-        data = numpy.loadtxt(self.filepath, unpack=True)
+        data = read_columns(self.filepath)
 
         x = data[self.time_combobox.currentIndex()]
         y = data[self.obs_combobox.currentIndex()]
@@ -332,19 +334,17 @@ class Widget(QtWidgets.QDialog, curveproperties_dialog.Ui_CurvePropertiesDialog)
     def populate_data_from_filepath(self, filepath):
 
         try:
-            data = numpy.loadtxt(filepath, unpack=True)
-            if 1 > len(data):
-                raise IndexError("File has less than 2 columns.")
+            data = read_columns(filepath)
 
-        except ValueError as e:
+        except (ValueError, OSError) as e:
             msg = messenger.Messenger("error", "A ValueError has occured:")
-            msg.set_info(e.args[0])
+            msg.set_info(str(filepath) + "\n" + str(e))
             msg.show()
             return False
 
         except IndexError as e:
             msg = messenger.Messenger("error", "An IndexError has occured:")
-            msg.set_info(e.args[0])
+            msg.set_info(str(filepath) + "\n" + str(e))
             msg.show()
             return False
 

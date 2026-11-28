@@ -1,3 +1,4 @@
+from src.helpers.project_io import atomic_write_parser
 from PyQt5 import QtWidgets, QtGui
 from gui import configurespots_widget
 from src import constants
@@ -75,10 +76,9 @@ class Widget(QtWidgets.QWidget, configurespots_widget.Ui_SpotConfigureWidget):
     def save_spots(self):
         save_path = methods.save_file(self, suffix=".pywdspot", name_filter="PyWD2015 spot file (*.pywdspot)")
         if save_path is not None:
-            parser = self.write_into_parser(ConfigParser())
+            parser = self.write_into_parser(ConfigParser(interpolation=None))
 
-            with open(save_path, "w") as destination:
-                parser.write(destination)
+            atomic_write_parser(parser, save_path)
 
             msg = messenger.Messenger("info", "Save completed:")
             msg.set_info(save_path)
@@ -88,7 +88,7 @@ class Widget(QtWidgets.QWidget, configurespots_widget.Ui_SpotConfigureWidget):
         load_path = methods.load_file(self, suffix=".pywdspot", name_filter="PyWD2015 spot file (*.pywdspot);;"
                                                                             "PyWD2015 project file (*.pywdproject)")
         if load_path is not None:
-            parser = ConfigParser()
+            parser = ConfigParser(interpolation=None)
             with open(load_path, "r") as source:
                 parser.read_file(source)
 
